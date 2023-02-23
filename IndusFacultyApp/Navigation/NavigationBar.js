@@ -133,6 +133,14 @@ export default function NavigationBar() {
           name="Announctments"
           component={Routes.totalannounctments}
         />
+        <Stack.Screen
+          name="AnswerDoubt"
+          component={Routes.answerdoubt}
+          options={{
+            presentation: "containedTransparentModal",
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

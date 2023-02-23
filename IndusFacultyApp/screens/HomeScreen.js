@@ -117,7 +117,11 @@ export default function HomeScreen({
               </Text>
             </View>
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("AnswerDoubt");
+            }}
+          >
             <View style={styles.reportInnerContainer}>
               <Icon
                 name="check-circle"

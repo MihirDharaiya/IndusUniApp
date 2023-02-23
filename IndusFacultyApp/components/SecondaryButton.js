@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2.3),
     textAlign: "center",
     fontWeight: "bold",
+    color: Colors.blue,
   },
   pressed: {
     opacity: 0.75,
