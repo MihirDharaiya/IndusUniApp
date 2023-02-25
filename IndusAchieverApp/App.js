@@ -21,22 +21,27 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from "react-native-vector-icons/FontAwesome5";
+import Icons from "react-native-vector-icons/FontAwesome";
 import StudentProfile from './screens/StudentProfile';
+import { responsiveFontSize } from 'react-native-responsive-dimensions';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 function Navigation(){
-  return <BottomTabs.Navigator screenOptions={{
+  return <BottomTabs.Navigator 
+  initialRouteName={"HomeScreen"}
+  screenOptions={{
     tabBarActiveTintColor: Colors.red,
     headerShown: false,
-    tabBarShowLabel: false
+    tabBarShowLabel: false,
+    tabBarActiveBackgroundColor: Colors.extralightgrey
   }}>
-    <BottomTabs.Screen name='PastDoubts' component={PastDoubts} options={{tabBarIcon: ({color,size}) => <Icon name='clipboard-list' size={size} color={Colors.blue}/>}}/>
-    <BottomTabs.Screen name='Community' component={Community} options={{tabBarIcon: ({color,size}) => <Icon name='users' size={size} color={Colors.blue}/>}}/>
-    <BottomTabs.Screen name='HomeScreen' component={HomeScreen} options={{tabBarIcon: ({color,size}) => <Icon name='home' size={size} color={Colors.blue}/>}}/>
-    <BottomTabs.Screen name='ActiveDoubts' component={ActiveDoubts} options={{tabBarIcon: ({color,size}) => <Icon name='comments' size={size} color={Colors.blue}/>}}/>
-    <BottomTabs.Screen name='Profile' component={Profile} options={{tabBarIcon: ({color,size}) => <Icon name='user' size={size} color={Colors.blue}/>}}/>
+    <BottomTabs.Screen name='PastDoubts'  component={PastDoubts} options={{tabBarIcon: ({size}) => <Icon name='clipboard-list' size={responsiveFontSize(3.3)} color={Colors.blue}/>}} />
+    <BottomTabs.Screen name='Community' component={Community} options={{tabBarIcon: ({size}) => <Icon name='users' size={size} color={Colors.blue}/>}}/>
+    <BottomTabs.Screen name='HomeScreen' component={HomeScreen} options={{tabBarIcon: ({size}) => <Icon name='home' size={size} color={Colors.blue}/>}}/>
+    <BottomTabs.Screen name='ActiveDoubts' component={ActiveDoubts} options={{tabBarIcon: ({size}) => <Icons name='comment' size={size} color={Colors.blue}/>}}/>
+    <BottomTabs.Screen name='Profile' component={Profile} options={{tabBarIcon: ({size}) => <Icon name='user-alt' size={size} color={Colors.blue}/>}}/>
 
   </BottomTabs.Navigator>
 }
