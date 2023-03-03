@@ -3,17 +3,26 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, Pressable } from "react-native";
 import React from "react";
 import Card from "../components/Card";
 import Colors from "../constants/Colors";
 import ImageTextStack from "../components/ImageTextStack";
+import CreateDoubtScreen from "./CreateDoubtScreen";
+import Routes from "../Navigation/Routes";
 
-export default function HomeScreen() {
+export default function HomeScreen({
+  navigation
+}) {
   return (
     <ScrollView style={styles.conatiner}>
       <Text style={styles.topText}>Here you can create your{"\n"} respective doubts {"\n"} according to the your branch faculties</Text>
       <View style={styles.card}>
+        <Pressable
+        onPress={() => {
+          navigation.navigate("CreateDoubtScreen");
+        }}
+        >
       <Card>
         <View style={styles.titleContainer}>
         <View style={styles.imgContainer}>
@@ -30,6 +39,7 @@ export default function HomeScreen() {
         </View>      
         </View>
       </Card>
+      </Pressable>
       <Card>
         <View style={styles.titleContainer}>
         <View style={styles.imgContainer}>
@@ -50,7 +60,9 @@ export default function HomeScreen() {
         <Text style={styles.moreText}>... more</Text>
       </View>
       </View>
-        <ImageTextStack></ImageTextStack>
+        <ImageTextStack onPressActive={() => {navigation.navigate("ActiveDoubts");}}
+        onPressQuestions={() => {navigation.navigate("FrequentlyAskedQuestion");}}
+        ></ImageTextStack>
         <View style={styles.calendarView}>
         <ImageBackground
           source={require("../assets/images/Calendar.png")}

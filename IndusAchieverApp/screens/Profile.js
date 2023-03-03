@@ -17,8 +17,18 @@ import TextInputField from "../components/TextInputField";
 import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
+import { getAuth, signOut } from "firebase/auth";
 
-export default function Profile() {
+export default function Profile({navigation}) {
+
+  const onSignOut=() => {
+    const auth = getAuth();
+signOut(auth).then(() => {
+  navigation.navigate('LoginScreen')
+}).catch((error) => {
+  alert('Something went wrong please try again !')
+});
+  }
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.imageContainer}>
@@ -53,6 +63,9 @@ export default function Profile() {
           iconName="link"
           size={responsiveFontSize(2.3)}
           color={Colors.white}
+          onPress={() => {
+            navigation.navigate("SocailMediaScreen");
+          }}
           ></PrimaryButton>
         </View>
       </View>
@@ -101,6 +114,7 @@ export default function Profile() {
           size={responsiveFontSize(3)}
           color={Colors.blue}
           textStyle={{ color: Colors.blue }}
+          onPress={()=> onSignOut()}
         >
           Log Out
         </SecondaryButton>

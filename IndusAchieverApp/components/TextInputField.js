@@ -18,6 +18,7 @@ function TextInputField({
   editable,
   enteredValue,
   enteredValueHandler,
+  secureTextEntry
 }) {
   return (
     <View style={styles.outersearchSection}>
@@ -33,6 +34,7 @@ function TextInputField({
             <Text style={styles.titleText}>{title}</Text>
           </View>
           <TextInput
+            secureTextEntry={secureTextEntry}
             style={styles.input}
             placeholder={placeholder}
             maxLength={maxLength}

@@ -53,6 +53,7 @@ import TextInputBoxField from "../components/TextInputBoxField";
       paddingLeft: responsiveWidth(2),
     },
     titleView:{
+      paddingTop: responsiveHeight(2),
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',

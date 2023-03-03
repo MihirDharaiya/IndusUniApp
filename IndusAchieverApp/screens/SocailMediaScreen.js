@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
 import {
     responsiveHeight,
@@ -10,9 +10,15 @@ import Colors from '../constants/Colors';
 import AltTextField from '../components/AltTextField';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
+import GreyCard from '../components/GreyCard';
 export default function SocailMediaScreen() {
+  const[skill, setSkill] = useState("");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setText(event.target[0].value);
+  };
   return (
-    <ScrollView>
+    <ScrollView style={styles.rootContainer}>
       <Text style={styles.textStyle}>Add Other Details</Text>
       <View style={styles.inputField}>
         <SecondaryTextInputField
@@ -50,12 +56,21 @@ export default function SocailMediaScreen() {
             <View style={styles.altField}>
             <AltTextField
             placeholder={"Add Revelant Skills"}
+            enteredValue={skill}
+            enteredValueHandler={(val) => setSkill(val)}
             ></AltTextField>
             </View>
             <View style={styles.altButton}>
-            <PrimaryButton>Add</PrimaryButton>
-            </View>
+            <PrimaryButton
+            onPress={handleSubmit}
+            >Add</PrimaryButton>
         </View>
+        </View>
+            <View>
+              <GreyCard>
+                <Text>{skill}</Text>
+              </GreyCard>
+            </View>
         <View style={styles.secondButton}>
         <SecondaryButton
         iconVisible={true}
@@ -73,6 +88,10 @@ export default function SocailMediaScreen() {
 }
 
 const styles = StyleSheet.create({
+  rootContainer:{
+    backgroundColor: Colors.white,
+    flex:1
+  },
     textStyle: {
         textAlign: 'center',
         padding: 20,

@@ -16,8 +16,40 @@ import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import TextInputField from "../components/TextInputField";
+import { useState,useEffect } from "react";
+import { getAuth, onAuthStateChanged, User,signInWithEmailAndPassword } from 'firebase/auth';
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const auth = getAuth();
+
+  const onSignIn = () => {
+    const reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    if(!(reg.test(email)===true)){
+      setError('Please Enter Valid University Email !!')
+    }
+    else if(password=='' || password.length<=8){
+      setError('Pleaser Enter Valid Password')
+    }
+    else{
+      setError("")
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      const user = userCredential.user;
+      setEmail('');
+      setPassword('');
+      navigation.navigate('tabClientNavigator')
+    })
+      .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setError('Invalid User !')
+      });
+    }
+  }
+
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.containerImage}>
@@ -30,16 +62,21 @@ export default function LoginScreen() {
         <View>
           <TextInputField
             title="Username:"
-            iconName={"user-tag"}
-            iconStyle={{ marginRight: responsiveWidth(3.9) }}
-            size={responsiveFontSize(4)}
+            iconName={"user-alt"}
+            iconStyle={{ marginRight: responsiveWidth(3) }}
+            size={responsiveFontSize(3.7)}
             placeholder="Enter Username"
+            enteredValue={email}
+            enteredValueHandler={text => setEmail(text)}
           />
           <TextInputField
             title="Password:"
             iconName={"lock"}
             size={responsiveFontSize(4)}
             placeholder="Enter Password"
+            enteredValue={password}
+            enteredValueHandler={password => setPassword(password)}
+            secureTextEntry={true}
           />
 
           <Pressable
@@ -54,9 +91,17 @@ export default function LoginScreen() {
             </View>
           </Pressable>
         </View>
-
+        {
+        error==''?null:(<View style={{paddingBottom: 10}}>
+          <Text style={{color: Colors.red, textAlign: 'center'}}>
+            {error}
+          </Text>
+        </View>)
+      }
         <View style={styles.buttonContainer}>
-          <PrimaryButton>LogIn</PrimaryButton>
+          <PrimaryButton
+          onPress={()=> onSignIn()}
+          >LogIn</PrimaryButton>
         </View>
       </Card>
 
@@ -83,7 +128,11 @@ export default function LoginScreen() {
           </View>
           <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
         </View>
-        <SecondaryButton>Sign Up</SecondaryButton>
+        <SecondaryButton
+        onPress={()=> {
+          navigation.navigate('SignUpScreen')
+        }}
+        >Sign Up</SecondaryButton>
       </View>
     </ScrollView>
   );
@@ -103,7 +152,7 @@ const styles = StyleSheet.create({
     height: responsiveWidth(35),
   },
   mainContainer: {
-    marginBottom: 10,
+    backgroundColor: Colors.white
   },
   buttonText: {
     color: Colors.white,

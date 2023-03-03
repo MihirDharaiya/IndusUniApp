@@ -88,6 +88,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
       paddingLeft: responsiveWidth(2),
     },
     titleView:{
+      paddingTop: responsiveHeight(2),
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',

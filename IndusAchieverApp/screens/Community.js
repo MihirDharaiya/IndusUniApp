@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     },
     searchView:{
       flexDirection: 'row',
-      width: responsiveWidth(60),
+      width: responsiveWidth(100),
       marginTop: responsiveHeight(2),
+
     }
 })

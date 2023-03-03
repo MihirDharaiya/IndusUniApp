@@ -9,54 +9,127 @@ import  Colors  from '../constants/Colors';
 import Card from '../components/Card';
 import TextInputField from '../components/TextInputField'
 import SecondaryButton from '../components/SecondaryButton';
-export default function SignupScreen() {
+import {app} from '../firebase/firebase';
+import { useState } from 'react';
+import { getAuth, onAuthStateChanged, User,createUserWithEmailAndPassword } from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
+import {doc,setDoc} from 'firebase/firestore';
+
+export default function SignupScreen({navigation}) {
+  const auth=getAuth();
+  const db = getFirestore(app);
+
+  const [enrollnmentNumber, setenrollnmentNumber] = useState('');   
+  const [password, setPassword] = useState('');  
+  const [confirmPassword, setconfirmPassword] = useState('');    
+  const [name, setName] = useState('');   
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  
+  const addUser = ()=>{
+    const reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    if(!(reg.test(email)===true)){
+      setError('Please Enter Valid University Email !!')
+    }
+    else if(enrollnmentNumber=='' || enrollnmentNumber.length != 12 || !enrollnmentNumber.startsWith('IU')){
+      
+      setError('Please Enter Valid Enrollnment Number !!')
+    }
+    else if(name==''){
+      setError('Please Enter Valid Name')
+    }
+    else if(password=='' || password!=confirmPassword || password.length<=8){
+      setError('Pleaser Enter Valid Password')
+    }
+    else{
+      setError('');
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => { 
+        const user = userCredential.user;             
+        console.log("User Added :",user);  
+        setDoc(doc(db, "users",user.uid), {
+          email: email,
+          name: name,
+          enrollnmentNumber: enrollnmentNumber
+        }).then(()=>{
+          navigation.navigate('tabClientNavigator')
+        });
+      })            
+      .catch((error) => {
+        console.log("Error : ",error)});               
+    }
+  }
+
   return (
-    <ScrollView>
+    <ScrollView style={styles.rootContainer}>
         <View style={styles.containerImage}>
         <Image
           style={styles.image}
           source={require("../assets/images/IndusAchieverLogo.png")}
         />
         </View>
-        <Text style={styles.infoText}>Kindly scan your front and back side {'\n'}of your university ID card</Text>
-        <View style={styles.cameraButtonContainer}>
-            <PrimaryButton iconVisible={true}
-          iconName="camera-retro"
-          size={responsiveFontSize(3)}
-          color={Colors.blue}>Camera</PrimaryButton>
-        </View>
-        <Text style={styles.infoText2}>Having trouble using the camera ?</Text>
+        <Text style={styles.infoText}>Kindly Enter Your University Email Only</Text>
         <Card>
             <View>
             <TextInputField
-            title="Enrollnment Number:"
-            iconName={"user-tag"}
+            title="Name:"
+            iconName={"user-alt"}
+            size={responsiveFontSize(4)}
+            placeholder="Enter Name"
+            enteredValue={name}
+            enteredValueHandler={(val) => setName(val)}
+          />
+          <TextInputField
+            title="Email:"
+            iconName={"at"}
             iconStyle={{ marginRight: responsiveWidth(3.9) }}
             size={responsiveFontSize(4)}
-            placeholder="Enter Username"
+            placeholder="Enter Email"
+            enteredValue={email}
+            enteredValueHandler={(val) =>setEmail(val)}
+          />
+            <TextInputField
+            title="Enrollnment Number:"
+            iconName={"id-badge"}
+            iconStyle={{ marginRight: responsiveWidth(3.9) }}
+            size={responsiveFontSize(4)}
+            placeholder="Enter Enrollnment"
+            enteredValue={enrollnmentNumber}
+            enteredValueHandler={(val) =>setenrollnmentNumber(val)}
           />
           <TextInputField
             title="Password:"
             iconName={"lock"}
             size={responsiveFontSize(4)}
             placeholder="Enter Password"
+            enteredValue={password}
+            enteredValueHandler={(val) =>setPassword(val)}
+            secureTextEntry={true}
           />
           <TextInputField
-            title="Emial:"
-            iconName={"at"}
-            iconStyle={{ marginRight: responsiveWidth(3.9) }}
+            title="Confirm Password:"
+            iconName={"lock"}
             size={responsiveFontSize(4)}
-            placeholder="Enter Email"
+            placeholder="Enter Password"
+            enteredValue={confirmPassword}
+            enteredValueHandler={(val) =>setconfirmPassword(val)}
+            secureTextEntry={true}
           />
-          <TextInputField
-            title="Name:"
-            iconName={"user"}
-            size={responsiveFontSize(4)}
-            placeholder="Enter Name"
-          />
+          
             </View>
+            {
+        error==''?null:(<View style={{paddingTop: 10}}>
+          <Text style={{color: Colors.red, textAlign: 'center'}}>
+            {error}
+          </Text>
+        </View>)
+      }
             <View style={styles.buttonContainer}>
-                <SecondaryButton textStyle={{color: Colors.darkred}} buttonStyle={{borderColor: Colors.darkred}}>Sign Up</SecondaryButton>
+                <SecondaryButton 
+                textStyle={{color: Colors.darkred}}
+                buttonStyle={{borderColor: Colors.darkred}}
+                onPress={()=> {addUser()}}
+                >Sign Up</SecondaryButton>
             </View>
         </Card>
         
@@ -65,6 +138,9 @@ export default function SignupScreen() {
 }
 
 const styles = StyleSheet.create({
+  rootContainer:{
+    backgroundColor: Colors.white
+  },
     image: {
         width: responsiveWidth(70),
         height: responsiveWidth(35),
@@ -78,7 +154,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: responsiveFontSize(2.4),
         color: Colors.darkred,
-        fontWeight: 'semi-bold'
+        fontWeight: 'bold',
+        marginBottom: responsiveHeight(4)
     },
     infoText2: {
         textAlign: 'center',

@@ -8,11 +8,11 @@ import {
 import Colors from "../constants/Colors";
 import ActiveDoubts from '../screens/ActiveDoubts';
 
-export default function ImageTextStack() {
-  return (
+export default function ImageTextStack({onPressActive, onPressQuestions}) {
+    return (
     <View style={styles.boxContainer}>
       <View style={styles.container}>
-        <Pressable onPress={ActiveDoubts}>
+        <Pressable onPress={onPressActive}>
         <ImageBackground
           source={require("../assets/images/Pencil.jpg")}
           style={styles.backdrop1}
@@ -26,6 +26,7 @@ export default function ImageTextStack() {
       </View>
 
       <View style={styles.container}>
+        <Pressable onPress={onPressQuestions}>
         <ImageBackground
           source={require("../assets/images/Question_mark.jpg")}
           style={styles.backdrop2}
@@ -36,6 +37,7 @@ export default function ImageTextStack() {
             </Text>
           </View>
         </ImageBackground>
+        </Pressable>
       </View>
     </View>
   );
