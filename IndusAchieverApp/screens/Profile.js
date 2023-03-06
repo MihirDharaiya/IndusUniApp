@@ -14,10 +14,12 @@ import {
 } from "react-native";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
-import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
+import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
+import {getFirestore} from 'firebase/firestore';
+import {doc,setDoc} from 'firebase/firestore';
 
 export default function Profile({navigation}) {
 
@@ -73,6 +75,7 @@ signOut(auth).then(() => {
         <TextInputField
           title="Name:"
           iconName={"user-alt"}
+          iconStyle={{ marginRight: responsiveWidth(2)}}
           size={responsiveFontSize(3.5)}
           placeholder="Name"
           editable={false}
@@ -80,6 +83,7 @@ signOut(auth).then(() => {
         <TextInputField
           title="Email:"
           iconName={"at"}
+          iconStyle={{ marginRight: responsiveWidth(2)}}
           size={responsiveFontSize(3.5)}
           placeholder="Email address"
           editable={false}
@@ -87,7 +91,8 @@ signOut(auth).then(() => {
         <TextInputField
           title="Enrollnment Number:"
           iconName={"id-badge"}
-          size={responsiveFontSize(3.5)}
+          iconStyle={{ marginRight: responsiveWidth(3.4)}}
+          size={responsiveFontSize(3.8)}
           placeholder="IU12312"
           style={{ marginRight: 3 }}
           editable={false}
@@ -95,14 +100,16 @@ signOut(auth).then(() => {
         <TextInputField
           title="Branch:"
           iconName={"building"}
-          size={responsiveFontSize(3.5)}
+          iconStyle={{ marginRight: responsiveWidth(2.8)}}
+          size={responsiveFontSize(3.4)}
           placeholder="Department name"
           editable={false}
         />
         <TextInputField
           title="Batch Year:"
           iconName={"id-card"}
-          size={responsiveFontSize(3.5)}
+          iconStyle={{ marginRight: responsiveWidth(2)}}
+          size={responsiveFontSize(3.1)}
           placeholder="2017"
           editable={false}
         />
@@ -126,7 +133,6 @@ signOut(auth).then(() => {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    marginBottom: responsiveHeight(1),
     backgroundColor: Colors.white
   },
   inputFieldsContainer: {

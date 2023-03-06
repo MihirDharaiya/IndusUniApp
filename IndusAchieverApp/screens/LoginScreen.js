@@ -38,6 +38,7 @@ export default function LoginScreen({navigation}) {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
       const user = userCredential.user;
+      console.log(user);
       setEmail('');
       setPassword('');
       navigation.navigate('tabClientNavigator')
@@ -63,7 +64,7 @@ export default function LoginScreen({navigation}) {
           <TextInputField
             title="Username:"
             iconName={"user-alt"}
-            iconStyle={{ marginRight: responsiveWidth(3) }}
+            iconStyle={{ marginRight: responsiveWidth(2)}}
             size={responsiveFontSize(3.7)}
             placeholder="Enter Username"
             enteredValue={email}
@@ -80,6 +81,9 @@ export default function LoginScreen({navigation}) {
           />
 
           <Pressable
+          onPress={()=> {
+            navigation.navigate('ForgotPassword')
+          }}
             style={({ pressed }) =>
               pressed
                 ? [styles.buttonInnerContainer, styles.pressed]

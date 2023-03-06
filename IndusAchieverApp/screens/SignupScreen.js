@@ -74,7 +74,7 @@ export default function SignupScreen({navigation}) {
             <TextInputField
             title="Name:"
             iconName={"user-alt"}
-            size={responsiveFontSize(4)}
+            size={responsiveFontSize(3.7)}
             placeholder="Enter Name"
             enteredValue={name}
             enteredValueHandler={(val) => setName(val)}
@@ -82,7 +82,7 @@ export default function SignupScreen({navigation}) {
           <TextInputField
             title="Email:"
             iconName={"at"}
-            iconStyle={{ marginRight: responsiveWidth(3.9) }}
+            iconStyle={{ marginRight: responsiveWidth(2) }}
             size={responsiveFontSize(4)}
             placeholder="Enter Email"
             enteredValue={email}
@@ -155,7 +155,9 @@ const styles = StyleSheet.create({
         fontSize: responsiveFontSize(2.4),
         color: Colors.darkred,
         fontWeight: 'bold',
-        marginBottom: responsiveHeight(4)
+        marginBottom: responsiveHeight(4),
+        paddingLeft: 5,
+        paddingRight: 5
     },
     infoText2: {
         textAlign: 'center',

@@ -44,7 +44,7 @@ export default function ForgotPassword() {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 16,
+    backgroundColor: Colors.white
   },
   logoContainer: {
     alignItems: "center",
