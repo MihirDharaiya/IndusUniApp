@@ -1,0 +1,12 @@
+.title-div {
+  text-align: center;
+  padding: 10px;
+  margin-top:25%;
+  margin-bottom:25%;
+  opacity: 1;
+}
+.welcome-title {
+  color: wheat;
+  font-size: 5rem;
+  font-weight: 600;
+}

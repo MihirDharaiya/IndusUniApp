@@ -1,0 +1,54 @@
+.backgroundimage {
+  background-image: url("/src/images/background.png");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.main-div {
+  width: 100vw;
+  height: 100vh;
+}
+.box {
+  width: 72vw;
+  height: 92vh;
+  border-radius: 5px;
+  background: rgba(50, 51, 50, 0.75);
+  position: absolute;
+  top: 50%;
+  left: 62%;
+  transform: translate(-50%, -50%);
+}
+.form-div {
+  padding: 3%;
+  opacity: 1;
+}
+.input-div {
+  padding-bottom: 0.5%;
+}
+#icon {
+  color: #fff;
+  margin-right: 10px;
+  font-size: 1.8rem;
+}
+#input-title {
+  color: #fff;
+  font-size: 1.4rem;
+  justify-content: center;
+}
+#inputField {
+  font-size: 1.4rem;
+  color: #000000;
+  font-weight: 600;
+}
+#submit-btn {
+  width: 150px;
+  font-size: 30px;
+  font-weight: 200;
+  background-color: #19315a;
+  color: #fff;
+  margin-top: 10px;
+}
+#inputField:focus {
+  border-color: #19315a;
+}

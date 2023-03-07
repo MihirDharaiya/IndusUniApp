@@ -1,0 +1,48 @@
+#login-card {
+  margin: 0;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  margin-left: 5%;
+  padding: 3% 2% 1% 2%;
+}
+#login-logo-image {
+  width: 60%;
+  height: 20%;
+}
+.login-form {
+  padding-top: 10%;
+}
+#login-input-title {
+  color: #19315a;
+  font-size: 1.3rem;
+}
+#login-icon {
+  margin-right: 5px;
+}
+#login-inputField {
+  font-size: 1.3rem;
+}
+#login-inputField:focus {
+  border-color: #19315a;
+}
+#forgot-pass-btn {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ff0000;
+  position: relative;
+  padding-left: 68%;
+}
+#forgot-pass-div {
+  align-items: flex-end;
+}
+#login-submit-btn {
+  width: 150px;
+  font-size: 30px;
+  font-weight: 200;
+  background-color: #19315a;
+  color: #fff;
+  margin-top: 5%;
+}

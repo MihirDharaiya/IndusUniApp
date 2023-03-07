@@ -1,0 +1,26 @@
+table {
+  width: 95%;
+  margin: 3% 3% 0% 3%;
+  border-collapse: collapse;
+  border-spacing: 0 20px;
+}
+
+th {
+  font-size: x-large;
+  color: #ffffff;
+  text-align: left;
+  font-weight: 400;
+}
+
+td {
+  font-size: 1.3rem;
+  color: #000000;
+  font-weight: 300;
+  text-align: left;
+  padding: 15px 10px 15px 10px;
+  border-right: 1px solid black;
+}
+.list-row {
+  background-color: #d9d9d9;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
