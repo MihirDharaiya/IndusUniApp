@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import AddFaculty from "./pages/AddFaculty";
 import RemoveFaculty from "./pages/RemoveFaculty";
 import ReportedStudentList from "./pages/ReportedStudentList";
@@ -10,7 +10,6 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import AllPastEvents from "./pages/AllPastEvents";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import { useState } from "react";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 const Paths = () => {
   return (

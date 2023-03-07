@@ -13,7 +13,6 @@ import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import app from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
-import emailjs from "emailjs-com";
 function AddFaculty(props) {
   const [email, setEmail] = useState("");
   const [branch, setBranch] = useState("");
@@ -37,31 +36,12 @@ function AddFaculty(props) {
     const pass = firstname.slice(0, 4) + password;
     setPasword(pass.trim());
   }
-  const sendEmail = (e, fullname) => {
-    e.preventDefault();
-    var templateParams = {
-      name: fullname,
-      email: email,
-      password: password,
-    };
-    emailjs
-      .sendForm(
-        "service_njnb2xo",
-        "template_022czgd",
-        templateParams,
-        "Co8Ys7rNCdrgjoIJD"
-      )
-      .then((error) => {
-        alert(error.text);
-      });
-  };
   function camelize(str) {
     return str.replace(/\W+(.)/g, function (match, chr) {
       return chr.toUpperCase();
     });
   }
   function reset(e) {
-    e.preventDefault();
     setBranch("");
     setEmail("");
     setFirstname("");
@@ -97,13 +77,11 @@ function AddFaculty(props) {
         console.log(email);
         console.log(password);
         reset();
-        sendEmail(fullname);
       })
       .then((error) => {
         alert(error.text);
       });
   };
-  const refresh = () => window.location.reload(true);
   return (
     <div className="backgroundimage">
       <div className="main-div">
@@ -112,9 +90,8 @@ function AddFaculty(props) {
             <form onSubmit={onSubmit} id="faculty-form">
               <div className="input-div mb-3">
                 <label className="form-label" id="input-title">
-                  {" "}
-                  <FontAwesomeIcon icon={faUser} id="icon" size="l" />{" "}
-                  Firstname:{" "}
+                  <FontAwesomeIcon icon={faUser} id="icon" />
+                  Firstname:
                 </label>
                 <input
                   type="text"
@@ -128,9 +105,8 @@ function AddFaculty(props) {
 
               <div className="input-div mb-3">
                 <label className="form-label" id="input-title">
-                  {" "}
-                  <FontAwesomeIcon icon={faSignature} id="icon" size="l" />{" "}
-                  Lastname:{" "}
+                  <FontAwesomeIcon icon={faSignature} id="icon" />
+                  Lastname:
                 </label>
                 <input
                   type="text"
@@ -144,7 +120,7 @@ function AddFaculty(props) {
 
               <div className="input-div mb-3">
                 <label className="form-label" id="input-title">
-                  <FontAwesomeIcon icon={faAt} id="icon" size="l" />
+                  <FontAwesomeIcon icon={faAt} id="icon" />
                   Email ID:
                 </label>
                 <input
@@ -158,7 +134,7 @@ function AddFaculty(props) {
               </div>
               <div className="input-div mb-3">
                 <label className="form-label" id="input-title">
-                  <FontAwesomeIcon icon={faBuilding} id="icon" size="l" />
+                  <FontAwesomeIcon icon={faBuilding} id="icon" />
                   Branch:
                 </label>
                 <select
@@ -180,7 +156,7 @@ function AddFaculty(props) {
               </div>
               <div className="input-div mb-3">
                 <label className="form-label" id="input-title">
-                  <FontAwesomeIcon icon={faIdCardClip} id="icon" size="l" />
+                  <FontAwesomeIcon icon={faIdCardClip} id="icon" />
                   ID Number:
                 </label>
                 <input
@@ -194,7 +170,7 @@ function AddFaculty(props) {
               </div>
               <div class="form-group input-div">
                 <label className="form-label" id="input-title">
-                  <FontAwesomeIcon icon={faGraduationCap} id="icon" size="l" />
+                  <FontAwesomeIcon icon={faGraduationCap} id="icon" />
                   Position:
                 </label>
                 <select

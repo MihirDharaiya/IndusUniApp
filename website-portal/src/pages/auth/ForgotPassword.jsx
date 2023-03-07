@@ -16,6 +16,7 @@ function ForgotPassword(props) {
           <img
             src={Logo}
             className="img-fluid mx-auto d-block"
+            alt="logo"
             id="login-logo-image"
           />
           <form className="login-form">

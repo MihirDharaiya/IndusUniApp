@@ -22,7 +22,7 @@ const links = [
 
 const Sidebar = () => {
   const location = useLocation();
-  const { logOut, user } = useUserAuth();
+  const { logOut } = useUserAuth();
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {

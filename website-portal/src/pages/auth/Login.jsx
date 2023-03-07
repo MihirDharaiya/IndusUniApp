@@ -8,7 +8,6 @@ import { useUserAuth } from "../../context/UserAuthContext";
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { logIn } = useUserAuth();
 
@@ -33,6 +32,7 @@ function Login(props) {
           <img
             src={Logo}
             className="img-fluid mx-auto d-block"
+            alt="logo"
             id="login-logo-image"
           />
           <form className="login-form" onSubmit={onSubmit}>

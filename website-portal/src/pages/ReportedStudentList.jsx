@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "../components/Sidebar";
 import "./styles/ReportedStudentList.css";
 function ReportedStudentList(props) {
   return (
