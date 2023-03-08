@@ -2,7 +2,12 @@ import React from "react";
 import Logo from "../../images/IndusLogo.png";
 import Password from "../../images/password-image.gif";
 import "../styles/ResetPasswordLink.css";
+import { useNavigate } from "react-router-dom";
 const ResetPasswordLink = () => {
+  const navigate = useNavigate();
+  function relogin() {
+    navigate("/login");
+  }
   return (
     <div className="backgroundimage">
       <div className="password-div ">
@@ -23,6 +28,16 @@ const ResetPasswordLink = () => {
             {" "}
             Kindly Check Your Register Email Id.
           </h1>
+          <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+            <button
+              type="submit"
+              className="btn"
+              id="pass-submit-btn"
+              onClick={relogin}
+            >
+              Login
+            </button>
+          </div>
         </div>
       </div>
     </div>
