@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase";
@@ -18,6 +19,10 @@ export function UserAuthContextProvider({ children }) {
   function logOut() {
     return signOut(auth);
   }
+  function forgotPassword(email) {
+    return sendPasswordResetEmail(auth, email);
+  }
+
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -33,7 +38,9 @@ export function UserAuthContextProvider({ children }) {
   }, []);
 
   return (
-    <userAuthContext.Provider value={{ user, logIn, logOut, signUp }}>
+    <userAuthContext.Provider
+      value={{ user, logIn, logOut, signUp, forgotPassword }}
+    >
       {children}
     </userAuthContext.Provider>
   );

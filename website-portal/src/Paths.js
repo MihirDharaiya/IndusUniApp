@@ -5,6 +5,7 @@ import RemoveFaculty from "./pages/RemoveFaculty";
 import ReportedStudentList from "./pages/ReportedStudentList";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPasswordLink from "./pages/auth/ResetPasswordLink";
 import WelcomePage from "./pages/WelcomePage";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
@@ -64,6 +65,11 @@ const Paths = () => {
         </Route>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/Forgot-password" element={<ForgotPassword />} />
+        <Route
+          exact
+          path="/Reset-password-link-sent"
+          element={<ResetPasswordLink />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </UserAuthContextProvider>

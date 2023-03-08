@@ -3,8 +3,21 @@ import "../styles/ForgotPassword.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAt } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../../images/IndusLogo.png";
+import { useUserAuth } from "../../context/UserAuthContext";
+import { useNavigate } from "react-router-dom";
 function ForgotPassword(props) {
+  const { forgotPassword } = useUserAuth();
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await forgotPassword(email);
+      navigate("/Reset-password-link-sent");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <div className="backgroundimage">
       <div className="main-div">
@@ -19,7 +32,7 @@ function ForgotPassword(props) {
             alt="logo"
             id="login-logo-image"
           />
-          <form className="login-form">
+          <form className="login-form" onSubmit={onSubmit}>
             <div className="input-div mb-3">
               <label className="form-label" id="login-input-title">
                 <FontAwesomeIcon icon={faAt} id="login-icon" size="xl" />

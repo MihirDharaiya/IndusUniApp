@@ -13,6 +13,7 @@ import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import app from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
+import emailjs from "@emailjs/browser";
 function AddFaculty(props) {
   const [email, setEmail] = useState("");
   const [branch, setBranch] = useState("");
@@ -36,11 +37,31 @@ function AddFaculty(props) {
     const pass = firstname.slice(0, 4) + password;
     setPasword(pass.trim());
   }
-  function camelize(str) {
-    return str.replace(/\W+(.)/g, function (match, chr) {
-      return chr.toUpperCase();
-    });
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
+  const sendEmail = (fullname) => {
+    var templateParams = {
+      name: fullname,
+      email: email,
+      password: password,
+    };
+    emailjs
+      .send(
+        "service_njnb2xo",
+        "indus_email_temp",
+        templateParams,
+        "Co8Ys7rNCdrgjoIJD"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
   function reset(e) {
     setBranch("");
     setEmail("");
@@ -53,8 +74,8 @@ function AddFaculty(props) {
   }
 
   const onSubmit = async (e) => {
-    setFirstname(camelize(firstname));
-    setLastname(camelize(lastname));
+    setFirstname(capitalizeFirstLetter(firstname));
+    setLastname(capitalizeFirstLetter(lastname));
 
     generatePassword();
     const fullname = firstname + " " + lastname;
@@ -77,11 +98,14 @@ function AddFaculty(props) {
         console.log(email);
         console.log(password);
         reset();
+        sendEmail(fullname);
       })
       .then((error) => {
         alert(error.text);
       });
   };
+  console.log(firstname);
+  console.log(lastname);
   return (
     <div className="backgroundimage">
       <div className="main-div">
