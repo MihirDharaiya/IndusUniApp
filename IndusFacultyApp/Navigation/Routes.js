@@ -8,8 +8,10 @@ import HomeScreen from "../screens/HomeScreen";
 import Notification from "../screens/Notification";
 import Profile from "../screens/Profile";
 import TotalDoubts from "../screens/TotalDoubts";
-import TotalAnnounctments from "../screens/TotalAnnounctments";
+import TotalAnnouncements from "../screens/TotalAnnouncements";
 import AnswerDoubt from "../screens/AnswerDoubt";
+import Splash from "../screens/Splash";
+import VerifyEmail from "../screens/VerifyEmail";
 const Routes = {
   loginScreen: LoginScreen,
   forgotPassword: ForgotPassword,
@@ -21,7 +23,9 @@ const Routes = {
   notification: Notification,
   profile: Profile,
   totaldoubts: TotalDoubts,
-  totalannounctments: TotalAnnounctments,
+  totalannouncements: TotalAnnouncements,
   answerdoubt: AnswerDoubt,
+  splash: Splash,
+  verifyEmail: VerifyEmail,
 };
 export default Routes;

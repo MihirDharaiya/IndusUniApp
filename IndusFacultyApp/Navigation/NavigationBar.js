@@ -101,6 +101,7 @@ export default function NavigationBar() {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName={"Splash"}
         screenOptions={({}) => ({
           headerStyle: {
             backgroundColor: Colors.blue,
@@ -127,11 +128,36 @@ export default function NavigationBar() {
           component={Overview}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Splash"
+          component={Routes.splash}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={Routes.loginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={Routes.forgotPassword}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EmailVerification"
+          component={Routes.emailVerification}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="VerifyEmail"
+          component={Routes.verifyEmail}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Notifications" component={Routes.notification} />
         <Stack.Screen name="Total Doubts" component={Routes.totaldoubts} />
         <Stack.Screen
-          name="Announctments"
-          component={Routes.totalannounctments}
+          name="Total Announcements"
+          component={Routes.totalannouncements}
         />
         <Stack.Screen
           name="AnswerDoubt"

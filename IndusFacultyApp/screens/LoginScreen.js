@@ -14,34 +14,32 @@ import {
 import Colors from "../constants/Colors";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
-import SecondaryButton from "../components/SecondaryButton";
 import TextInputField from "../components/TextInputField";
 import React, { useState } from "react";
-import { auth } from "../firebase";
-export default function LoginScreen() {
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const handleSignUp = () => {
-  //   auth
-  //     .createUserWithEmailAndPassword()
-  //     .then((userCredentials) => {
-  //       const user = userCredentials.user;
-  //       console.log(user.email);
-  //     })
-  //     .catch((error) => alert(error.message));
-  // };
-
+  const auth = getAuth();
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword()
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        // if (!userCredentials.user.emailVerified) {
+        //   user.sendEmailVerification();
+        //   navigation.navigate("VerifyEmail");
+        // }
+        navigation.navigate("Overview");
         console.log(user.email);
       })
       .catch((error) => alert(error.message));
   };
   return (
-    <ScrollView style={styles.mainContainer}>
+    <ScrollView style={styles.rootContainer}>
       <View style={styles.containerImage}>
         <Image
           style={styles.image}
@@ -49,15 +47,15 @@ export default function LoginScreen() {
         />
       </View>
       <Card>
-        <View>
+        <View style={styles.inputContainer}>
           <TextInputField
-            title="Username:"
-            iconName={"user-tag"}
+            title="Email Id:"
+            iconName={"at"}
             iconStyle={{ marginRight: 2 }}
             size={responsiveFontSize(4)}
             placeholder="Enter Email"
             enteredValue={email}
-            enteredValueHandler={(text) => setUsername(text)}
+            enteredValueHandler={(text) => setEmail(text)}
           />
           <TextInputField
             title="Password:"
@@ -65,11 +63,14 @@ export default function LoginScreen() {
             iconStyle={{ marginRight: 12 }}
             size={responsiveFontSize(4)}
             enteredValue={password}
-            placeholder="Enter Password"
+            placeholder="********"
             enteredValueHandler={(text) => setPassword(text)}
           />
 
           <Pressable
+            onPress={() => {
+              navigation.navigate("ForgotPassword");
+            }}
             style={({ pressed }) =>
               pressed
                 ? [styles.buttonInnerContainer, styles.pressed]
@@ -83,7 +84,7 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.buttonContainer}>
-          <PrimaryButton>LogIn</PrimaryButton>
+          <PrimaryButton onPress={() => handleLogin()}>LogIn</PrimaryButton>
         </View>
       </Card>
     </ScrollView>
@@ -91,6 +92,10 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    backgroundColor: Colors.white,
+  },
   signUpContainer: {
     marginHorizontal: 16,
   },
@@ -98,13 +103,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginVertical: responsiveHeight(5),
+    marginBottom: responsiveHeight(5),
+  },
+  inputContainer: {
+    marginTop: responsiveHeight(5),
   },
   image: {
     width: responsiveWidth(70),
     height: responsiveWidth(35),
-  },
-  mainContainer: {
-    marginBottom: 10,
   },
   buttonText: {
     color: Colors.white,

@@ -18,8 +18,18 @@ import TextInputField from "../components/TextInputField";
 import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
-
-export default function Profile() {
+import { getAuth, signOut } from "firebase/auth";
+export default function Profile({ navigation }) {
+  const onSignOut = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        navigation.navigate("LoginScreen");
+      })
+      .catch((error) => {
+        alert("Something went wrong please try again !");
+      });
+  };
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.imageContainer}>
@@ -92,22 +102,6 @@ export default function Profile() {
           editable={false}
         />
       </View>
-      {/* <View style={styles.buttonOuterContainer}>
-        <Pressable
-          style={({ pressed }) =>
-            pressed
-              ? [styles.buttonInnerContainer, styles.pressed]
-              : styles.buttonInnerContainer
-          }
-        >
-          <Icon
-            name="sign-out-alt"
-            size={responsiveFontSize(3.5)}
-            color={Colors.blue}
-          />
-          <Text style={styles.buttonText}> Logout</Text>
-        </Pressable>
-      </View> */}
       <View style={styles.buttonOuterContainer}>
         <SecondaryButton
           iconVisible={true}
@@ -115,6 +109,7 @@ export default function Profile() {
           size={responsiveFontSize(3)}
           color={Colors.blue}
           textStyle={{ color: Colors.blue }}
+          onPress={() => onSignOut()}
         >
           Log Out
         </SecondaryButton>

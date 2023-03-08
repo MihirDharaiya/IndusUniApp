@@ -6,9 +6,8 @@ import {
 } from "react-native-responsive-dimensions";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
-import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
-export default function EmailVerification({ navigation }) {
+export default function VerifyEmail({ navigation }) {
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.logoContainer}>
@@ -21,13 +20,13 @@ export default function EmailVerification({ navigation }) {
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
-            source={require("../assets/images/EmailVerificationIcon.png")}
+            source={require("../assets/images/VerifyEmailIcon.png")}
           />
         </View>
         <View style={styles.mainTextContainer}>
           <Text style={styles.mainText}>Check Your Email !!</Text>
           <Text style={styles.subText}>
-            Follow the Link in the Email to Reset the Password.
+            Follow the Link in the Email to Verify the Account.
           </Text>
         </View>
         <PrimaryButton

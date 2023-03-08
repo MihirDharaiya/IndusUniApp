@@ -6,7 +6,7 @@ import {
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
-export default function TotalAnnounctments() {
+export default function TotalAnnouncements() {
   return (
     <View style={styles.rootContainer}>
       <View style={styles.noActivityContainer}>

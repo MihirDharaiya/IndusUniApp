@@ -39,7 +39,7 @@ export default function Analytics({ navigation }) {
 
         <Pressable
           onPress={() => {
-            navigation.navigate("Announctments");
+            navigation.navigate("Total Announcements");
           }}
         >
           <View style={styles.container}>

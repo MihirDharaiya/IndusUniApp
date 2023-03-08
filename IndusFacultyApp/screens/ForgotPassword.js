@@ -8,7 +8,18 @@ import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
-export default function ForgotPassword() {
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { useState } from "react";
+export default function ForgotPassword({ navigation }) {
+  const [email, setEmail] = useState("");
+  const auth = getAuth();
+  const handleReset = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        navigation.navigate("EmailVerification");
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.logoContainer}>
@@ -35,8 +46,10 @@ export default function ForgotPassword() {
           iconName={"at"}
           size={responsiveFontSize(3)}
           placeholder={"example@gmail.com"}
+          enteredValue={email}
+          enteredValueHandler={(text) => setEmail(text)}
         ></SecondaryTextInputField>
-        <PrimaryButton>Reset Password</PrimaryButton>
+        <PrimaryButton onPress={handleReset}>Reset Password</PrimaryButton>
       </Card>
     </ScrollView>
   );
@@ -45,9 +58,12 @@ export default function ForgotPassword() {
 const styles = StyleSheet.create({
   rootContainer: {
     marginVertical: 16,
+    flex: 1,
+    backgroundColor: Colors.white,
   },
   logoContainer: {
     alignItems: "center",
+    marginBottom: responsiveHeight(5),
   },
   logo: {
     width: responsiveWidth(70),
