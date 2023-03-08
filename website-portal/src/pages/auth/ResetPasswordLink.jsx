@@ -21,7 +21,7 @@ const ResetPasswordLink = () => {
           />
           <h1 className="text-center" id="text-pass">
             {" "}
-            Kindly Check Your Registar Email Id
+            Kindly Check Your Register Email Id.
           </h1>
         </div>
       </div>
