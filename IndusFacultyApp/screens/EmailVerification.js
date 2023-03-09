@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -11,42 +18,49 @@ import Colors from "../constants/Colors";
 export default function EmailVerification({ navigation }) {
   return (
     <ScrollView style={styles.rootContainer}>
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/images/IndusFacultyLogo.png")}
-        />
-      </View>
-      <Card>
-        <View style={styles.imageContainer}>
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
+        <View style={styles.logoContainer}>
           <Image
-            style={styles.image}
-            source={require("../assets/images/EmailVerificationIcon.png")}
+            style={styles.logo}
+            source={require("../assets/images/IndusFacultyLogo.png")}
           />
         </View>
-        <View style={styles.mainTextContainer}>
-          <Text style={styles.mainText}>Check Your Email !!</Text>
-          <Text style={styles.subText}>
-            Follow the Link in the Email to Reset the Password.
-          </Text>
-        </View>
-        <PrimaryButton
-          onPress={() => {
-            navigation.navigate("LoginScreen");
-          }}
-        >
-          Login
-        </PrimaryButton>
-      </Card>
+        <Card>
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={require("../assets/images/EmailVerificationIcon.png")}
+            />
+          </View>
+          <View style={styles.mainTextContainer}>
+            <Text style={styles.mainText}>Check Your Email !!</Text>
+            <Text style={styles.subText}>
+              Follow the Link in the Email to Reset the Password.
+            </Text>
+          </View>
+          <PrimaryButton
+            onPress={() => {
+              navigation.navigate("LoginScreen");
+            }}
+          >
+            Login
+          </PrimaryButton>
+        </Card>
+      </ImageBackground>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginVertical: 16,
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  building: {
+    height: responsiveHeight(100),
   },
   logoContainer: {
     alignItems: "center",

@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -22,44 +29,52 @@ export default function ForgotPassword({ navigation }) {
   };
   return (
     <ScrollView style={styles.rootContainer}>
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/images/IndusFacultyLogo.png")}
-        />
-      </View>
-      <Card>
-        <View style={styles.imageContainer}>
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
+        <View style={styles.logoContainer}>
           <Image
-            style={styles.image}
-            source={require("../assets/images/ForgotPasswordIcon.png")}
+            style={styles.logo}
+            source={require("../assets/images/IndusFacultyLogo.png")}
           />
         </View>
-        <View style={styles.mainTextContainer}>
-          <Text style={styles.mainText}>Forgot Your Password ??</Text>
-          <Text style={styles.subText}>
-            Enter your email address to {"\n"}retrieve your password
-          </Text>
-        </View>
-        <SecondaryTextInputField
-          iconVisible={true}
-          iconName={"at"}
-          size={responsiveFontSize(3)}
-          placeholder={"example@gmail.com"}
-          enteredValue={email}
-          enteredValueHandler={(text) => setEmail(text)}
-        ></SecondaryTextInputField>
-        <PrimaryButton onPress={handleReset}>Reset Password</PrimaryButton>
-      </Card>
+        <Card>
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={require("../assets/images/ForgotPasswordIcon.png")}
+            />
+          </View>
+          <View style={styles.mainTextContainer}>
+            <Text style={styles.mainText}>Forgot Your Password ??</Text>
+            <Text style={styles.subText}>
+              Enter your email address to {"\n"}retrieve your password
+            </Text>
+          </View>
+          <SecondaryTextInputField
+            iconVisible={true}
+            iconName={"at"}
+            size={responsiveFontSize(3)}
+            placeholder={"example@gmail.com"}
+            enteredValue={email}
+            enteredValueHandler={(text) => setEmail(text)}
+          ></SecondaryTextInputField>
+          <PrimaryButton onPress={handleReset}>Reset Password</PrimaryButton>
+        </Card>
+      </ImageBackground>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginVertical: 16,
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  building: {
+    height: responsiveHeight(100),
+    paddingVertical: 10,
   },
   logoContainer: {
     alignItems: "center",
@@ -68,7 +83,7 @@ const styles = StyleSheet.create({
   logo: {
     width: responsiveWidth(70),
     height: responsiveWidth(35),
-    marginVertical: 15,
+    marginTop: responsiveHeight(6),
   },
   imageContainer: {
     alignItems: "center",

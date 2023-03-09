@@ -18,6 +18,7 @@ function TextInputField({
   editable,
   enteredValue,
   enteredValueHandler,
+  multiline,
 }) {
   return (
     <View style={styles.outersearchSection}>
@@ -42,6 +43,7 @@ function TextInputField({
             value={enteredValue}
             editable={editable}
             onChangeText={enteredValueHandler}
+            multiline={multiline}
           />
         </View>
       </View>
