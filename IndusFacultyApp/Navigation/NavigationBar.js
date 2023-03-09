@@ -144,11 +144,6 @@ export default function NavigationBar() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="EmailVerification"
-          component={Routes.emailVerification}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="VerifyEmail"
           component={Routes.verifyEmail}
           options={{ headerShown: false }}

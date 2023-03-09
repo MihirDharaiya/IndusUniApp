@@ -13,9 +13,8 @@ import {
 } from "react-native-responsive-dimensions";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
-import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
-export default function EmailVerification({ navigation }) {
+export default function VerifyEmail({ navigation }) {
   return (
     <ScrollView style={styles.rootContainer}>
       <ImageBackground
@@ -32,7 +31,7 @@ export default function EmailVerification({ navigation }) {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require("../assets/images/EmailVerificationIcon.png")}
+              source={require("../assets/images/VerifyEmailIcon.png")}
             />
           </View>
           <View style={styles.mainTextContainer}>
@@ -56,6 +55,7 @@ export default function EmailVerification({ navigation }) {
 
 const styles = StyleSheet.create({
   rootContainer: {
+    marginVertical: 16,
     flex: 1,
     backgroundColor: Colors.white,
   },

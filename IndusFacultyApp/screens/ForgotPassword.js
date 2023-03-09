@@ -23,7 +23,7 @@ export default function ForgotPassword({ navigation }) {
   const handleReset = () => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        navigation.navigate("EmailVerification");
+        navigation.navigate("VerifyEmail");
       })
       .catch((error) => alert(error.message));
   };
