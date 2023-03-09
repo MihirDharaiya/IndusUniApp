@@ -45,8 +45,8 @@ export default function Profile({ navigation }) {
           />
         </TouchableHighlight>
       </View>
-      <View style={styles.editButtonOuterContainer}>
-        <View style={styles.editButtonInnerContainer}>
+      <View style={styles.buttonOuterContainer}>
+        <View style={styles.buttonInnerContainer}>
           <PrimaryButton
             textNotVisible={true}
             iconVisible={true}
@@ -102,7 +102,15 @@ export default function Profile({ navigation }) {
           editable={false}
         />
       </View>
-      <View style={styles.buttonOuterContainer}>
+      <View style={styles.signOutButtonContainer}>
+        <PrimaryButton
+          iconVisible={true}
+          iconName="calendar"
+          size={responsiveFontSize(3)}
+          onPress={() => navigation.navigate("I am on Leave")}
+        >
+          On Leave
+        </PrimaryButton>
         <SecondaryButton
           iconVisible={true}
           iconName="sign-out-alt"
@@ -153,15 +161,20 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
 
-  editButtonOuterContainer: {
+  buttonOuterContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: responsiveWidth(10),
   },
-  buttonOuterContainer: {
+  buttonInnerContainer: {
+    flexDirection: "row",
+  },
+  signOutButtonContainer: {
+    justifyContent: "center",
     borderRadius: 17,
     margin: 8,
     alignItems: "center",
     marginTop: 16,
+    flexDirection: "row",
   },
 });

@@ -14,9 +14,10 @@ function PrimaryButton({
   children,
   onPress,
   textStyle,
+  viewStyle,
 }) {
   return (
-    <View style={styles.buttonOuterContainer}>
+    <View style={[styles.buttonOuterContainer, viewStyle]}>
       <Pressable
         style={({ pressed }) =>
           pressed
