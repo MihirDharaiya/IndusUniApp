@@ -23,6 +23,7 @@ import Notification from '../screens/Notification';
 import ForgotPassword from '../screens/ForgotPassword';
 import ReenterPassword from '../screens/ReenterPassword';
 import EmailVerification from '../screens/EmailVerification';
+import AcademicCalendar from '../screens/AcademicCalendar';
 
 
 
@@ -58,6 +59,11 @@ const BottomNavigationBar = () => {
         <Stack.Screen
 						name="Notifications"
 						component={Notification}
+						options={{ headerShown: false }}
+					/>
+          <Stack.Screen
+						name="AcademicCalendar"
+						component={AcademicCalendar}
 						options={{ headerShown: false }}
 					/>
       </Stack.Navigator>    

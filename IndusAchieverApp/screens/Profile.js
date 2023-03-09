@@ -19,12 +19,15 @@ import SecondaryButton from "../components/SecondaryButton";
 import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
 import {getFirestore} from 'firebase/firestore';
-import {doc,setDoc} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
+import {app} from '../firebase/firebase';
 
 export default function Profile({navigation}) {
 
-  const onSignOut=() => {
-    const auth = getAuth();
+const db = getFirestore(app);
+
+const onSignOut=() => {
+const auth = getAuth();
 signOut(auth).then(() => {
   navigation.navigate('LoginScreen')
 }).catch((error) => {

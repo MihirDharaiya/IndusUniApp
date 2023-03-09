@@ -3,8 +3,8 @@ import {
     responsiveWidth,
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
-  import { StyleSheet, Text, View, ScrollView } from "react-native";
-  import React from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import React from "react";
 import Colors from "../constants/Colors";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import BorderCard from "../components/BorderCard";
@@ -21,7 +21,7 @@ import TextInputBoxField from "../components/TextInputBoxField";
           </View>
         <BorderCard>
           <View style={styles.inputField}>
-            <TextInputBoxField title={'Subject:'} lines={1}></TextInputBoxField>
+            <TextInputBoxField title={'Subject:'} editable={false}></TextInputBoxField>
           </View>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Faculty Name:</Text>

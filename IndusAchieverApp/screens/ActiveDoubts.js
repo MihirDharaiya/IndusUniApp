@@ -3,8 +3,8 @@ import {
     responsiveWidth,
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
-  import { StyleSheet, Text, View, ScrollView } from "react-native";
-  import React from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import React from "react";
 import BorderCard from "../components/BorderCard";
 import Colors from "../constants/Colors";
 import TextInputBoxField from "../components/TextInputBoxField";
@@ -22,13 +22,13 @@ import Icon from "react-native-vector-icons/FontAwesome5";
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Faculty Name:</Text>
             <Text style={styles.headingText}>Raised On:</Text>
-          </View>
+          </View> 
           <View style={styles.answerView}>
             <Text style={styles.answerText}>Rahul Bhatt</Text>
             <Text style={styles.answerText}>16/11/2022</Text>
           </View>
           <View style={styles.inputField}>
-            <TextInputBoxField title={'Subject:'} lines={1}></TextInputBoxField>
+            <TextInputBoxField title={'Subject:'} editable={false}></TextInputBoxField>
           </View>
           <View style={styles.outerView}>
           <View style={styles.textIconView}>
@@ -96,9 +96,11 @@ import Icon from "react-native-vector-icons/FontAwesome5";
     },
     textIconView: {
       flexDirection: 'row',
+      padding: responsiveWidth(0.5)
     },
     outerView: {
       flexDirection: 'row',
+      alignItems: 'center',
       justifyContent: 'space-between',
       paddingTop: 10
     }

@@ -1,14 +1,25 @@
-import { Button, View, StyleSheet } from 'react-native';
-import Colors from '../constants/Colors';
-export default function FlexedButtons() {
+import {View, StyleSheet, Pressable, Text} from 'react-native';
+import React, { useState } from 'react';
+import { responsiveFontSize } from 'react-native-responsive-dimensions';
+
+export default function FlexedButtons({onPress}) {
+
    return (
    <View style={styles.container}>
      <View style={styles.buttonContainer}>
-      <Button title="Alumni Network" color={Colors.black}/>
-    </View>
+      <Pressable onPress={onPress}>
+        <View>
+        <Text style={styles.text}>Alumni Network</Text>
+        </View>
+      </Pressable>   
+      </View>
     <View style={styles.buttonContainer2}>
-      <Button title="Student Network" color={Colors.black}/>
-    </View>
+    <Pressable onPress={onPress}>
+        <View>
+        <Text style={styles.text}>Student Network</Text>
+        </View>
+      </Pressable>   
+      </View>
   </View>
    )
 }
@@ -27,6 +38,10 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 2,
     borderTopWidth: 2
-
+  },
+  text: {
+    fontSize: responsiveFontSize(2),
+    padding: 10,
+    textAlign: 'center',
   }
 });

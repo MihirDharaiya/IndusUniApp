@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView} from 'react-native'
 import React from 'react'
 import Card from "../components/Card";
 import {
@@ -57,7 +57,7 @@ export default function CreateDoubtScreen() {
       </View>
       <View style={styles.inputField}>
         <TextInputBoxField title={"Subject:"} placeholder={'Enter a Subject'} lines={1}/>
-        <TextInputBoxField title={"Description:"} placeholder={'Describe your query/doubt'} lines={12}/>
+        <TextInputBoxField title={"Description:"} placeholder={'Describe your query/doubt'} lines={12} multiline={true}/>
       </View>
       <View style={styles.buttonStyle}>
       <PrimaryButton>Submit</PrimaryButton>

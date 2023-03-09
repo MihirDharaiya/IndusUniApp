@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   container: {
-    marginVertical: responsiveHeight(2),
+    marginVertical: responsiveHeight(1.5),
     borderRadius: 6,
     overflow: "hidden",
   },
@@ -71,19 +71,20 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2.5),
     textAlign: "center",
     fontWeight: "600",
-    paddingHorizontal: 8,
   },
   textContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    paddingHorizontal: 8,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: 'center'
   },
   imageText: {
+    marginBottom: responsiveHeight(0.4),
     fontSize: responsiveFontSize(2.3),
     color: Colors.blue,
     fontWeight: "600",
   },
   imageNumbers: {
+    marginBottom: responsiveHeight(1),
     fontSize: responsiveFontSize(2.5),
     fontWeight: "600",
     color: Colors.blue,

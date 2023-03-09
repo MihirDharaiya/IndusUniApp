@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, ImageBackground } from "react-native";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -8,9 +8,24 @@ import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
-export default function ForgotPassword() {
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { useState } from "react";
+export default function ForgotPassword({navigation}) {
+const [email, setEmail] = useState("");
+const auth = getAuth();
+const handleReset = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        navigation.navigate("EmailVerification");
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <ScrollView style={styles.container}>
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
@@ -35,9 +50,12 @@ export default function ForgotPassword() {
           iconName={"at"}
           size={responsiveFontSize(3)}
           placeholder={"example@gmail.com"}
+          enteredValue={email}
+          enteredValueHandler={(text) => setEmail(text)}
         ></SecondaryTextInputField>
-        <PrimaryButton>Reset Password</PrimaryButton>
+        <PrimaryButton onPress={handleReset}>Reset Password</PrimaryButton>
       </Card>
+      </ImageBackground>
     </ScrollView>
   );
 }
@@ -78,4 +96,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: Colors.grey,
   },
+  building: {
+    height: responsiveHeight(100)
+  }
 });

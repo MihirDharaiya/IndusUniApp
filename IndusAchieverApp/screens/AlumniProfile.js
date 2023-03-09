@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image} from 'react-native'
 import React from 'react'
 import Colors from '../constants/Colors'
 import BorderCard from '../components/BorderCard'

@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -6,49 +13,57 @@ import {
 } from "react-native-responsive-dimensions";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
-import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
-export default function EmailVerification() {
+export default function EmailVerification({ navigation }) {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/images/IndusAchieverLogo.png")}
-        />
-      </View>
-      <Card>
-        <View style={styles.imageContainer}>
+    <ScrollView style={styles.rootContainer}>
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
+        <View style={styles.logoContainer}>
           <Image
-            style={styles.image}
-            source={require("../assets/images/EmailVerificationIcon.png")}
+            style={styles.logo}
+            source={require("../assets/images/IndusAchieverLogo.png")}
           />
         </View>
-        <View style={styles.mainTextContainer}>
-          <Text style={styles.mainText}>Check Your Email !!</Text>
-          <Text style={styles.subText}>
-            Enter a code you received in your email to reset your password
-          </Text>
-        </View>
-        <SecondaryTextInputField
-          iconVisible={true}
-          iconName={"lock"}
-          size={responsiveFontSize(3)}
-          placeholder={"**********"}
-          keyboardType="numeric"
-        ></SecondaryTextInputField>
-        <PrimaryButton>Verify</PrimaryButton>
-      </Card>
+        <Card>
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={require("../assets/images/EmailVerificationIcon.png")}
+            />
+          </View>
+          <View style={styles.mainTextContainer}>
+            <Text style={styles.mainText}>Check Your Email !!</Text>
+            <Text style={styles.subText}>
+              Follow the Link in the Email to Reset the Password.
+            </Text>
+          </View>
+          <PrimaryButton
+            onPress={() => {
+              navigation.navigate("LoginScreen");
+            }}
+          >
+            Login
+          </PrimaryButton>
+        </Card>
+      </ImageBackground>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 16,
+  rootContainer: {
+    flex: 1,
+    backgroundColor: Colors.white,
+  },
+  building: {
+    height: responsiveHeight(100),
   },
   logoContainer: {
     alignItems: "center",
+    marginBottom: responsiveHeight(5),
   },
   logo: {
     width: responsiveWidth(70),

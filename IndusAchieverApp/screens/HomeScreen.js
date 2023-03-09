@@ -8,8 +8,6 @@ import React from "react";
 import Card from "../components/Card";
 import Colors from "../constants/Colors";
 import ImageTextStack from "../components/ImageTextStack";
-import CreateDoubtScreen from "./CreateDoubtScreen";
-import Routes from "../Navigation/Routes";
 
 export default function HomeScreen({
   navigation
@@ -64,6 +62,11 @@ export default function HomeScreen({
         onPressQuestions={() => {navigation.navigate("FrequentlyAskedQuestion");}}
         ></ImageTextStack>
         <View style={styles.calendarView}>
+          <Pressable
+          onPress={() => {
+            navigation.navigate("AcademicCalendar");
+          }}
+          >
         <ImageBackground
           source={require("../assets/images/Calendar.png")}
           style={styles.CalendarContainer}
@@ -72,6 +75,7 @@ export default function HomeScreen({
             <Text style={styles.calendarText}>Academic Calendar {"\n"} for {"\n"} 2022-2023</Text>
           </View>
         </ImageBackground>
+        </Pressable>
         </View>
     </ScrollView>
   );
@@ -117,15 +121,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   CalendarContainer: {
+    marginBottom: responsiveHeight(4),
     width: responsiveWidth(92),
-    height: responsiveHeight(13),  
+    height: responsiveHeight(15),  
   },
   calendarText:{
    color:Colors.black,
    fontSize: responsiveFontSize(2.3),
    fontWeight: '600',
    textAlign: 'right',
-   padding: 10
+   paddingTop: responsiveHeight(1.1),
+   paddingRight: responsiveWidth(2)
   },
   calendarView:{
     alignItems: 'center',

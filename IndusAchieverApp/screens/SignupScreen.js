@@ -1,17 +1,16 @@
-import { StyleSheet, Text, View, ScrollView, Image} from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, ImageBackground} from 'react-native'
 import {
     responsiveHeight,
     responsiveWidth,
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
-import PrimaryButton from '../components/PrimaryButton';
 import  Colors  from '../constants/Colors';
 import Card from '../components/Card';
 import TextInputField from '../components/TextInputField'
 import SecondaryButton from '../components/SecondaryButton';
 import {app} from '../firebase/firebase';
 import { useState } from 'react';
-import { getAuth, onAuthStateChanged, User,createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc} from 'firebase/firestore';
 
@@ -27,8 +26,8 @@ export default function SignupScreen({navigation}) {
   const [error, setError] = useState('');
   
   const addUser = ()=>{
-    const reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
-    if(!(reg.test(email)===true)){
+    const reg =  /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
+    if(!reg.test(email)){
       setError('Please Enter Valid University Email !!')
     }
     else if(enrollnmentNumber=='' || enrollnmentNumber.length != 12 || !enrollnmentNumber.startsWith('IU')){
@@ -45,8 +44,7 @@ export default function SignupScreen({navigation}) {
       setError('');
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
-        const user = userCredential.user;             
-        console.log("User Added :",user);  
+        const user = userCredential.user;              
         setDoc(doc(db, "users",user.uid), {
           email: email,
           name: name,
@@ -62,6 +60,10 @@ export default function SignupScreen({navigation}) {
 
   return (
     <ScrollView style={styles.rootContainer}>
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
         <View style={styles.containerImage}>
         <Image
           style={styles.image}
@@ -78,6 +80,7 @@ export default function SignupScreen({navigation}) {
             placeholder="Enter Name"
             enteredValue={name}
             enteredValueHandler={(val) => setName(val)}
+            multiline={true}
           />
           <TextInputField
             title="Email:"
@@ -87,6 +90,7 @@ export default function SignupScreen({navigation}) {
             placeholder="Enter Email"
             enteredValue={email}
             enteredValueHandler={(val) =>setEmail(val)}
+            multiline={true}
           />
             <TextInputField
             title="Enrollnment Number:"
@@ -115,8 +119,7 @@ export default function SignupScreen({navigation}) {
             enteredValueHandler={(val) =>setconfirmPassword(val)}
             secureTextEntry={true}
           />
-          
-            </View>
+          </View>
             {
         error==''?null:(<View style={{paddingTop: 10}}>
           <Text style={{color: Colors.red, textAlign: 'center'}}>
@@ -132,7 +135,7 @@ export default function SignupScreen({navigation}) {
                 >Sign Up</SecondaryButton>
             </View>
         </Card>
-        
+        </ImageBackground>
     </ScrollView>
   )
 }
@@ -170,6 +173,11 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         margin: 15
+    },
+    textInputView: {
+      width: responsiveWidth(70)
+    },
+    building: {
+      height: "100%"
     }
-    
 })

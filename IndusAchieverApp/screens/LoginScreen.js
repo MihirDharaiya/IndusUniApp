@@ -26,8 +26,8 @@ export default function LoginScreen({navigation}) {
   const auth = getAuth();
 
   const onSignIn = () => {
-    const reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
-    if(!(reg.test(email)===true)){
+    const reg =  /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
+    if(!reg.test(email)){
       setError('Please Enter Valid University Email !!')
     }
     else if(password=='' || password.length<=8){
@@ -38,7 +38,6 @@ export default function LoginScreen({navigation}) {
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
       const user = userCredential.user;
-      console.log(user);
       setEmail('');
       setPassword('');
       navigation.navigate('tabClientNavigator')
@@ -69,6 +68,7 @@ export default function LoginScreen({navigation}) {
             placeholder="Enter Username"
             enteredValue={email}
             enteredValueHandler={text => setEmail(text)}
+            multiline={true}
           />
           <TextInputField
             title="Password:"
@@ -143,6 +143,9 @@ export default function LoginScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  rootScreen: {
+    flex: 1
+  },
   signUpContainer: {
     marginHorizontal: 16,
   },
@@ -179,4 +182,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginBottom: responsiveHeight(5),
   },
+  building: {
+    flex: 1,
+    // height: responsiveHeight(100)
+  }
 });

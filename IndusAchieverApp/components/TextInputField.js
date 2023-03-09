@@ -18,7 +18,9 @@ function TextInputField({
   editable,
   enteredValue,
   enteredValueHandler,
-  secureTextEntry
+  secureTextEntry,
+  numberOfLines,
+  multiline
 }) {
   return (
     <View style={styles.outersearchSection}>
@@ -33,6 +35,7 @@ function TextInputField({
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>{title}</Text>
           </View>
+          <View style={styles.textInputView}>
           <TextInput
             secureTextEntry={secureTextEntry}
             style={styles.input}
@@ -44,7 +47,10 @@ function TextInputField({
             value={enteredValue}
             editable={editable}
             onChangeText={enteredValueHandler}
+            numberOfLines = {numberOfLines}
+            multiline={multiline}
           />
+          </View>
         </View>
       </View>
       <View style={styles.line} />
@@ -88,4 +94,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 3,
   },
+  textInputView:{
+    width: responsiveWidth(60)
+  }
 });
