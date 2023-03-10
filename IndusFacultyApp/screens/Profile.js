@@ -107,7 +107,7 @@ export default function Profile({ navigation }) {
           iconVisible={true}
           iconName="calendar"
           size={responsiveFontSize(3)}
-          onPress={() => navigation.navigate("I am on Leave")}
+          onPress={() => navigation.navigate("On a Break")}
         >
           On Leave
         </PrimaryButton>

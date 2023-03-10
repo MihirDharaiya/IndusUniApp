@@ -150,7 +150,7 @@ export default function NavigationBar() {
         />
         <Stack.Screen name="Notifications" component={Routes.notification} />
         <Stack.Screen name="Total Doubts" component={Routes.totaldoubts} />
-        <Stack.Screen name="I am on Leave" component={Routes.onLeave} />
+        <Stack.Screen name="On a Break" component={Routes.onLeave} />
         <Stack.Screen
           name="Total Announcements"
           component={Routes.totalannouncements}

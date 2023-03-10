@@ -20,16 +20,23 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
 export default function OnLeave() {
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
+  const [fromMode, setFromMode] = useState("date");
+  const [fromShow, setFromShow] = useState(false);
+  const [toMode, setToMode] = useState("date");
+  const [toShow, setToShow] = useState(false);
   const [toDate, setToDate] = useState(new Date());
   const [fromDate, setFromDate] = useState(new Date());
   const [toText, setToText] = useState("Select Date");
   const [fromText, setFromText] = useState("Select Date");
-
+  function confirmLeave() {
+    if (toText < fromText) {
+      alert("Kindly Enter Valid dates.");
+    } else {
+    }
+  }
   const onFromDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
-    setShow(Platform.OS === "ios");
+    setFromShow(Platform.OS === "ios");
     setFromDate(currentDate);
     let tempDate = new Date(currentDate);
     let fDate =
@@ -42,7 +49,7 @@ export default function OnLeave() {
   };
   const onToDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || toDate;
-    setShow(Platform.OS === "ios");
+    setToShow(Platform.OS === "ios");
     setToDate(currentDate);
     let tempDate = new Date(currentDate);
     let fDate =
@@ -53,11 +60,14 @@ export default function OnLeave() {
       tempDate.getFullYear();
     setToText(fDate);
   };
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
+  const fromShowMode = (currentMode) => {
+    setFromShow(true);
+    setFromMode(currentMode);
   };
-
+  const toShowMode = (currentMode) => {
+    setToShow(true);
+    setToMode(currentMode);
+  };
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.onLeaveImageContainer}>
@@ -79,16 +89,16 @@ export default function OnLeave() {
               iconName="calendar-alt"
               size={responsiveFontSize(2.3)}
               color={Colors.white}
-              onPress={() => showMode("date")}
+              onPress={() => fromShowMode("date")}
             >
               From Date
             </PrimaryButton>
-            {show && (
+            {fromShow && (
               <DateTimePicker
                 style={styles.datePickerStyle}
                 testID="Set Date"
                 value={fromDate}
-                mode={mode}
+                mode={fromMode}
                 display="default"
                 minDate={new Date()}
                 onChange={onFromDateChange}
@@ -107,15 +117,15 @@ export default function OnLeave() {
               size={responsiveFontSize(3)}
               color={Colors.blue}
               textStyle={{ color: Colors.blue }}
-              onPress={() => showMode("date")}
+              onPress={() => toShowMode("date")}
             >
               To Date
             </SecondaryButton>
-            {show && (
+            {toShow && (
               <DateTimePicker
                 testID="Set Date"
                 value={toDate}
-                mode={mode}
+                mode={toMode}
                 display="default"
                 minDate={new Date()}
                 onChange={onToDateChange}
@@ -129,9 +139,9 @@ export default function OnLeave() {
               iconName="calendar-alt"
               size={responsiveFontSize(2.3)}
               color={Colors.white}
-              onPress={() => showMode("date")}
+              onPress={confirmLeave}
             >
-              Submit
+              Confirm Leave
             </PrimaryButton>
           </View>
         </View>
