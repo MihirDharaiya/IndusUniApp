@@ -17,14 +17,38 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import TextInputField from "../components/TextInputField";
 import { useState,useEffect } from "react";
-import { getAuth, onAuthStateChanged, User,signInWithEmailAndPassword } from 'firebase/auth';
+import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
+import { getAuth, User,signInWithEmailAndPassword } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {app} from '../firebase/firebase';
+
 
 export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [enrollnmentNumber, setenrollnmentNumber] = useState('');  
+  const [branch, setBranch] = useState('');  
+  const [batchYear, setBatchYear] = useState('');  
   const [error, setError] = useState('');
   const auth = getAuth();
+  const db = getFirestore(app);
 
+// const fetchData= async()=>{
+//   const docRef = doc(db, "users", auth.currentUser.uid);
+//   const docSnap = await getDoc(docRef);
+//   if(docSnap.exists){
+//     setEmail(docSnap.data().email)
+//     setenrollnmentNumber(docSnap.data().enrollnmentNumber)
+//     setBatchYear(docSnap.data().batchYear)
+//     setName(docSnap.data().name)
+//     setBranch(docSnap.data().branch)
+//   }
+// }
+// useEffect(()=>{
+//   fetchData()
+// })
+  
   const onSignIn = () => {
     const reg =  /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
     if(!reg.test(email)){
@@ -41,6 +65,7 @@ export default function LoginScreen({navigation}) {
       setEmail('');
       setPassword('');
       navigation.navigate('tabClientNavigator')
+      // AsyncStorage.setItem('users', JSON.stringify(fetchData()));
     })
       .catch((error) => {
       const errorCode = error.code;

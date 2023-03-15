@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, ScrollView} from 'react-native'
-import React from 'react'
+import {React, useState} from 'react'
 import Card from "../components/Card";
 import {
     responsiveHeight,
@@ -10,9 +10,58 @@ import Colors from '../constants/Colors';
 import TextInputBoxField from '../components/TextInputBoxField';
 import PrimaryButton from '../components/PrimaryButton';
 import { SelectList } from "react-native-dropdown-select-list";
+import { getAuth} from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
+import {doc,setDoc, addDoc, collection} from 'firebase/firestore';
+import {app} from '../firebase/firebase';
 
-export default function CreateDoubtScreen() {
-  const [selected, setSelected] = React.useState("");
+
+export default function CreateDoubtScreen({route,navigation}) {
+  const auth=getAuth();
+  const db = getFirestore(app);
+
+  const [subject, setSubject] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [name, setName] = useState('');   
+  const [enrollnmentNumber, setenrollnmentNumber] = useState('');   
+  const [branch, setBranch] = useState('');   
+  const [batchYear, setBatchYear] = useState('');   
+  const [error, setError] = useState('');
+
+  const addDoubt=()=> {
+    if(!subject){
+      setError('Please Enter Valid Subject!!')
+    }
+    else if(!description){
+      setError('Please Enter detailed Description !!')
+    }
+    else{
+      setError('');
+      let date = new Date()
+      let fDate =
+      date.getDate() +
+      "/" +
+      (date.getMonth() + 1) +
+      "/" +
+      date.getFullYear();
+      showData();
+      addDoc(collection(db, "doubts"),{
+        subject: subject,
+        description: description,
+        // enrollnmentNumber: enrollnmentNumber,
+        // batchYear: batchYear,
+        // branch: branch,
+        // name: name,
+        facultyName: route.params.data.name,
+        facultyId: route.params.data.id,
+        date: fDate
+      }).then(()=> {
+        navigation.navigate('HomeScreen');
+      })
+    }
+  }
+
+  const [selected, setSelected] = useState("");
   const data = [
     { key: "1", value: "LOR", selected },
     { key: "2", value: "Exam Result" },
@@ -31,9 +80,9 @@ export default function CreateDoubtScreen() {
         </View>
         <View style={styles.textContainer}>
         <Text style={styles.title}>Name:</Text>
-        <Text style={styles.answerTitle}>Rahul Bhatt</Text>
+        <Text style={styles.answerTitle}>{route.params.data.name}</Text>
         <Text style={styles.title}>Designation:</Text>
-        <Text style={styles.answerTitle}>Assistant Professor</Text>
+        <Text style={styles.answerTitle}>{route.params.data.position}</Text>
         </View>      
         </View>
         </Card>
@@ -56,11 +105,20 @@ export default function CreateDoubtScreen() {
         <Text style={styles.text}>Choose a subject from the frequently {"\n"} asked queries or make a custom one </Text>
       </View>
       <View style={styles.inputField}>
-        <TextInputBoxField title={"Subject:"} placeholder={'Enter a Subject'} lines={1}/>
-        <TextInputBoxField title={"Description:"} placeholder={'Describe your query/doubt'} lines={12} multiline={true}/>
+        <TextInputBoxField title={"Subject:"} placeholder={'Enter a Subject'} lines={1} enteredValue={subject} enteredValueHandler={(val) => setSubject(val)}/>
+        <TextInputBoxField title={"Description:"} placeholder={'Describe your query/doubt'} lines={12} multiline={true} enteredValue={description} enteredValueHandler={(val) => setDescription(val)}/>
       </View>
+      {
+        error==''?null:(<View style={{paddingTop: 10}}>
+          <Text style={{color: Colors.red, textAlign: 'center'}}>
+            {error}
+          </Text>
+        </View>)
+      }
       <View style={styles.buttonStyle}>
-      <PrimaryButton>Submit</PrimaryButton>
+      <PrimaryButton
+      onPress={()=> {addDoubt()}}
+      >Submit</PrimaryButton>
       </View>
     </ScrollView>
   )

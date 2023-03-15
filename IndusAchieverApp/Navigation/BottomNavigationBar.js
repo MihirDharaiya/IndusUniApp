@@ -109,6 +109,7 @@ const BottomNavigationBar = () => {
     <Tab.Navigator
 				initialRouteName="HomeStack"
         screenOptions={({navigation}) => ({
+          tabBarShowLabel: false,
           tabBarActiveBackgroundColor: Colors.extralightgrey,
           headerStyle: {
             backgroundColor: Colors.white,
@@ -135,9 +136,9 @@ const BottomNavigationBar = () => {
             />
           ),
         })}
-				tabBarOptions={{
-					showLabel: false,
-				}}
+				// screenOptions={{
+				// 	showLabel: false,
+				// }}
 			>
         <Tab.Screen
 					name="PastDoubts"

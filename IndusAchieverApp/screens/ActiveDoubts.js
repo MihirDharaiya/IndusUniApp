@@ -4,13 +4,32 @@ import {
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import BorderCard from "../components/BorderCard";
 import Colors from "../constants/Colors";
 import TextInputBoxField from "../components/TextInputBoxField";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
+import {app} from '../firebase/firebase';
   
   export default function ActiveDoubts() {
+
+    const [facultyName, setFacultyName] = useState(null);   
+    const [subject, setSubject] = useState(null);   
+
+
+    useEffect(() => {
+      const ReadData= async()=>{
+        const docRef = doc(db, "doubts", );
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setFacultyName(docSnap.data().name);
+          setSubject(docSnap.data().subject);
+        } 
+      }
+      ReadData();
+    }, [app])
+
     return (
       <ScrollView style={styles.rootContainer}>
         <View>
@@ -24,11 +43,11 @@ import Icon from "react-native-vector-icons/FontAwesome5";
             <Text style={styles.headingText}>Raised On:</Text>
           </View> 
           <View style={styles.answerView}>
-            <Text style={styles.answerText}>Rahul Bhatt</Text>
+            <Text style={styles.answerText}>{facultyName}</Text>
             <Text style={styles.answerText}>16/11/2022</Text>
           </View>
           <View style={styles.inputField}>
-            <TextInputBoxField title={'Subject:'} editable={false}></TextInputBoxField>
+            <TextInputBoxField title={'Subject:'} editable={false} enteredValue={subject}></TextInputBoxField>
           </View>
           <View style={styles.outerView}>
           <View style={styles.textIconView}>

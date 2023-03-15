@@ -6,7 +6,7 @@ import {
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import Colors from "../constants/Colors.js";
   
-export default function TextInputBoxField({ title, placeholder, lines, multiline, editable }) {
+export default function TextInputBoxField({ title, placeholder, lines, multiline, editable,enteredValueHandler,enteredValue }) {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.titleText}>{title}</Text>
@@ -17,6 +17,8 @@ export default function TextInputBoxField({ title, placeholder, lines, multiline
         numberOfLines={lines}
         multiline={multiline}
         editable={editable}
+        value={enteredValue}
+        onChangeText={enteredValueHandler}
       />
     </View>
  );

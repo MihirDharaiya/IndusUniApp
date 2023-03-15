@@ -9,8 +9,6 @@ import {
   TouchableHighlight,
   ScrollView,
   Image,
-  Text,
-  Pressable,
 } from "react-native";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
@@ -18,17 +16,43 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
-import {getFirestore} from 'firebase/firestore';
-import {doc, getDoc} from 'firebase/firestore';
+import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Profile({navigation}) {
 
 const db = getFirestore(app);
+const auth=getAuth();
+const [name, setName] = useState(null);   
+const [email, setEmail] = useState(null);
+const [enrollnmentNumber, setenrollnmentNumber] = useState(null);  
+const [branch, setBranch] = useState(null);  
+const [batchYear, setBatchYear] = useState(null);  
+
+const showData = async () => {
+let user = await AsyncStorage.getItem('users');
+    user = JSON.parse(user);
+    console.log(typeof user, user);
+    setName(user.name);
+    setEmail(user.email);
+    setenrollnmentNumber(user.enrollnmentNumber);
+    setBatchYear(user.batchYear);
+    setBranch(user.branch);
+  };
+const clearData = () => {
+    AsyncStorage.clear();
+  }
+useEffect(()=>{
+  showData();
+  clearData();
+})
 
 const onSignOut=() => {
 const auth = getAuth();
 signOut(auth).then(() => {
+  setEmail('');
+  clearData();
   navigation.navigate('LoginScreen')
 }).catch((error) => {
   alert('Something went wrong please try again !')
@@ -82,6 +106,7 @@ signOut(auth).then(() => {
           size={responsiveFontSize(3.5)}
           placeholder="Name"
           editable={false}
+          enteredValue={name}
         />
         <TextInputField
           title="Email:"
@@ -90,6 +115,7 @@ signOut(auth).then(() => {
           size={responsiveFontSize(3.5)}
           placeholder="Email address"
           editable={false}
+          enteredValue={email}
         />
         <TextInputField
           title="Enrollnment Number:"
@@ -99,6 +125,7 @@ signOut(auth).then(() => {
           placeholder="IU12312"
           style={{ marginRight: 3 }}
           editable={false}
+          enteredValue={enrollnmentNumber}
         />
         <TextInputField
           title="Branch:"
@@ -107,6 +134,7 @@ signOut(auth).then(() => {
           size={responsiveFontSize(3.4)}
           placeholder="Department name"
           editable={false}
+          enteredValue={branch}
         />
         <TextInputField
           title="Batch Year:"
@@ -115,6 +143,7 @@ signOut(auth).then(() => {
           size={responsiveFontSize(3.1)}
           placeholder="2017"
           editable={false}
+          enteredValue={batchYear}
         />
       </View>
       <View style={styles.buttonOuterContainer}>

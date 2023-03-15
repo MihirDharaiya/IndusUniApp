@@ -10,9 +10,11 @@ import TextInputField from '../components/TextInputField'
 import SecondaryButton from '../components/SecondaryButton';
 import {app} from '../firebase/firebase';
 import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc} from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function SignupScreen({navigation}) {
   const auth=getAuth();
@@ -42,15 +44,29 @@ export default function SignupScreen({navigation}) {
     }
     else{
       setError('');
+      let str = email;
+      let a = str.indexOf('.');
+      let b = str.indexOf('@');
+      let x="";
+      for (let i = a+1;i<b;i++){
+        x += str.charAt(i)
+      }
+      var arr = x.split('.');
+      const data = { 
+        email: email,
+        name: name,
+        enrollnmentNumber: enrollnmentNumber,
+        branch: arr[1].toUpperCase(),
+        batchYear: "20"+arr[0]
+      }
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
         const user = userCredential.user;              
         setDoc(doc(db, "users",user.uid), {
-          email: email,
-          name: name,
-          enrollnmentNumber: enrollnmentNumber
+         data
         }).then(()=>{
-          navigation.navigate('tabClientNavigator')
+          navigation.navigate('tabClientNavigator');
+          AsyncStorage.setItem('users', JSON.stringify(data));
         });
       })            
       .catch((error) => {

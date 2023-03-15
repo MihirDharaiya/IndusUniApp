@@ -1,5 +1,5 @@
-import { StyleSheet,View} from 'react-native'
-import React from 'react'
+import { StyleSheet,View, Button, Text} from 'react-native'
+import {React,useState} from 'react'
 import FlexedButtons from '../components/FlexedButtons'
 import PrimaryButton from '../components/PrimaryButton'
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
@@ -11,6 +11,11 @@ import {
 import Colors from '../constants/Colors'
 
 export default function Community() {
+  const [showSection1, setShowSection1] = useState(true);
+
+  const toggleSections = () => {
+    setShowSection1(!showSection1);
+  };
   return (
     <View style={styles.rootContainer}>
       <View>
@@ -30,8 +35,8 @@ export default function Community() {
       </View>
       </View>
      </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
     rootContainer: {
@@ -51,4 +56,4 @@ const styles = StyleSheet.create({
     button: {
       width: responsiveWidth(40)
     }
-})
+});
