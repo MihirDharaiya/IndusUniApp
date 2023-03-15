@@ -13,20 +13,8 @@ import {
 } from "react-native-responsive-dimensions";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
-import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { useState } from "react";
-export default function ForgotPassword({ navigation }) {
-  const [email, setEmail] = useState("");
-  const auth = getAuth();
-  const handleReset = () => {
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        navigation.navigate("ResetPasswordLinkSend");
-      })
-      .catch((error) => alert(error.message));
-  };
+export default function VerifyEmail({ navigation }) {
   return (
     <ScrollView style={styles.rootContainer}>
       <ImageBackground
@@ -43,24 +31,22 @@ export default function ForgotPassword({ navigation }) {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require("../assets/images/ForgotPasswordIcon.png")}
+              source={require("../assets/images/ResetPasswordLinkSendIcon.png")}
             />
           </View>
           <View style={styles.mainTextContainer}>
-            <Text style={styles.mainText}>Forgot Your Password ??</Text>
+            <Text style={styles.mainText}>Check Your Email !!</Text>
             <Text style={styles.subText}>
-              Enter your email address to {"\n"}retrieve your password
+              Follow the Link in the Email to Reset the Password.
             </Text>
           </View>
-          <SecondaryTextInputField
-            iconVisible={true}
-            iconName={"at"}
-            size={responsiveFontSize(3)}
-            placeholder={"example@gmail.com"}
-            enteredValue={email}
-            enteredValueHandler={(text) => setEmail(text)}
-          ></SecondaryTextInputField>
-          <PrimaryButton onPress={handleReset}>Reset Password</PrimaryButton>
+          <PrimaryButton
+            onPress={() => {
+              navigation.navigate("LoginScreen");
+            }}
+          >
+            Login
+          </PrimaryButton>
         </Card>
       </ImageBackground>
     </ScrollView>
@@ -69,12 +55,12 @@ export default function ForgotPassword({ navigation }) {
 
 const styles = StyleSheet.create({
   rootContainer: {
+    marginVertical: 16,
     flex: 1,
     backgroundColor: Colors.white,
   },
   building: {
     height: responsiveHeight(100),
-    paddingVertical: 10,
   },
   logoContainer: {
     alignItems: "center",
@@ -83,15 +69,14 @@ const styles = StyleSheet.create({
   logo: {
     width: responsiveWidth(70),
     height: responsiveWidth(35),
-    marginTop: responsiveHeight(6),
+    marginVertical: 15,
   },
   imageContainer: {
     alignItems: "center",
   },
   image: {
-    width: responsiveWidth(50),
-    height: responsiveWidth(50),
-    marginBottom: -20,
+    width: responsiveWidth(40),
+    height: responsiveWidth(40),
   },
   mainTextContainer: {
     padding: 2,
@@ -99,7 +84,7 @@ const styles = StyleSheet.create({
   },
 
   mainText: {
-    fontSize: responsiveFontSize(2.5),
+    fontSize: responsiveFontSize(3),
     fontWeight: "bold",
     textAlign: "center",
     padding: 10,

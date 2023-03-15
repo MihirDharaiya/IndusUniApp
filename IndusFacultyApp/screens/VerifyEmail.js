@@ -37,7 +37,7 @@ export default function VerifyEmail({ navigation }) {
           <View style={styles.mainTextContainer}>
             <Text style={styles.mainText}>Check Your Email !!</Text>
             <Text style={styles.subText}>
-              Follow the Link in the Email to Reset the Password.
+              Follow the Link in the Email to Verify the register email ID.
             </Text>
           </View>
           <PrimaryButton

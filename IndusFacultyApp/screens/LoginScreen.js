@@ -25,20 +25,47 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
+import {
+  getFirestore,
+  getDocs,
+  doc,
+  collection,
+  onSnapshot,
+  limit,
+  query,
+} from "firebase/firestore";
+
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const auth = getAuth();
-  const handleLogin = () => {
+  const VerifyEmail = async (user) => {
+    try {
+      await sendEmailVerification(user);
+      return true;
+    } catch (error) {
+      const errorCode = error.code.replace("auth/", "");
+      if (Platform.OS === "android") {
+        ToastAndroid.show(errorCode, ToastAndroid.SHORT);
+      } else {
+        AlertIOS.alert("title", "text");
+      }
+      return false;
+    }
+  };
+  const handleLogin = async () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        // if (!userCredentials.user.emailVerified) {
-        //   sendEmailVerification();
-        //   navigation.navigate("VerifyEmail");
-        // }
-        navigation.navigate("Overview");
+        console.log(user);
+        console.log(user.emailVerified);
+        if (!user.emailVerified) {
+          navigation.navigate("VerifyEmail");
+          VerifyEmail(user);
+        } else {
+          navigation.navigate("Overview");
+        }
       })
       .catch((error) => {
         const errorCode = error.code.replace("auth/", "");

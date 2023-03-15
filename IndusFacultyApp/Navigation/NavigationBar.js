@@ -148,6 +148,11 @@ export default function NavigationBar() {
           component={Routes.verifyEmail}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="ResetPasswordLinkSend"
+          component={Routes.resetPasswordLinkSend}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Notifications" component={Routes.notification} />
         <Stack.Screen name="Total Doubts" component={Routes.totaldoubts} />
         <Stack.Screen name="On a Break" component={Routes.onLeave} />

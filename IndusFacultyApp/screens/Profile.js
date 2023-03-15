@@ -19,6 +19,8 @@ import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import { getAuth, signOut } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function Profile({ navigation }) {
   const onSignOut = () => {
     const auth = getAuth();

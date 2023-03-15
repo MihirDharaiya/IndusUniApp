@@ -11,6 +11,7 @@ import TotalAnnouncements from "../screens/TotalAnnouncements";
 import AnswerDoubt from "../screens/AnswerDoubt";
 import Splash from "../screens/Splash";
 import VerifyEmail from "../screens/VerifyEmail";
+import ResetPasswordLinkSend from "../screens/ResetPasswordLinkSend";
 import OnLeave from "../screens/OnLeave";
 const Routes = {
   loginScreen: LoginScreen,
@@ -27,5 +28,6 @@ const Routes = {
   splash: Splash,
   verifyEmail: VerifyEmail,
   onLeave: OnLeave,
+  resetPasswordLinkSend: ResetPasswordLinkSend,
 };
 export default Routes;

@@ -169,7 +169,7 @@ function AddFaculty(props) {
                   onChange={(e) => setBranch(e.target.value)}
                 >
                   <option></option>
-                  <option>CSE</option>
+                  <option>CS</option>
                   <option>CE</option>
                   <option>IT</option>
                   <option>EE</option>
