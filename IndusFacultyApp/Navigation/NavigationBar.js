@@ -8,11 +8,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/FontAwesome5";
-import * as React from "react";
+import React, { useEffect } from "react";
 import Routes from "./Routes";
 import Colors from "../constants/Colors";
 import NotificationBell from "../components/NotificationBell";
-
+import { getAuth } from "firebase/auth";
+import { app } from "../firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
@@ -22,6 +25,24 @@ const Announcement = "Announcement";
 const Profile = "Profile";
 
 function Overview() {
+  const auth = getAuth();
+  const useruid = auth.currentUser.uid;
+  const db = getFirestore(app);
+  const getUserData = async () => {
+    const a = await getDoc(doc(db, "faculty", useruid));
+    AsyncStorage.setItem("users", JSON.stringify(a.data()));
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      await AsyncStorage.removeItem("users");
+      let user = await AsyncStorage.getItem("users");
+      if (!user) {
+        getUserData();
+      }
+    }
+    fetchData();
+  });
   return (
     <BottomTabs.Navigator
       initialRouteName={Home}

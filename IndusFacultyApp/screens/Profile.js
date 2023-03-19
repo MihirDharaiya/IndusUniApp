@@ -15,17 +15,42 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Profile({ navigation }) {
-  const onSignOut = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [branch, setBranch] = useState("");
+  const [position, setPosition] = useState("");
+  const [id, setId] = useState("");
+  const showData = async () => {
+    let user = await AsyncStorage.getItem("users");
+    user = JSON.parse(user);
+    // console.log(typeof user, user);
+    setName(user.fname);
+    setEmail(user.femail);
+    setBranch(user.fbranch);
+    setPosition(user.fposition);
+    setId(user.fid);
+  };
+  const clearData = () => {
+    AsyncStorage.clear();
+  };
+  useEffect(() => {
+    showData();
+    clearData();
+  });
+  const onSignOut = async () => {
     const auth = getAuth();
+    await AsyncStorage.removeItem("users");
     signOut(auth)
       .then(() => {
+        clearData();
+
         navigation.navigate("LoginScreen");
       })
       .catch((error) => {
@@ -64,43 +89,43 @@ export default function Profile({ navigation }) {
           title="Name:"
           iconName={"user-alt"}
           size={responsiveFontSize(3.5)}
-          placeholder="Name"
+          placeholder={name}
           editable={false}
         />
         <TextInputField
           title="Email:"
           iconName={"at"}
           size={responsiveFontSize(3.5)}
-          placeholder="Email address"
+          placeholder={email}
           editable={false}
         />
         <TextInputField
           title="User ID No.:"
           iconName={"user-tag"}
           size={responsiveFontSize(3.5)}
-          placeholder="IU12312"
+          placeholder={id}
           style={{ marginRight: 3 }}
           editable={false}
         />
-        <TextInputField
+        {/* <TextInputField
           title="Phone No.:"
           iconName={"phone"}
           size={responsiveFontSize(3.5)}
           placeholder="+919883437378"
           editable={false}
-        />
+        /> */}
         <TextInputField
           title="Department:"
           iconName={"building"}
           size={responsiveFontSize(3.5)}
-          placeholder="Department name"
+          placeholder={branch}
           editable={false}
         />
         <TextInputField
           title="Position:"
           iconName={"user-graduate"}
           size={responsiveFontSize(3.5)}
-          placeholder="Professor"
+          placeholder={position}
           editable={false}
         />
       </View>

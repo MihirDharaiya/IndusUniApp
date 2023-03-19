@@ -12,17 +12,34 @@ import {
   Pressable,
 } from "react-native";
 import Colors from "../constants/Colors";
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "../components/Card";
 import GreyCard from "../components/GreyCard";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import AnswerDoubt from "./AnswerDoubt";
+import { getAuth } from "firebase/auth";
+import { app } from "../firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function HomeScreen({
   studentName,
   studentEnrollNo,
   studentBranch,
   navigation,
 }) {
+  // const auth = getAuth();
+  // const useruid = auth.currentUser.uid;
+  // const db = getFirestore(app);
+  // const getUserData = async () => {
+  //   const a = await getDoc(doc(db, "faculty", useruid));
+  //   // console.log("the record is :", a.data());
+  // };
+  // useEffect(() => {
+  //   getUserData();
+  //   return () => {
+  //     console.log("This will be logged on unmount");
+  //   };
+  // });
   return (
     <ScrollView style={styles.rootContainer}>
       <Card>

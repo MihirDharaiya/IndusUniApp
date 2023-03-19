@@ -25,21 +25,17 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import {
-  getFirestore,
-  getDocs,
-  doc,
-  collection,
-  onSnapshot,
-  limit,
-  query,
-} from "firebase/firestore";
-
+import { app } from "../firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { firebase } from "@react-native-firebase/firestore";
 export default function LoginScreen({ navigation }) {
+  // Firebase requirements
+  const auth = getAuth();
+  const db = getFirestore(app);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const auth = getAuth();
+
   const VerifyEmail = async (user) => {
     try {
       await sendEmailVerification(user);
@@ -54,20 +50,24 @@ export default function LoginScreen({ navigation }) {
       return false;
     }
   };
+  const clearData = () => {
+    AsyncStorage.clear();
+  };
   const handleLogin = async () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user);
-        console.log(user.emailVerified);
         if (!user.emailVerified) {
           navigation.navigate("VerifyEmail");
           VerifyEmail(user);
         } else {
+          clearData();
           navigation.navigate("Overview");
         }
       })
       .catch((error) => {
+        setEmail("");
+        setPassword("");
         const errorCode = error.code.replace("auth/", "");
         if (Platform.OS === "android") {
           ToastAndroid.show(errorCode, ToastAndroid.SHORT);

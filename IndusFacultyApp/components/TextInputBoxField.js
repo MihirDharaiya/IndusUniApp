@@ -8,7 +8,13 @@ import React from "react";
 
 import Colors from "../constants/Colors.js";
 
-export default function TextInputBoxField({ title, placeholder, lines }) {
+export default function TextInputBoxField({
+  title,
+  placeholder,
+  lines,
+  enteredValue,
+  enteredValueHandler,
+}) {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.titleText}>{title}</Text>
@@ -17,6 +23,9 @@ export default function TextInputBoxField({ title, placeholder, lines }) {
         placeholder={placeholder}
         autoCapitalize="none"
         numberOfLines={lines}
+        multiline={true}
+        value={enteredValue}
+        onChangeText={enteredValueHandler}
       />
     </View>
   );

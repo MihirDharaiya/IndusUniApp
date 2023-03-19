@@ -86,11 +86,11 @@ function AddFaculty(props) {
         const user = userCredential.user;
         console.log("User Added :", user);
         setDoc(doc(db, "faculty", user.uid), {
-          email: email,
-          name: fullname,
-          branch: branch,
-          position: position,
-          id: id,
+          femail: email,
+          fname: fullname,
+          fbranch: branch,
+          fposition: position,
+          fid: id,
         });
       })
       .then(() => {
