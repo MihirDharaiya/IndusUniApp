@@ -48,7 +48,9 @@ export default function LoginScreen({navigation}) {
 // useEffect(()=>{
 //   fetchData()
 // })
-  
+const clearData = () => {
+  AsyncStorage.clear();
+};
   const onSignIn = () => {
     const reg =  /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
     if(!reg.test(email)){
@@ -64,6 +66,7 @@ export default function LoginScreen({navigation}) {
       const user = userCredential.user;
       setEmail('');
       setPassword('');
+      clearData();
       navigation.navigate('tabClientNavigator')
       // AsyncStorage.setItem('users', JSON.stringify(fetchData()));
     })
@@ -71,6 +74,8 @@ export default function LoginScreen({navigation}) {
       const errorCode = error.code;
       const errorMessage = error.message;
       setError('Invalid User !')
+      setEmail('');
+      setPassword('');
       });
     }
   }

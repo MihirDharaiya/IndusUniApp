@@ -24,7 +24,12 @@ import ForgotPassword from '../screens/ForgotPassword';
 import ReenterPassword from '../screens/ReenterPassword';
 import EmailVerification from '../screens/EmailVerification';
 import AcademicCalendar from '../screens/AcademicCalendar';
-
+import StudentProfile from '../screens/StudentProfile';
+import { getAuth } from "firebase/auth";
+import { app } from "../firebase/firebase";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from 'react';
 
 
 const Stack = createNativeStackNavigator();
@@ -82,6 +87,11 @@ const BottomNavigationBar = () => {
         <Stack.Screen
           name="AlumniProfile"
           component={AlumniProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="StudentProfile"
+          component={StudentProfile}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>    
@@ -170,6 +180,26 @@ const BottomNavigationBar = () => {
       </Tab.Navigator>
   )
   function GetTab() {
+    const auth = getAuth();
+    const useruid = auth.currentUser.uid;
+    const db = getFirestore(app);
+    const getUserData = async () => {
+    const a = await getDoc(doc(db, "users", useruid));
+    AsyncStorage.setItem("users", JSON.stringify(a.data()));
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      await AsyncStorage.removeItem("users");
+      let user = await AsyncStorage.getItem("users");
+      if (!user) {
+        getUserData();
+      }
+      user = JSON.parse(user);
+      console.log(user);
+    }
+    fetchData();
+  });
     return tabClientNavigator;
   }
   return (

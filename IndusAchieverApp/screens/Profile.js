@@ -16,7 +16,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
-import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
+import {getFirestore, getDoc, doc, query, onSnapshot, setDoc} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -24,11 +24,11 @@ export default function Profile({navigation}) {
 
 const db = getFirestore(app);
 const auth=getAuth();
-const [name, setName] = useState(null);   
-const [email, setEmail] = useState(null);
-const [enrollnmentNumber, setenrollnmentNumber] = useState(null);  
-const [branch, setBranch] = useState(null);  
-const [batchYear, setBatchYear] = useState(null);  
+const [name, setName] = useState("");   
+const [email, setEmail] = useState("");
+const [enrollnmentNumber, setenrollnmentNumber] = useState("");  
+const [branch, setBranch] = useState("");  
+const [batchYear, setBatchYear] = useState("");  
 
 const showData = async () => {
 let user = await AsyncStorage.getItem('users');
@@ -43,15 +43,35 @@ let user = await AsyncStorage.getItem('users');
 const clearData = () => {
     AsyncStorage.clear();
   }
+
+// useEffect(()=>{
+//   const getUser = async () => {
+//     const docRef = doc(db, "users",auth.currentUser.uid);
+//     const docSnap = await getDoc(docRef);
+    
+//     if (docSnap.exists()) {
+//       setName(docSnap.data().name)
+//       setEmail(docSnap.data().email)
+//       setenrollnmentNumber(docSnap.data().enrollnmentNumber)
+//       setBatchYear(docSnap.data().batchYear)
+//       setBranch(docSnap.data().branch)
+  
+//     } else {
+//       // doc.data() will be undefined in this case
+//       console.log("No such document!");
+//     }
+//     }
+//     getUser();
+// },[]);
 useEffect(()=>{
   showData();
   clearData();
-})
+},[]);
 
-const onSignOut=() => {
+const onSignOut= async() => {
 const auth = getAuth();
+await AsyncStorage.removeItem("users");
 signOut(auth).then(() => {
-  setEmail('');
   clearData();
   navigation.navigate('LoginScreen')
 }).catch((error) => {
@@ -116,6 +136,7 @@ signOut(auth).then(() => {
           placeholder="Email address"
           editable={false}
           enteredValue={email}
+          multiline={true}
         />
         <TextInputField
           title="Enrollnment Number:"

@@ -63,7 +63,13 @@ export default function SignupScreen({navigation}) {
       .then((userCredential) => { 
         const user = userCredential.user;              
         setDoc(doc(db, "users",user.uid), {
-         data
+        //  data
+        email: email,
+        name: name,
+        enrollnmentNumber: enrollnmentNumber,
+        branch: arr[1].toUpperCase(),
+        batchYear: "20"+arr[0],
+        uid: auth.currentUser.uid
         }).then(()=>{
           navigation.navigate('tabClientNavigator');
           AsyncStorage.setItem('users', JSON.stringify(data));

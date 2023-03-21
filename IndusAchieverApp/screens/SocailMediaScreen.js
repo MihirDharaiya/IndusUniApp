@@ -11,6 +11,7 @@ import AltTextField from '../components/AltTextField';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import GreyCard from '../components/GreyCard';
+
 export default function SocailMediaScreen() {
   const[skill, setSkill] = useState("");
   const handleSubmit = (event) => {

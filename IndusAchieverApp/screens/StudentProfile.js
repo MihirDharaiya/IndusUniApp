@@ -8,7 +8,7 @@ import RoundButton from '../components/RoundButton'
 import Card from '../components/Card'
 import GreyCard from '../components/GreyCard'
 
-export default function StudentProfile() {
+export default function StudentProfile({route}) {
     return (
         <ScrollView style={styles.rootContainer}>
             <View>
@@ -18,9 +18,12 @@ export default function StudentProfile() {
                     source={require("../assets/images/Profile.png")}/>
                     </View>
                     <View>
-                        <Text style={styles.nameTitle}>Rahul Bhatt</Text>
+                        <Text style={styles.nameTitle}>{route.params.data.name}</Text>
                         <Text style={styles.subTitle}>Branch: </Text>
-                        <Text style={styles.answerText}>CSE, 3rd Year</Text>
+                        <View style={{flexDirection: 'row', textAlign: 'center', justifyContent: 'center'}}>
+                        <Text style={styles.answerText}>{route.params.data.branch+", "}</Text>
+                        <Text style={styles.answerText}>{route.params.data.batchYear}</Text>
+                        </View>
                     </View>
                     <View style={styles.buttonView}>
                         <Text style={{fontSize: responsiveFontSize(2)}}>Skills:</Text>

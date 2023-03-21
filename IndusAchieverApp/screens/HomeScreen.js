@@ -53,9 +53,9 @@ function card(data) {
         </View>
         <View style={styles.textContainer}>
         <Text style={styles.title}>Name:</Text>
-        <Text style={styles.answerTitle}>{data.name}</Text>
+        <Text style={styles.answerTitle}>{data.fname}</Text>
         <Text style={styles.title}>Designation:</Text>
-        <Text style={styles.answerTitle}>{data.position}</Text>
+        <Text style={styles.answerTitle}>{data.fposition}</Text>
         </View>      
         </View>
       </Card>
@@ -72,7 +72,7 @@ function card(data) {
       <FlatList
       data={faculty}
       renderItem={({item}) => card(item)}
-      keyExtractor={data => data.id}
+      keyExtractor={data => data.fid}
       initialNumToRender={1}
       >
       </FlatList>
@@ -80,7 +80,7 @@ function card(data) {
       <View style={styles.moreCon}>
       {renderNum >= 4 ? null : <Pressable
         onPress={()=>{
-          setRenderNum(renderNum*2);
+          setRenderNum(50);
         }}
         >
         <Text style={styles.moreText}>... more</Text>
@@ -143,7 +143,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: responsiveHeight(1),
     color: Colors.grey,
-    fontSize: responsiveFontSize(1.8)
+    fontSize: responsiveFontSize(1.8),
+    flexWrap: 'wrap',
+    width: responsiveWidth(50)
   },
   textContainer:{
     padding: 6,

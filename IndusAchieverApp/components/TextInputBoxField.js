@@ -19,6 +19,7 @@ export default function TextInputBoxField({ title, placeholder, lines, multiline
         editable={editable}
         value={enteredValue}
         onChangeText={enteredValueHandler}
+        autoCorrect={false}
       />
     </View>
  );
