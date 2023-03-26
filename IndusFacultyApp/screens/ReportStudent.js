@@ -17,22 +17,22 @@ import Colors from "../constants/Colors";
 import Card from "../components/Card";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { app } from "../firebase";
-import SecondaryButton from "../components/SecondaryButton";
+import PrimaryButton from "../components/PrimaryButton";
 export default function ReportStudent({ route, navigation }) {
   const auth = getAuth();
   const db = getFirestore(app);
 
-  const [reply, setReply] = useState("");
+  const [reason, setReason] = useState("");
   const [error, setError] = useState("");
   const reportStudent = async () => {
-    if (reply.length < 10) {
+    if (reason.length < 50) {
       setError("Mention Reason in detail.");
     } else {
-      const docRef = doc(db, "activedoubts", route.params.data.uid);
-      await deleteDoc(docRef);
-      await addDoc(collection(db, "resolveddoubts"), {
+      await addDoc(collection(db, "reportedstudents"), {
+        batchYear: route.params.data.batchYear,
+        branch: route.params.data.branch,
         date: route.params.data.date,
         subject: route.params.data.subject,
         description: route.params.data.description,
@@ -40,14 +40,15 @@ export default function ReportStudent({ route, navigation }) {
         fid: route.params.data.fid,
         fname: route.params.data.fname,
         name: route.params.data.name,
-        reply: reply,
+        raised: "faculty",
+        reason: reason,
       }).then(() => {
-        setReply("");
+        setReason("");
 
         if (Platform.OS === "android") {
-          ToastAndroid.show("Response has been saved", ToastAndroid.SHORT);
+          ToastAndroid.show("Student in being Reported", ToastAndroid.SHORT);
         } else {
-          AlertIOS.alert("Stored", "Response has been saved");
+          AlertIOS.alert("Notified", "Student in being Reported");
         }
         navigation.navigate("Home");
       });
@@ -56,20 +57,30 @@ export default function ReportStudent({ route, navigation }) {
 
   return (
     <View style={styles.rootContainer}>
+      <View style={styles.alertInputTextContainer}>
+        <Text style={styles.alertInputText}>
+          Reporting a student will ban him or her for{" "}
+          <Text style={{ fontWeight: "bold", color: Colors.red }}>
+            {" "}
+            7 working days
+          </Text>{" "}
+          from Raising doubts. Do it only if absolutely necessary.
+        </Text>
+      </View>
       <Card cardStyle={styles.card}>
         <Text style={styles.inputText}>Reason of Reporting:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            placeholder={"Enter Your reply:"}
+            placeholder={"Enter Your reply"}
             autoCapitalize="none"
             multiline={true}
             numberOfLines={6}
-            value={reply}
-            onChangeText={(text) => setReply(text)}
+            value={reason}
+            onChangeText={(text) => setReason(text)}
           />
         </View>
-        <SecondaryButton onPress={() => reportStudent()}>SEND</SecondaryButton>
+        <PrimaryButton onPress={() => reportStudent()}>SEND</PrimaryButton>
       </Card>
       {error == "" ? null : (
         <View style={{ paddingTop: 10 }}>
@@ -93,6 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: Colors.blue,
   },
   alertInputTextContainer: {
     padding: responsiveWidth(3),

@@ -1,0 +1,53 @@
+.main-title {
+  text-align: center;
+  padding: 1%;
+  color: #d9d9d9;
+}
+.details-main-div {
+  background-color: #d9d9d9;
+  margin: 0% 2% 2% 2%;
+  border-radius: 6px;
+}
+.details-inner-div {
+  display: flex;
+  justify-content: space-around;
+}
+.details-div {
+  padding: 2% 2% 0% 2%;
+  display: flex;
+  width: 100%;
+  text-align: left;
+}
+.details-div h3 {
+  font-size: 1.8rem;
+}
+.red-detail {
+  font-size: 1.8rem;
+  color: #b70a0a;
+  padding-left: 2%;
+}
+.green-detail {
+  font-size: 1.8rem;
+  color: #01540b;
+  padding-left: 2%;
+}
+.doubt-div {
+  background-color: #c8c8c8;
+  margin: 2% 2% 2% 2%;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  text-align: center;
+}
+.doubt-inner-div {
+  padding: 1% 2% 2% 2%;
+  display: flex;
+  font-size: 1.6;
+  justify-content: center;
+}
+#doubt-btn {
+  margin-left: 25px;
+  padding: 10px 20px 10px 20px;
+  font-weight: 600;
+  margin-bottom: 2%;
+}

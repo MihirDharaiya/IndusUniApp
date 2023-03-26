@@ -87,7 +87,7 @@ function Overview() {
         headerRight: () => (
           <NotificationBell
             onPress={() => {
-              navigation.navigate("Notifications");
+              navigation.navigate("Announcements");
             }}
           />
         ),
@@ -174,18 +174,26 @@ export default function NavigationBar() {
           component={Routes.resetPasswordLinkSend}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Notifications" component={Routes.notification} />
-        <Stack.Screen name="Total Doubts" component={Routes.totaldoubts} />
+        <Stack.Screen name="Announcements" component={Routes.notification} />
+        <Stack.Screen name="Total Doubts" component={Routes.totalDoubts} />
         <Stack.Screen name="On a Break" component={Routes.onLeave} />
         <Stack.Screen
           name="Total Announcements"
-          component={Routes.totalannouncements}
+          component={Routes.totalAnnouncements}
         />
         <Stack.Screen
           name="AnswerDoubt"
-          component={Routes.answerdoubt}
+          component={Routes.answerDoubt}
           options={{
-            presentation: "containedTransparentModal",
+            presentation: "modal",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ReportStudent"
+          component={Routes.reportStudent}
+          options={{
+            presentation: "modal",
             headerShown: false,
           }}
         />

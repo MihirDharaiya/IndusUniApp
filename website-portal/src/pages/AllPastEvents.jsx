@@ -37,7 +37,7 @@ function AllPastEvents(props) {
                   <td>
                     <strong>{event.date}</strong>
                   </td>
-                  <td style={{ width: "35%" }}>{event.facultyname}</td>
+                  <td style={{ width: "35%" }}>{event.fname}</td>
                 </tr>
               </>
             ))}

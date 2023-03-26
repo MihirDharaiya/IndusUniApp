@@ -106,7 +106,7 @@ export default function LoginScreen({ navigation }) {
               iconStyle={{ marginRight: 12 }}
               size={responsiveFontSize(4)}
               enteredValue={password}
-              multiline={true}
+              secureTextEntry={true}
               placeholder="********"
               enteredValueHandler={(text) => setPassword(text)}
             />
@@ -127,7 +127,14 @@ export default function LoginScreen({ navigation }) {
             </Pressable>
           </View>
           <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={() => handleLogin()}>LogIn</PrimaryButton>
+            <PrimaryButton
+              iconVisible={true}
+              iconName={"fingerprint"}
+              size={responsiveFontSize(3.5)}
+              onPress={() => handleLogin()}
+            >
+              LogIn
+            </PrimaryButton>
           </View>
         </Card>
       </ImageBackground>

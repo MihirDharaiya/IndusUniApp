@@ -30,7 +30,7 @@ export default function Profile({ navigation }) {
   const showData = async () => {
     let user = await AsyncStorage.getItem("users");
     user = JSON.parse(user);
-    // console.log(typeof user, user);
+
     setName(user.fname);
     setEmail(user.femail);
     setBranch(user.fbranch);
@@ -98,6 +98,7 @@ export default function Profile({ navigation }) {
           size={responsiveFontSize(3.5)}
           placeholder={email}
           editable={false}
+          multiline={true}
         />
         <TextInputField
           title="User ID No.:"
@@ -107,13 +108,6 @@ export default function Profile({ navigation }) {
           style={{ marginRight: 3 }}
           editable={false}
         />
-        {/* <TextInputField
-          title="Phone No.:"
-          iconName={"phone"}
-          size={responsiveFontSize(3.5)}
-          placeholder="+919883437378"
-          editable={false}
-        /> */}
         <TextInputField
           title="Department:"
           iconName={"building"}
@@ -158,9 +152,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
   },
-  inputFieldsContainer: {
-    paddingHorizontal: responsiveWidth(5),
-  },
   imageContainer: {
     alignItems: "center",
     marginVertical: responsiveHeight(2.5),
@@ -185,7 +176,7 @@ const styles = StyleSheet.create({
   image: {
     width: responsiveWidth(25),
     height: responsiveWidth(25),
-    borderRadius: 50,
+    borderRadius: responsiveWidth(50),
   },
 
   buttonOuterContainer: {

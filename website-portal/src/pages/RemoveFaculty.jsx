@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./styles/RemoveFaculty.css";
-import {
-  getFirestore,
-  getDocs,
-  collection,
-  query,
-  deleteDoc,
-  where,
-  getDoc,
-} from "firebase/firestore";
+import { getFirestore, getDocs, collection, query } from "firebase/firestore";
 import app from "../firebase";
-
 function RemoveFaculty(props) {
   const db = getFirestore(app);
   const [faculty, setFaculty] = useState([]);
+
   const getFaculty = async () => {
     const docRef = query(collection(db, "faculty"));
     const docSnap = await getDocs(docRef);
@@ -28,12 +20,7 @@ function RemoveFaculty(props) {
     getFaculty();
   }, [1]);
 
-  const RemoveFaculty = async (event, uid) => {
-    // const docRef = query(collection(db, "faculty"), where("fid", "==", uid));
-    // const docSnap = await getDoc(docRef);
-    // console.log(docSnap.data());
-    console.log("faculty Remove", uid);
-  };
+  const Remove = async (event, fid) => {};
   return (
     <div className="backgroundimage">
       <div className="main-div">
@@ -58,7 +45,7 @@ function RemoveFaculty(props) {
                     <button
                       type="button"
                       class="btn btn-danger"
-                      onClick={(event) => RemoveFaculty(event, faculty.fid)}
+                      onClick={(event) => Remove(event, faculty.fid)}
                     >
                       Remove
                     </button>
