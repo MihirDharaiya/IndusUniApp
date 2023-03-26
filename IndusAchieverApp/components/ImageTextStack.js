@@ -18,7 +18,7 @@ export default function ImageTextStack({onPressActive, onPressQuestions}) {
           style={styles.backdrop1}
         >
           <View style={styles.textContainer}>
-            <Text style={styles.imageNumbers}>80</Text>
+            <Text style={styles.imageNumbers}>3</Text>
             <Text style={styles.imageText}> Active Doubts</Text>
           </View>
         </ImageBackground>

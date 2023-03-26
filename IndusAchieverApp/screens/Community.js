@@ -10,7 +10,7 @@ import {
 } from "react-native-responsive-dimensions";
 import Colors from '../constants/Colors';
 import Card from '../components/Card'
-import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query} from 'firebase/firestore';
+import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query, where} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import { getAuth} from "firebase/auth";
 
@@ -21,7 +21,7 @@ export default function Community({navigation}) {
   const auth=getAuth();
 
   async function getUsers(){
-    const docRef = query(collection(db,"users"));
+    const docRef = query(collection(db,"users") ,where("uid","!=",auth.currentUser.uid));
     const docSnap = await getDocs(docRef);
     var arr=[]
       docSnap.forEach(doc => {
@@ -68,8 +68,8 @@ export default function Community({navigation}) {
   return (
     <View style={styles.rootContainer}>
       <View>
-      <FlexedButtons></FlexedButtons>
-      <View style={styles.container}>
+      {/* <FlexedButtons></FlexedButtons> */}
+      {/* <View style={styles.container}>
         <View style={styles.searchBox}>
         <SecondaryTextInputField
         iconVisible={true}
@@ -81,7 +81,7 @@ export default function Community({navigation}) {
         <View style={styles.button}>
         <PrimaryButton>Search</PrimaryButton>
         </View>
-      </View>
+      </View> */}
       <View>
         <FlatList
       data={users}

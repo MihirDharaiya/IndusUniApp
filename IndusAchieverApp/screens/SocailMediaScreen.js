@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
 import {
     responsiveHeight,
@@ -11,13 +11,68 @@ import AltTextField from '../components/AltTextField';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import GreyCard from '../components/GreyCard';
+import { getAuth} from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
+import {doc,setDoc, addDoc, collection, updateDoc,getDoc} from 'firebase/firestore';
+import {app} from '../firebase/firebase';
 
-export default function SocailMediaScreen() {
+export default function SocailMediaScreen({navigation}) {
+
+  const auth=getAuth();
+  const db = getFirestore(app);
   const[skill, setSkill] = useState("");
+  const[github, setGithub] = useState("");
+  const[linkedIn, setLinkedIn] = useState("");
+  const[instagram, setInstagram] = useState("");
+  const[twitter, setTwitter] = useState("");
+  const [error, setError] = useState('');
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setText(event.target[0].value);
   };
+
+const dataExist = async() =>{
+  const gitLink = "https://github.com/";
+  const linLink = "https://www.linkedin.com/in/";
+  const twitLink = "https://twitter.com/";
+  const instLink = "https://www.instagram.com/";
+    const col = doc(db,'users',auth.currentUser.uid)
+    const snap = await getDoc(col);
+    setGithub(snap.data().github.replace(gitLink,""))
+    setLinkedIn(snap.data().linkedIn.replace(linLink,""))
+    setTwitter(snap.data().twitter.replace(twitLink,""))
+    setInstagram(snap.data().instagram.replace(instLink,""))
+}
+
+ useEffect(()=>{
+  dataExist()
+},[]);
+  const addLinks= async()=>{
+    const user = doc(db, "users", auth.currentUser.uid);
+    const gitLink = "https://github.com/";
+    const linLink = "https://www.linkedin.com/in/";
+    const twitLink = "https://twitter.com/";
+    const instLink = "https://www.instagram.com/";
+    updateDoc(user,{
+      github: github.length < 1 ? "" : gitLink+github,
+      linkedIn: linkedIn.length < 1 ? "" : linLink+linkedIn,
+      instagram: instagram.length < 1 ? "" : instLink+instagram,
+      twitter: twitter.length < 1 ? "" : twitLink+twitter
+    }).then(()=> {
+      if (Platform.OS === "android") {
+        ToastAndroid.show("Details Have Been Saved", ToastAndroid.SHORT);
+      } else {
+        // AlertIOS.alert("Raised", "Doubt has been created");
+      }
+      setGithub("");
+      setInstagram("");
+      setLinkedIn("");
+      setTwitter("");
+      navigation.navigate('Profile');
+    })
+  } 
+
   return (
     <ScrollView style={styles.rootContainer}>
       <Text style={styles.textStyle}>Add Other Details</Text>
@@ -28,6 +83,8 @@ export default function SocailMediaScreen() {
         size={responsiveFontSize(3)}
         placeholder={"GitHub ID"}
         keyboardType="email"
+        enteredValue={github}
+        enteredValueHandler={(val) => setGithub(val)}
         ></SecondaryTextInputField>
         <SecondaryTextInputField
         iconVisible={true}
@@ -35,6 +92,8 @@ export default function SocailMediaScreen() {
         size={responsiveFontSize(3)}
         placeholder={"LinkedIn ID"}
         keyboardType="email"
+        enteredValue={linkedIn}
+        enteredValueHandler={(val) => setLinkedIn(val)}
         ></SecondaryTextInputField>
         <SecondaryTextInputField
         iconVisible={true}
@@ -42,6 +101,8 @@ export default function SocailMediaScreen() {
         size={responsiveFontSize(3)}
         placeholder={"Instagram ID"}
         keyboardType="email"
+        enteredValue={instagram}
+        enteredValueHandler={(val) => setInstagram(val)}
         ></SecondaryTextInputField>
         <SecondaryTextInputField
         iconVisible={true}
@@ -49,10 +110,12 @@ export default function SocailMediaScreen() {
         size={responsiveFontSize(3)}
         placeholder={"Twitter ID"}
         keyboardType="email"
+        enteredValue={twitter}
+        enteredValueHandler={(val) => setTwitter(val)}
         ></SecondaryTextInputField>
       </View>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={styles.textStyle}>Add Skills</Text>
+        {/* <Text style={styles.textStyle}>Add Skills</Text>
         <View style={styles.skillSection}>
             <View style={styles.altField}>
             <AltTextField
@@ -71,7 +134,7 @@ export default function SocailMediaScreen() {
               <GreyCard>
                 <Text>{skill}</Text>
               </GreyCard>
-            </View>
+            </View> */}
         <View style={styles.secondButton}>
         <SecondaryButton
         iconVisible={true}
@@ -79,6 +142,9 @@ export default function SocailMediaScreen() {
         size={responsiveFontSize(3)}
         color={Colors.blue}
         textStyle={{ color: Colors.blue }}
+        onPress={()=>{
+          addLinks();
+        }}
         >
             Save
         </SecondaryButton>

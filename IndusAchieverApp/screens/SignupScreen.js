@@ -10,7 +10,7 @@ import TextInputField from '../components/TextInputField'
 import SecondaryButton from '../components/SecondaryButton';
 import {app} from '../firebase/firebase';
 import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, VerifyEmail } from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc} from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,7 +61,8 @@ export default function SignupScreen({navigation}) {
       }
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
-        const user = userCredential.user;              
+        const user = userCredential.user;   
+        sendEmailVerification(user);
         setDoc(doc(db, "users",user.uid), {
         //  data
         email: email,
@@ -71,7 +72,8 @@ export default function SignupScreen({navigation}) {
         batchYear: "20"+arr[0],
         uid: auth.currentUser.uid
         }).then(()=>{
-          navigation.navigate('tabClientNavigator');
+          // navigation.navigate('tabClientNavigator');
+          navigation.navigate("VerifyEmail");
           AsyncStorage.setItem('users', JSON.stringify(data));
         });
       })            

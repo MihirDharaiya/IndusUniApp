@@ -21,7 +21,7 @@ import {app} from '../firebase/firebase';
     const db = getFirestore(app);
 
     async function getDoubts(){
-      const docRef = query(collection(db,"doubts"));
+      const docRef = query(collection(db,"pastdoubts"));
       const docSnap = await getDocs(docRef);
       var arr=[]
         docSnap.forEach(doc => {
@@ -39,14 +39,19 @@ import {app} from '../firebase/firebase';
         <BorderCard>
           <View style={styles.inputField}>
             <TextInputBoxField title={'Subject:'} editable={false} enteredValue={data.subject} multiline={true}></TextInputBoxField>
+            <TextInputBoxField title={'Reply:'} editable={false} enteredValue={data.reply} multiline={true} textStyle={{color:Colors.darkred}}></TextInputBoxField>
+
           </View>
           <View style={styles.headingView}>
-            <Text style={styles.headingText}>Faculty Name:</Text>
             <Text style={styles.headingText}>Raised On:</Text>
+            <Text style={styles.headingText}>Resolved On:</Text>
           </View>
           <View style={styles.answerView}>
-            <Text style={styles.answerText}>{data.facultyName}</Text>
-            <Text style={styles.answerText2}>{data.date}</Text>
+            <Text style={styles.answerText}>{data.raisedDate}</Text>
+            <Text style={styles.answerText2}>{data.resolvedDate}</Text>
+          </View>
+          <View style={styles.facultyView}>
+            <Text style={styles.facultyText}><Text style={{fontWeight: '700', color: Colors.black}}>By:</Text> {data.fname}</Text>
           </View>
         </BorderCard>
        </View>
@@ -59,15 +64,12 @@ import {app} from '../firebase/firebase';
             <Icon name="clock" color={Colors.grey} size={responsiveFontSize(3)}/>
             <Text style={styles.activeText}>Past Doubts</Text>
           </View> 
-       { 
-      (auth.currentUser.uid === doubts.uid) ?
        <FlatList
       data={doubts}
       renderItem={({item}) => card(item)}
       keyExtractor={data => data.uid}
       >
-      </FlatList> : <Text>There are no Past Doubts</Text>
-       }
+      </FlatList>
        </View>
       </ScrollView>
     );
@@ -135,6 +137,27 @@ import {app} from '../firebase/firebase';
       justifyContent: 'center',
       alignItems: 'center',
       paddingTop: responsiveHeight(1)
+    },
+    facultyView:{
+      padding: 10,
+      flexDirection: 'row',
+    } ,
+    facultyText:{
+      fontWeight: '700',
+      fontSize: responsiveFontSize(2),
+      color:Colors.grey,
+      width: responsiveWidth(50),
+      flexWrap: 'wrap',
+      textAlign: 'center',
+      alignItems: 'center',
+      flex: 1
+    },
+    facultyHeading:{
+      fontWeight: '700',
+      fontSize: responsiveFontSize(2),
+      textAlign: 'center',
+      alignItems: 'center',
+      
     }
   });
   
