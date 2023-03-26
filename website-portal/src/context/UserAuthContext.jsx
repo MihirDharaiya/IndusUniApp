@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
   signOut,
+  deleteUser,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -23,6 +24,9 @@ export function UserAuthContextProvider({ children }) {
     return sendPasswordResetEmail(auth, email);
   }
 
+  function signUp(email, password) {
+    return createUserWithEmailAndPassword(auth, email, password);
+  }
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }

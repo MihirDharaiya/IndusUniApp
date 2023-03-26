@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import AllPastEvents from "./pages/AllPastEvents";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import MoreDetails from "./pages/MoreDetails";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 const Paths = () => {
   return (
@@ -50,6 +51,15 @@ const Paths = () => {
             element={
               <ProtectedRoute>
                 <ReportedStudentList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="/Reported-Student-List/More-Details"
+            element={
+              <ProtectedRoute>
+                <MoreDetails />
               </ProtectedRoute>
             }
           />

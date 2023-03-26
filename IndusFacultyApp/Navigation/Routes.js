@@ -13,6 +13,7 @@ import Splash from "../screens/Splash";
 import VerifyEmail from "../screens/VerifyEmail";
 import ResetPasswordLinkSend from "../screens/ResetPasswordLinkSend";
 import OnLeave from "../screens/OnLeave";
+import ReportStudent from "../screens/ReportStudent";
 const Routes = {
   loginScreen: LoginScreen,
   forgotPassword: ForgotPassword,
@@ -22,12 +23,13 @@ const Routes = {
   announcement: Announcement,
   notification: Notification,
   profile: Profile,
-  totaldoubts: TotalDoubts,
-  totalannouncements: TotalAnnouncements,
-  answerdoubt: AnswerDoubt,
+  totalDoubts: TotalDoubts,
+  totalAnnouncements: TotalAnnouncements,
+  answerDoubt: AnswerDoubt,
   splash: Splash,
   verifyEmail: VerifyEmail,
   onLeave: OnLeave,
   resetPasswordLinkSend: ResetPasswordLinkSend,
+  reportStudent: ReportStudent,
 };
 export default Routes;

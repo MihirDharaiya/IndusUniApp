@@ -96,7 +96,7 @@ export default function Announcement() {
   const addEvent = async () => {
     if (dateText < todayDateText) {
       setError("Previous date is not allowed");
-    } else if (lastDateText < dateText) {
+    } else if (dateText < lastDateText) {
       setError("Registration Date can't be a Previous date.");
     } else if (dateText === "No Date") {
       setError("Please Enter Valid Date!!");
@@ -119,13 +119,14 @@ export default function Announcement() {
       let user = await AsyncStorage.getItem("users");
       user = JSON.parse(user);
       await addDoc(collection(db, "events"), {
-        branch: user.fbranch,
         date: dateText,
         title: title,
         description: desc,
         link: link,
         category: selected,
         registerDate: nolastdate ? "" : lastDateText,
+        fname: user.fname,
+        fid: user.fid,
       }).then(() => {
         setDate(new Date());
         setDateText("No Date");

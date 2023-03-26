@@ -19,6 +19,7 @@ function TextInputField({
   enteredValue,
   enteredValueHandler,
   multiline,
+  secureTextEntry,
 }) {
   return (
     <View style={styles.outersearchSection}>
@@ -44,6 +45,7 @@ function TextInputField({
             editable={editable}
             onChangeText={enteredValueHandler}
             multiline={multiline}
+            secureTextEntry={secureTextEntry}
           />
         </View>
       </View>
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
   searchSection: {
     flexDirection: "row",
     backgroundColor: Colors.white,
+    width: "80%",
   },
   IconStyle: {
     padding: responsiveWidth(2),
