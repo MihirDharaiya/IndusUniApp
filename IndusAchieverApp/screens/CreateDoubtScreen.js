@@ -112,14 +112,17 @@ useEffect(()=>{
       let date = new Date()
       let currentYear = date.getFullYear();
       addDoc(collection(db, "activedoubts"),{
-        subject: subject,
+        subject: subject === "Other" ? otherSubject : subject,
         description: description,
         fname: route.params.data.fname,
         fid: route.params.data.fid,
-        date: date,
+        date: date.toDateString(),
         uid: auth.currentUser.uid,
         priority: priority(subject),
-        enrollnmentNumber: user.enrollnmentNumber
+        enrollnmentNumber: user.enrollnmentNumber,
+        batchYear: user.batchYear,
+        branch: user.branch,
+        name: user.name,
       }).then(()=> {
         if (Platform.OS === "android") {
           ToastAndroid.show("Doubt has been created", ToastAndroid.SHORT);

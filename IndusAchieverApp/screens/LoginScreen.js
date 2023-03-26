@@ -18,7 +18,7 @@ import SecondaryButton from "../components/SecondaryButton";
 import TextInputField from "../components/TextInputField";
 import { useState,useEffect } from "react";
 import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
-import { getAuth, User,signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, User,signInWithEmailAndPassword,sendEmailVerification } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {app} from '../firebase/firebase';
 
@@ -34,20 +34,6 @@ export default function LoginScreen({navigation}) {
   const auth = getAuth();
   const db = getFirestore(app);
 
-// const fetchData= async()=>{
-//   const docRef = doc(db, "users", auth.currentUser.uid);
-//   const docSnap = await getDoc(docRef);
-//   if(docSnap.exists){
-//     setEmail(docSnap.data().email)
-//     setenrollnmentNumber(docSnap.data().enrollnmentNumber)
-//     setBatchYear(docSnap.data().batchYear)
-//     setName(docSnap.data().name)
-//     setBranch(docSnap.data().branch)
-//   }
-// }
-// useEffect(()=>{
-//   fetchData()
-// })
 const clearData = () => {
   AsyncStorage.clear();
 };
@@ -63,12 +49,17 @@ const clearData = () => {
       setError("")
       signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-      const user = userCredential.user;
-      setEmail('');
-      setPassword('');
-      clearData();
-      navigation.navigate('tabClientNavigator')
-      // AsyncStorage.setItem('users', JSON.stringify(fetchData()));
+        const user = userCredential.user;
+        if (!user.emailVerified) {
+          navigation.navigate("VerifyEmail");
+          sendEmailVerification(user);
+        } else {
+          setEmail('');
+          setPassword('');
+          clearData();
+          navigation.navigate('tabClientNavigator')
+          AsyncStorage.setItem('users', JSON.stringify(fetchData()));
+        }
     })
       .catch((error) => {
       const errorCode = error.code;

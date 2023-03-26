@@ -25,11 +25,13 @@ import ReenterPassword from '../screens/ReenterPassword';
 import EmailVerification from '../screens/EmailVerification';
 import AcademicCalendar from '../screens/AcademicCalendar';
 import StudentProfile from '../screens/StudentProfile';
+import ActiveDoubtModal from '../screens/ActiveDoubtModal';
 import { getAuth } from "firebase/auth";
 import { app } from "../firebase/firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from 'react';
+import VerifyEmail from '../screens/VerifyEmail';
 
 
 const Stack = createNativeStackNavigator();
@@ -212,6 +214,7 @@ const BottomNavigationBar = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
         <Stack.Screen name="ReenterPassword" component={ReenterPassword} options={{ headerShown: false }} />
         <Stack.Screen name="EmailVerification" component={EmailVerification} options={{ headerShown: false }} />
+        <Stack.Screen name="VerifyEmail" component={VerifyEmail} options={{ headerShown: false }} />
 			</Stack.Navigator>
     </NavigationContainer>
   )
