@@ -32,6 +32,7 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from 'react';
 import VerifyEmail from '../screens/VerifyEmail';
+import ReportStudent from '../screens/ReportStudent';
 
 
 const Stack = createNativeStackNavigator();
@@ -215,6 +216,7 @@ const BottomNavigationBar = () => {
         <Stack.Screen name="ReenterPassword" component={ReenterPassword} options={{ headerShown: false }} />
         <Stack.Screen name="EmailVerification" component={EmailVerification} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyEmail" component={VerifyEmail} options={{ headerShown: false }} />
+        <Stack.Screen name="ReportStudent" component={ReportStudent} options={{ headerShown: false }} />
 			</Stack.Navigator>
     </NavigationContainer>
   )

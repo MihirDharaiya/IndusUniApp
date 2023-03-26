@@ -14,6 +14,7 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, VerifyE
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc} from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 export default function SignupScreen({navigation}) {
@@ -83,7 +84,7 @@ export default function SignupScreen({navigation}) {
   }
 
   return (
-    <ScrollView style={styles.rootContainer}>
+    <KeyboardAwareScrollView style={styles.rootContainer}>
       <ImageBackground
         style={styles.building}
         source={require("../assets/images/IndusMainBuilding.png")}
@@ -160,7 +161,7 @@ export default function SignupScreen({navigation}) {
             </View>
         </Card>
         </ImageBackground>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

@@ -46,6 +46,9 @@ export default function Community({navigation}) {
           }}
           >
         <Card>
+        <View style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+            <Text style={styles.yearStyle}><Text style={{fontWeight: '700', color: Colors.black}}>Batch Year:</Text> {data.batchYear}</Text>
+            </View>
           <View style={styles.titleContainer}>
           <View style={styles.imgContainer}>
           <Image
@@ -100,6 +103,10 @@ const styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
       backgroundColor: Colors.white
+    },
+    yearStyle:{
+      color: Colors.darkred,
+      fontWeight: '700'
     },
     container:{
       flexDirection: 'row',

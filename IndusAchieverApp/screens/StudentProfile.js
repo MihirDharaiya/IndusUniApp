@@ -11,8 +11,9 @@ import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query, where}
 import {app} from '../firebase/firebase';
 import { getAuth} from "firebase/auth";
 import GreyCard from '../components/GreyCard'
+import Icon from "react-native-vector-icons/FontAwesome5";
 
-export default function StudentProfile({route,navigation}) {  
+export default function StudentProfile({route,navigation,data}) {  
     const [renderNum, setRenderNum] = useState(1);
     const [showSection1, setShowSection1] = useState(true);
     const [users,setUsers] = useState([]);
@@ -40,6 +41,9 @@ export default function StudentProfile({route,navigation}) {
               }}
               >
             <Card>
+            <View style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+            <Text style={styles.yearStyle}><Text style={{fontWeight: '700', color: Colors.black}}>Batch Year:</Text> {data.batchYear}</Text>
+            </View>
               <View style={styles.titleContainer}>
               <View style={styles.imgContainer}>
               <Image
@@ -63,6 +67,34 @@ export default function StudentProfile({route,navigation}) {
         <ScrollView style={styles.rootContainer}>
             <View>
                 <BorderCard>
+                <View style={{justifyContent:'space-between', alignItems: 'space-between', flexDirection: 'row'}}>
+                <Pressable
+                onPress={() => {
+                  navigation.navigate("ReportStudent",{data:data});
+                }}
+              >
+                <View style={styles.reportContainer}>
+                  <Icon
+                    name="flag"
+                    size={responsiveFontSize(2)}
+                    color={Colors.red}
+                  />
+                  <Text
+                    style={[
+                      styles.text,
+                      {
+                        fontWeight: "400",
+                        color: Colors.red,
+                        fontSize: responsiveFontSize(1.6),
+                      },
+                    ]}
+                  >
+                    Report
+                  </Text>
+                </View>
+              </Pressable>        
+            <Text style={styles.yearStyle}>{route.params.data.batchYear}</Text>
+            </View>
                     <View style={styles.image}>
                     <Image 
                     source={require("../assets/images/Profile.png")}/>
@@ -170,6 +202,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    yearStyle:{
+        color: Colors.darkred,
+        fontWeight: '700'
+      },
     nameTitle:{
         fontSize: responsiveFontSize(2.5),
         fontWeight: '700',
@@ -238,5 +274,15 @@ const styles = StyleSheet.create({
         padding: 6,
         justifyContent: 'flex-end'
     },
+    reportContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+      },
+      text: {
+        fontSize: responsiveFontSize(1.8),
+        fontWeight: "400",
+        color: Colors.lightgrey,
+        marginLeft: 4,
+      },
 
 })

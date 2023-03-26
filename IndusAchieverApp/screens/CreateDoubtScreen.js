@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, ScrollView, ToastAndroid,
   Platform,
-  AlertIOS,} from 'react-native'
+  AlertIOS,KeyboardAvoidingView} from 'react-native'
 import {React, useState, useEffect} from 'react'
 import Card from "../components/Card";
 import {
@@ -17,6 +17,8 @@ import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc, addDoc, collection} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 
 export default function CreateDoubtScreen({route,navigation}) {
@@ -135,7 +137,7 @@ useEffect(()=>{
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
       <View>
         <Card>
         <View style={styles.titleContainer}>
@@ -192,6 +194,7 @@ useEffect(()=>{
         enteredValue={otherSubject} 
         enteredValueHandler={(val) => setOtherSubject(val)}/>
         }
+        
         <TextInputBoxField 
         title={"Description:"} 
         placeholder={'Describe your query/doubt'} 
@@ -212,7 +215,7 @@ useEffect(()=>{
       onPress={()=> {addDoubt()}}
       >Submit</PrimaryButton>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }
 

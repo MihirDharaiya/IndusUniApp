@@ -21,6 +21,7 @@ import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
 import { getAuth, User,signInWithEmailAndPassword,sendEmailVerification } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {app} from '../firebase/firebase';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 export default function LoginScreen({navigation}) {
@@ -72,7 +73,7 @@ const clearData = () => {
   }
 
   return (
-    <ScrollView style={styles.mainContainer}>
+    <KeyboardAwareScrollView style={styles.mainContainer}>
       <View style={styles.containerImage}>
         <Image
           style={styles.image}
@@ -159,7 +160,7 @@ const clearData = () => {
         }}
         >Sign Up</SecondaryButton>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 

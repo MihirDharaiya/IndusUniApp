@@ -10,6 +10,8 @@ import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 export default function ForgotPassword({navigation}) {
 const [email, setEmail] = useState("");
 const auth = getAuth();
@@ -21,7 +23,7 @@ const handleReset = () => {
       .catch((error) => alert(error.message));
   };
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
       <ImageBackground
         style={styles.building}
         source={require("../assets/images/IndusMainBuilding.png")}
@@ -56,7 +58,7 @@ const handleReset = () => {
         <PrimaryButton onPress={handleReset}>Reset Password</PrimaryButton>
       </Card>
       </ImageBackground>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
