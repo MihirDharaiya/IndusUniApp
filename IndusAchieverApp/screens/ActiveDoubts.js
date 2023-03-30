@@ -12,10 +12,12 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import {getFirestore, getDoc, doc, query, onSnapshot,getDocs, collection,where,deleteDoc,addDoc} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import { getAuth, User} from 'firebase/auth';
+import { useIsFocused } from '@react-navigation/native';
 
 
   
   export default function ActiveDoubts({navigation}) {
+    const isFocused = useIsFocused();
     const [doubt, setDoubt] = useState([]);
     const [resolvedDoubt, setResolvedDoubt] = useState([]);
     const auth = getAuth();
@@ -62,7 +64,7 @@ import { getAuth, User} from 'firebase/auth';
         doubts,
         where("enrollnmentNumber", "==", enroll)
       );
-      const querySnapshot = await getDocs(q);
+      const un = onSnapshot(q,(querySnapshot)=>{
         var arr =[];
         var arrId = [];
       querySnapshot.forEach((doc) => {
@@ -74,6 +76,8 @@ import { getAuth, User} from 'firebase/auth';
         arr[i]["doubtId"] = arrId[i];
       }
       setResolvedDoubt(arr);
+      })
+      // const querySnapshot = await getDocs(q);
     };
 
 
@@ -85,11 +89,11 @@ import { getAuth, User} from 'firebase/auth';
         doubts,
         where("enrollnmentNumber", "==", enroll)
       );
-      const querySnapshot = await getDocs(q);
-      var arr =[];
-      var arrId = [];
+      const un = onSnapshot(q,(querySnapshot)=>{
+        var arr =[];
+        var arrId = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
+        // console.log(doc.data());
         arr.push(doc.data())
         arrId.push(doc.id)
       });
@@ -97,11 +101,24 @@ import { getAuth, User} from 'firebase/auth';
         arr[i]["doubtId"] = arrId[i];
       }
       setDoubt(arr);
+      })
+      // const querySnapshot = await getDocs(q);
+      // var arr =[];
+      // var arrId = [];
+      // querySnapshot.forEach((doc) => {
+      //   console.log(doc.data());
+      //   arr.push(doc.data())
+      //   arrId.push(doc.id)
+      // });
+      // for(let i = 0; i<arr.length; i++){
+      //   arr[i]["doubtId"] = arrId[i];
+      // }
+      // setDoubt(arr);
     };
 useEffect(()=>{
   getResolvedDoubt()
   getUnResolvedDoubt()
-},[])
+},[isFocused])
     
     function card(data,resolveDoubt){
         return (

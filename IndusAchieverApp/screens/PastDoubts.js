@@ -10,24 +10,35 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import BorderCard from "../components/BorderCard";
 import TextInputBoxField from "../components/TextInputBoxField";
 import { getAuth} from "firebase/auth";
-import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query} from 'firebase/firestore';
+import {getFirestore, getDocs, doc, collection, getDoc, where, query,onSnapshot} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 
 
   
   export default function PastDoubts() {
     const auth=getAuth();
+    const useruid = auth.currentUser.uid;
     const [doubts,setDoubts] = useState([]);
     const db = getFirestore(app);
 
     async function getDoubts(){
-      const docRef = query(collection(db,"pastdoubts"));
-      const docSnap = await getDocs(docRef);
-      var arr=[]
-        docSnap.forEach(doc => {
-            arr.push(doc.data())     
+      const a = await getDoc(doc(db, "users", useruid));
+      const enroll = a.data().enrollnmentNumber;
+      const docRef = query(collection(db,"pastdoubts"),where("enrollnmentNumber", "==", enroll));
+      const un = onSnapshot(docRef,(querySnapshot)=>{
+        var arr =[];
+      querySnapshot.forEach((doc) => {
+        // console.log(doc.data());
+        arr.push(doc.data())
+      });
+      setDoubts(arr);
       })
-      setDoubts(arr)
+      // const docSnap = await getDocs(docRef);
+      // var arr=[]
+      //   docSnap.forEach(doc => {
+      //       arr.push(doc.data())     
+      // })
+      // setDoubts(arr)
     }
     useEffect(() => {
       getDoubts()

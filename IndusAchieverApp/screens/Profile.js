@@ -19,6 +19,8 @@ import { getAuth, signOut } from "firebase/auth";
 import {getFirestore, getDoc, doc, query, onSnapshot, setDoc} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import UserPermissions from "../utilities/UserPermissions.js";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Profile({navigation}) {
 
@@ -29,6 +31,22 @@ const [email, setEmail] = useState("");
 const [enrollnmentNumber, setenrollnmentNumber] = useState("");  
 const [branch, setBranch] = useState("");  
 const [batchYear, setBatchYear] = useState("");  
+
+
+handleProfilePic = async() =>{
+    UserPermissions.getCameraPermission()
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowEditing: true,
+      aspect: [4,3]
+    })
+
+    if(!result.cancelled){
+      this.setState({user: {...this.state.user}})
+    }
+};
+
+
 
 const showData = async () => {
 let user = await AsyncStorage.getItem('users');
@@ -96,6 +114,7 @@ signOut(auth).then(() => {
       <View style={styles.editButtonOuterContainer}>
         <View>
           <PrimaryButton
+          onPress={()=>{handleProfilePic()}}
             textNotVisible={true}
             iconVisible={true}
             style={styles.iconRight}

@@ -11,9 +11,12 @@ import ImageTextStack from "../components/ImageTextStack";
 import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import { getAuth} from "firebase/auth";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function HomeScreen({navigation}) {
+  const isFocused = useIsFocused();
 
   const [faculty,setFaculty] = useState([]);
   const db = getFirestore(app);
@@ -31,7 +34,8 @@ async function getFaculty(){
 }
 useEffect(() => {
   getFaculty()
-},[renderNum])
+  setRenderNum(2)
+},[isFocused,renderNum])
 
 
 function card(data) {
@@ -65,7 +69,7 @@ function card(data) {
 }
 
   return (
-    <ScrollView style={styles.conatiner}>
+    <KeyboardAwareScrollView style={styles.conatiner}>
       <Text style={styles.topText}>Here you can create your{"\n"} respective doubts {"\n"} according to the your branch faculties</Text>
       <View style={styles.card}>
         <View>
@@ -81,6 +85,8 @@ function card(data) {
       {renderNum >= 4 ? null : <Pressable
         onPress={()=>{
           setRenderNum(50);
+          console.log(renderNum);
+          getFaculty();
         }}
         >
         <Text style={styles.moreText}>... more</Text>
@@ -106,7 +112,7 @@ function card(data) {
         </ImageBackground>
         </Pressable>
         </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
