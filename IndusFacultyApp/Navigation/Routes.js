@@ -14,6 +14,7 @@ import VerifyEmail from "../screens/VerifyEmail";
 import ResetPasswordLinkSend from "../screens/ResetPasswordLinkSend";
 import OnLeave from "../screens/OnLeave";
 import ReportStudent from "../screens/ReportStudent";
+import ViewDetails from "../screens/ViewDetails";
 const Routes = {
   loginScreen: LoginScreen,
   forgotPassword: ForgotPassword,
@@ -31,5 +32,6 @@ const Routes = {
   onLeave: OnLeave,
   resetPasswordLinkSend: ResetPasswordLinkSend,
   reportStudent: ReportStudent,
+  viewDetails: ViewDetails,
 };
 export default Routes;

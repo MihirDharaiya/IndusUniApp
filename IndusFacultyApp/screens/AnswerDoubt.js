@@ -23,10 +23,9 @@ import SecondaryButton from "../components/SecondaryButton";
 export default function ReportStudent({ route, navigation }) {
   const auth = getAuth();
   const db = getFirestore(app);
-
   const [reply, setReply] = useState("");
   const [error, setError] = useState("");
-  const reportStudent = async () => {
+  const ReplyToDoubt = async () => {
     if (reply.length < 10) {
       setError("Mention Reason in detail.");
     } else {
@@ -40,6 +39,7 @@ export default function ReportStudent({ route, navigation }) {
         fid: route.params.data.fid,
         fname: route.params.data.fname,
         name: route.params.data.name,
+        batchYear: route.params.data.batchYear,
         reply: reply,
       }).then(() => {
         setReply("");
@@ -69,7 +69,7 @@ export default function ReportStudent({ route, navigation }) {
             onChangeText={(text) => setReply(text)}
           />
         </View>
-        <SecondaryButton onPress={() => reportStudent()}>SEND</SecondaryButton>
+        <SecondaryButton onPress={() => ReplyToDoubt()}>SEND</SecondaryButton>
       </Card>
       {error == "" ? null : (
         <View style={{ paddingTop: 10 }}>

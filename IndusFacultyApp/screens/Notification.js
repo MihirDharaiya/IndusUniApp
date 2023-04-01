@@ -10,12 +10,11 @@ import {
   View,
   FlatList,
   Linking,
+  Pressable,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../constants/Colors";
 import BorderCard from "../components/BorderCard";
-import React, { useState, useEffect, useCallback } from "react";
-import { getAuth } from "firebase/auth";
+import React, { useState, useEffect } from "react";
 import { app } from "../firebase";
 import {
   query,
@@ -24,13 +23,14 @@ import {
   where,
   collection,
 } from "firebase/firestore";
-export default function Notification() {
-  const auth = getAuth();
+import { useIsFocused } from "@react-navigation/native";
+export default function Notification({ route, navigation }) {
+  const isFocused = useIsFocused();
   const db = getFirestore(app);
   const [noData, setNoData] = useState(true);
   const [events, setEvents] = useState([]);
 
-  async function getEvents() {
+  const getEvents = async () => {
     const doubts = collection(db, "events");
     const q = query(doubts, where("category", "!=", "1"));
     const docSnap = await getDocs(q);
@@ -48,75 +48,50 @@ export default function Notification() {
     } else {
       setNoData(true);
     }
-  }
-  useEffect(() => {
-    getEvents();
-    setNoData(false);
-  }, []);
-  const [textShown, setTextShown] = useState(false);
-  const [lengthMore, setLengthMore] = useState(false);
-  const toggleNumberOfLines = () => {
-    setTextShown(!textShown);
   };
-  const onTextLayout = useCallback((e) => {
-    setLengthMore(e.nativeEvent.lines.length >= 4);
-  }, []);
+  useEffect(() => {
+    if (isFocused) {
+      getEvents();
+      setNoData(false);
+    }
+  }, [isFocused]);
   function card(data) {
     return (
       <View>
-        <BorderCard>
-          <View style={styles.headingView}>
-            <Text style={styles.headingText}>Faculty Name:</Text>
-            <Text style={styles.headingText}>Event Date:</Text>
-          </View>
-          <View style={styles.answerView}>
-            <Text style={styles.answerText}>{data.fname}</Text>
-            <Text style={styles.answerText2}>{data.date}</Text>
-          </View>
-          <View>
-            <Text style={styles.titleText}>{data.title}</Text>
-          </View>
-          <View style={styles.mainContainer}>
-            <Text
-              onTextLayout={onTextLayout}
-              numberOfLines={textShown ? undefined : 4}
-              style={{ lineHeight: 21 }}
-            >
-              {data.description}
-            </Text>
-            {lengthMore ? (
-              <>
-                <Text
-                  onPress={toggleNumberOfLines}
-                  style={{
-                    lineHeight: 21,
-                    marginTop: 10,
-                    color: Colors.navyblue,
-                  }}
-                >
-                  {textShown ? "Read less..." : "Read more..."}
-                </Text>
-
-                <Text
-                  style={{
-                    color: Colors.darkred,
-                    marginTop: responsiveHeight(0.2),
-                  }}
-                  onPress={() => {
-                    Linking.openURL(data.link);
-                  }}
-                >
-                  {data.link}
-                </Text>
-              </>
-            ) : null}
-          </View>
-        </BorderCard>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("Event Details", { data: data });
+          }}
+        >
+          <BorderCard>
+            <View style={styles.headingView}>
+              <Text style={styles.headingText}>Faculty Name:</Text>
+              <Text style={styles.headingText}>Event Date:</Text>
+            </View>
+            <View style={styles.answerView}>
+              <Text style={styles.answerText}>{data.fname}</Text>
+              <Text style={styles.answerText2}>{data.date}</Text>
+            </View>
+            <View>
+              <Text numberOfLines={3} style={styles.titleText}>
+                {data.title}
+              </Text>
+            </View>
+            <View style={styles.mainContainer}>
+              <Text numberOfLines={3}>{data.description}</Text>
+            </View>
+          </BorderCard>
+        </Pressable>
       </View>
     );
   }
   return (
     <View style={styles.rootContainer}>
+      <View style={styles.infoTextContainer}>
+        <Text style={styles.infoText}>
+          Tab the card to view the event details
+        </Text>
+      </View>
       {noData ? (
         <View style={styles.noActivityContainer}>
           <Text style={styles.noActivityText}>No activity at the moment</Text>
@@ -139,6 +114,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     paddingTop: 16,
+    marginBottom: responsiveHeight(5),
+  },
+  infoTextContainer: {
+    justifyContent: "center",
+    paddingBottom: 8,
+  },
+  infoText: {
+    textAlign: "center",
+    color: Colors.darkred,
+    fontSize: responsiveFontSize(2),
+    fontWeight: "400",
   },
   noActivityContainer: {
     justifyContent: "center",
