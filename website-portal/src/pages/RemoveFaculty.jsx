@@ -10,17 +10,35 @@ function RemoveFaculty(props) {
     const docRef = query(collection(db, "faculty"));
     const docSnap = await getDocs(docRef);
     var arr = [];
+    var arrId = [];
     docSnap.forEach((doc) => {
       arr.push(doc.data());
+      arrId.push(doc.id);
     });
 
+    for (let i = 0; i < arr.length; i++) {
+      arr[i]["facultyId"] = arrId[i];
+    }
     setFaculty(arr);
+  };
+  const FacultyRemove = async (userId) => {
+    console.log(userId);
+    fetch(`https://wpbackend-6sx9.onrender.com/users/${userId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          getFaculty();
+          alert("Faculty is deleted from the University Database.");
+        } else {
+          alert("Error deleting Faculty from the Database.");
+        }
+      })
+      .catch((error) => console.error(error));
   };
   useEffect(() => {
     getFaculty();
   }, [1]);
-
-  const Remove = async (event, fid) => {};
   return (
     <div className="backgroundimage">
       <div className="main-div">
@@ -45,7 +63,7 @@ function RemoveFaculty(props) {
                     <button
                       type="button"
                       class="btn btn-danger"
-                      onClick={(event) => Remove(event, faculty.fid)}
+                      onClick={(event) => FacultyRemove(faculty.facultyId)}
                     >
                       Remove
                     </button>

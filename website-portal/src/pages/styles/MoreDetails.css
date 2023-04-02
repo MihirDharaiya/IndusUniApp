@@ -41,9 +41,12 @@
 }
 .doubt-inner-div {
   padding: 1% 2% 2% 2%;
-  display: flex;
+  display: inline;
   font-size: 1.6;
-  justify-content: center;
+  text-align: center;
+}
+#reason {
+  text-align: center;
 }
 #doubt-btn {
   margin-left: 25px;

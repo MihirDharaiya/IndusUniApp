@@ -57,7 +57,7 @@ export default function ReportStudent({ route, navigation }) {
   return (
     <View style={styles.rootContainer}>
       <Card cardStyle={styles.card}>
-        <Text style={styles.inputText}>Reason of Reporting:</Text>
+        <Text style={styles.inputText}>Your Reply:</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}

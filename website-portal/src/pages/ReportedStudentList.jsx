@@ -16,7 +16,7 @@ function ReportedStudentList(props) {
       arrId.push(doc.id);
     });
     for (let i = 0; i < arr.length; i++) {
-      arr[i]["link"] = arrId[i];
+      arr[i]["docId"] = arrId[i];
     }
     setData(arr);
   };
@@ -45,7 +45,7 @@ function ReportedStudentList(props) {
                   <td style={{ width: "25%" }}>
                     {data.raised === "faculty" ? (
                       <Link
-                        className="btn btn-warning"
+                        className="btn btn-danger"
                         id="student-btn"
                         to="/Reported-Student-List/More-Details"
                         state={{
@@ -56,7 +56,7 @@ function ReportedStudentList(props) {
                       </Link>
                     ) : (
                       <Link
-                        className="btn btn-danger"
+                        className="btn btn-warning"
                         id="student-btn"
                         to="/Reported-Student-List/More-Details"
                         state={{

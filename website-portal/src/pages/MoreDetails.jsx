@@ -4,14 +4,17 @@ import "./styles/MoreDetails.css";
 import emailjs from "@emailjs/browser";
 import {
   query,
-  getDoc,
+  doc,
+  deleteDoc,
   getFirestore,
   where,
   collection,
   getDocs,
 } from "firebase/firestore";
 import app from "../firebase";
+import { useNavigate } from "react-router-dom";
 const MoreDetails = (props) => {
+  const navigate = useNavigate();
   const db = getFirestore(app);
   const location = useLocation();
   const data = location.state.data;
@@ -31,6 +34,10 @@ const MoreDetails = (props) => {
           console.log(error.text);
         }
       );
+  };
+  const deleteStudentData = async () => {
+    const docRef = doc(db, "reportedstudents", data.docId);
+    await deleteDoc(docRef);
   };
   const warnStudent = async () => {
     let email = "";
@@ -52,6 +59,8 @@ const MoreDetails = (props) => {
       description: data.description,
     };
     await sendEmail(templateParams);
+    await deleteStudentData();
+    navigate("/Reported-Student-List", { replace: true });
     alert("Student is being notified.");
     return true;
   };
@@ -82,24 +91,28 @@ const MoreDetails = (props) => {
                 <h3 className="red-detail">{data.enrollnmentNumber}</h3>
               </div>
             </div>
-            <div className="doubt-div">
-              <div className="doubt-inner-div">
-                <h3>Subject: </h3>
-                <h3 className="red-detail">{data.subject}</h3>
+            {data.raised === "faculty" ? (
+              <div className="doubt-div">
+                <div className="doubt-inner-div">
+                  <h3>Subject: </h3>
+                  <h3 className="red-detail">{data.subject}</h3>
+                </div>
+                <div className="doubt-inner-div">
+                  <h3>Description: </h3>
+                  <h3>{data.description}</h3>
+                </div>
               </div>
-              <div className="doubt-inner-div">
-                <h3>Description: </h3>
-                <h3>{data.description}</h3>
-              </div>
-            </div>
+            ) : null}
             <div className="doubt-div">
               <div className="doubt-inner-div">
                 <h3>Reported By: </h3>
-                <h3 className="red-detail">{data.fname}</h3>
+                <h3 className="red-detail">
+                  {data.raised === "faculty" ? data.fname : data.reportedBy}
+                </h3>
               </div>
               <div className="doubt-inner-div">
                 <h3>Reason: </h3>
-                <h3>{data.reason}</h3>
+                <h3 id="reason">{data.reason}</h3>
               </div>
             </div>
             <div className="d-grid gap-2 d-md-flex justify-content-md-center">

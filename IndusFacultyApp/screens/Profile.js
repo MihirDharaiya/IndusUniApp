@@ -21,10 +21,8 @@ import SecondaryButton from "../components/SecondaryButton";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import { app } from "../firebase";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-// import { log } from "react-native-reanimated";
 export default function Profile({ navigation }) {
   const isFocused = useIsFocused();
   const storage = getStorage(app);
@@ -33,31 +31,7 @@ export default function Profile({ navigation }) {
   const [branch, setBranch] = useState("");
   const [position, setPosition] = useState("");
   const [id, setId] = useState("");
-  const [image, setImage] = useState(null);
-  const selectImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
-      return;
-    }
 
-    const result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.canceled) {
-      setImage(result.uri);
-      console.log(result.uri);
-      uploadImage(result.uri);
-    }
-  };
-  const uploadImage = async (uri) => {
-    const storageRef = ref(uri);
-    // uploadBytes(storageRef, file).then((snapshot) => {
-    //   console.log('Uploaded a blob or file!');
-    // });
-    // const response = await fetch(uri);
-    // const blob = await response.blob();
-    // const ref = storage().ref().child('profileImage');
-    return storageRef;
-  };
   const showData = async () => {
     let user = await AsyncStorage.getItem("users");
     user = JSON.parse(user);
@@ -99,7 +73,10 @@ export default function Profile({ navigation }) {
             { borderColor: "black", borderWidth: 2 },
           ]}
         >
-          <Image source={{ uri: image }} style={styles.image} />
+          <Image
+            source={require("../assets/images/Profile.png")}
+            style={styles.image}
+          />
         </TouchableHighlight>
       </View>
       <View style={styles.buttonOuterContainer}>
@@ -111,7 +88,6 @@ export default function Profile({ navigation }) {
             iconName="upload"
             size={responsiveFontSize(2.3)}
             color={Colors.white}
-            onPress={selectImage}
           ></PrimaryButton>
         </View>
       </View>
@@ -155,14 +131,14 @@ export default function Profile({ navigation }) {
         />
       </View>
       <View style={styles.signOutButtonContainer}>
-        <PrimaryButton
+        {/* <PrimaryButton
           iconVisible={true}
           iconName="calendar"
           size={responsiveFontSize(3)}
           onPress={() => navigation.navigate("On a Break")}
         >
           On Leave
-        </PrimaryButton>
+        </PrimaryButton> */}
         <SecondaryButton
           iconVisible={true}
           iconName="sign-out-alt"
