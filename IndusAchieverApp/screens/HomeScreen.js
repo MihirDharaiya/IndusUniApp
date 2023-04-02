@@ -9,10 +9,9 @@ import {
   View,
   Image,
   ImageBackground,
-  ScrollView,
   Pressable,
-  FlatList,
   BackHandler,
+  Alert
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
@@ -34,9 +33,6 @@ import {
 import { app } from "../firebase/firebase";
 
 export default function HomeScreen({ navigation }) {
-  function handleBackButtonClick() {
-    return true;
-  }
   const isFocused = useIsFocused();
   const [totalDoubtsCount, setTotalDoubtsCount] = useState(0);
   const auth = getAuth();
@@ -55,13 +51,24 @@ export default function HomeScreen({ navigation }) {
   }
   useEffect(() => {
     count();
-    // BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-    // return () => {
-    //   BackHandler.removeEventListener(
-    //     "hardwareBackPress",
-    //     handleBackButtonClick
-    //   );
+    // const backAction = () => {
+    //   Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+    //     {
+    //       text: 'Cancel',
+    //       onPress: () => null,
+    //       style: 'cancel',
+    //     },
+    //     {text: 'YES', onPress: () => BackHandler.exitApp()},
+    //   ]);
+    //   return true;
     // };
+    // const backHandler = BackHandler.addEventListener(
+    //   'hardwareBackPress',
+    //   backAction,
+    // );
+  
+    // return () => backHandler.remove();
+    
   }, [isFocused]);
   return (
     <KeyboardAwareScrollView style={styles.conatiner}>

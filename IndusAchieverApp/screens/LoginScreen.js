@@ -61,8 +61,8 @@ const clearData = () => {
           setEmail('');
           setPassword('');
           clearData();
-          navigation.navigate('tabClientNavigator')
-          AsyncStorage.setItem('users', JSON.stringify(fetchData()));
+          navigation.navigate('Overview')
+          // AsyncStorage.setItem('users', JSON.stringify(fetchData()));
         }
     })
       .catch((error) => {

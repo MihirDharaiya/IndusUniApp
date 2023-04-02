@@ -72,6 +72,7 @@ import {app} from '../firebase/firebase';
       data={doubts}
       renderItem={({item}) => card(item)}
       keyExtractor={data => data.uid}
+      style={{ marginBottom: responsiveHeight(10) }}
       >
       </FlatList>
        </View>

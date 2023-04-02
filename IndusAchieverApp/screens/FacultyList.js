@@ -81,7 +81,8 @@ const FacultyList = ({ navigation }) => {
     setFaculty(arr);
   }
   useEffect(() => {
-    getFaculty();
+    getFacultyBranch();
+    setClick1(true);
   }, [isFocused]);
 
   function card(data) {

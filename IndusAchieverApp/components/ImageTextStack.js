@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
   },
   imageText: {
     marginBottom: responsiveHeight(0.4),
-    fontSize: responsiveFontSize(2.3),
+    fontSize: responsiveFontSize(2),
     color: Colors.blue,
     fontWeight: "600",
   },
   imageNumbers: {
     marginBottom: responsiveHeight(1),
-    fontSize: responsiveFontSize(2.5),
+    fontSize: responsiveFontSize(2.2),
     fontWeight: "600",
     color: Colors.blue,
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   imageText2: {
     color: Colors.white,
     fontWeight: "bold",
-    fontSize: responsiveFontSize(2.3),
+    fontSize: responsiveFontSize(2),
     textAlign: "left",
   },
 });

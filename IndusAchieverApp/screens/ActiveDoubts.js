@@ -10,6 +10,7 @@ import {
   ScrollView,
   FlatList,
   Pressable,
+  BackHandler
 } from "react-native";
 import React, { useState, useEffect, useCallback } from "react";
 import BorderCard from "../components/BorderCard";
@@ -113,6 +114,13 @@ export default function ActiveDoubts({ navigation }) {
   useEffect(() => {
     getResolvedDoubt();
     getUnResolvedDoubt();
+    const backAction = () => {
+      navigation.goBack();
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
   }, [isFocused]);
 
   function card(data, resolveDoubt) {

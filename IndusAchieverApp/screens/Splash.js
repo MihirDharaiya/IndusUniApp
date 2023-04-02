@@ -14,7 +14,7 @@ useEffect(() => {
   auth.onAuthStateChanged((user) => {
     if (user) {
       setLogin(true);
-      navigation.navigate("tabClientNavigator");
+      navigation.navigate("Overview");
     } else {
       setLogin(false);
       navigation.navigate("LoginScreen");

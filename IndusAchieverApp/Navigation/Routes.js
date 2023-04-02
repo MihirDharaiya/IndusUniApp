@@ -8,7 +8,6 @@ import LoginScreen from "../screens/LoginScreen";
 import PastDoubts from "../screens/PastDoubts";
 import Profile from "../screens/Profile";
 import SignupScreen from "../screens/SignupScreen";
-import Analytics from "../screens/Analytics";
 import CreateDoubtScreen from "../screens/CreateDoubtScreen";
 import Community from "../screens/Community";
 import Notification from "../screens/Notification";
@@ -28,7 +27,6 @@ const Routes = {
     activeDoubts: ActiveDoubts,
     alumniProfile: AlumniProfile,
     alumniSection: AlumniSection,
-    analytics: Analytics,
     createDoubtScreen: CreateDoubtScreen,
     community: Community,
     notification: Notification,

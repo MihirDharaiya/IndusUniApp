@@ -103,6 +103,7 @@ export default function Notification({navigation }) {
             data={events}
             renderItem={({ item }) => card(item)}
             keyExtractor={(data) => data.eventId}
+            style={{ marginBottom: responsiveHeight(5) }}
           ></FlatList>
         </View>
       )}
