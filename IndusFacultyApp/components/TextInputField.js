@@ -18,8 +18,9 @@ function TextInputField({
   editable,
   enteredValue,
   enteredValueHandler,
-  multiline,
   secureTextEntry,
+  numberOfLines,
+  multiline,
 }) {
   return (
     <View style={styles.outersearchSection}>
@@ -34,19 +35,22 @@ function TextInputField({
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>{title}</Text>
           </View>
-          <TextInput
-            style={styles.input}
-            placeholder={placeholder}
-            maxLength={maxLength}
-            keyboardType={keyboardType}
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={enteredValue}
-            editable={editable}
-            onChangeText={enteredValueHandler}
-            multiline={multiline}
-            secureTextEntry={secureTextEntry}
-          />
+          <View style={styles.textInputView}>
+            <TextInput
+              secureTextEntry={secureTextEntry}
+              style={styles.input}
+              placeholder={placeholder}
+              maxLength={maxLength}
+              keyboardType={keyboardType}
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={enteredValue}
+              editable={editable}
+              onChangeText={enteredValueHandler}
+              numberOfLines={numberOfLines}
+              multiline={multiline}
+            />
+          </View>
         </View>
       </View>
       <View style={styles.line} />
@@ -70,7 +74,6 @@ const styles = StyleSheet.create({
   searchSection: {
     flexDirection: "row",
     backgroundColor: Colors.white,
-    width: "80%",
   },
   IconStyle: {
     padding: responsiveWidth(2),
@@ -90,6 +93,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
     elevation: 3,
-    width: "100%",
+  },
+  textInputView: {
+    width: responsiveWidth(70),
   },
 });

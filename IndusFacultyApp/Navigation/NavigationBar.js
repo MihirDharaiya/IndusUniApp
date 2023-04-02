@@ -175,6 +175,7 @@ export default function NavigationBar() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Announcements" component={Routes.notification} />
+
         <Stack.Screen name="Total Doubts" component={Routes.totalDoubts} />
         <Stack.Screen name="On a Break" component={Routes.onLeave} />
         <Stack.Screen
@@ -195,6 +196,13 @@ export default function NavigationBar() {
           options={{
             presentation: "modal",
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Event Details"
+          component={Routes.viewDetails}
+          options={{
+            presentation: "modal",
           }}
         />
       </Stack.Navigator>

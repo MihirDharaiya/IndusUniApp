@@ -20,13 +20,18 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useIsFocused } from "@react-navigation/native";
+import { app } from "../firebase";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 export default function Profile({ navigation }) {
+  const isFocused = useIsFocused();
+  const storage = getStorage(app);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [branch, setBranch] = useState("");
   const [position, setPosition] = useState("");
   const [id, setId] = useState("");
+
   const showData = async () => {
     let user = await AsyncStorage.getItem("users");
     user = JSON.parse(user);
@@ -41,8 +46,10 @@ export default function Profile({ navigation }) {
     AsyncStorage.clear();
   };
   useEffect(() => {
-    showData();
-    clearData();
+    if (isFocused) {
+      showData();
+      clearData();
+    }
   });
   const onSignOut = async () => {
     const auth = getAuth();
@@ -124,14 +131,14 @@ export default function Profile({ navigation }) {
         />
       </View>
       <View style={styles.signOutButtonContainer}>
-        <PrimaryButton
+        {/* <PrimaryButton
           iconVisible={true}
           iconName="calendar"
           size={responsiveFontSize(3)}
           onPress={() => navigation.navigate("On a Break")}
         >
           On Leave
-        </PrimaryButton>
+        </PrimaryButton> */}
         <SecondaryButton
           iconVisible={true}
           iconName="sign-out-alt"

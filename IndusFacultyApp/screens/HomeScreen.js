@@ -10,6 +10,9 @@ import {
   ScrollView,
   Image,
   Pressable,
+  ToastAndroid,
+  Platform,
+  AlertIOS,
 } from "react-native";
 import Colors from "../constants/Colors";
 import React, { useEffect, useState } from "react";
@@ -27,9 +30,12 @@ import {
   where,
   collection,
   limit,
+  deleteDoc,
+  addDoc,
 } from "firebase/firestore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 export default function HomeScreen({ navigation }) {
+  const isFocused = useIsFocused();
   const auth = getAuth();
   const useruid = auth.currentUser.uid;
   const db = getFirestore(app);
@@ -39,10 +45,12 @@ export default function HomeScreen({ navigation }) {
   const [noData, setNoData] = useState(false);
   const [generateDoubt, setGenerateDoubt] = useState(true);
   useEffect(() => {
-    setNoData(false);
-    setGenerateDoubt(true);
-    getDoubtData();
-  }, []);
+    if (isFocused) {
+      setNoData(false);
+      setGenerateDoubt(true);
+      getDoubtData();
+    }
+  }, [isFocused]);
   const getCurrentUser = async () => {
     const a = await getDoc(doc(db, "faculty", useruid));
     setFid(a.data().fid);
@@ -80,6 +88,30 @@ export default function HomeScreen({ navigation }) {
       }
     }
   };
+  const RejectDoubt = async () => {
+    const docRef = doc(db, "activedoubts", wholeData.uid);
+    await deleteDoc(docRef);
+    await addDoc(collection(db, "resolveddoubts"), {
+      date: data.date,
+      subject: data.subject,
+      description: data.description,
+      enrollnmentNumber: data.enrollnmentNumber,
+      fid: data.fid,
+      fname: data.fname,
+      name: data.name,
+      reply: "REJECTED",
+    }).then(() => {
+      if (Platform.OS === "android") {
+        ToastAndroid.show("Response has been saved", ToastAndroid.SHORT);
+      } else {
+        AlertIOS.alert("Stored", "Response has been saved");
+      }
+      setData([]);
+      setWholeData([]);
+      getDoubtData();
+    });
+  };
+
   return (
     <ScrollView style={styles.rootContainer}>
       <Card>
@@ -180,7 +212,7 @@ export default function HomeScreen({ navigation }) {
             </View>
 
             <View style={styles.optionsOuterContainer}>
-              <Pressable onPress={() => {}}>
+              <Pressable onPress={() => RejectDoubt()}>
                 <View style={styles.reportInnerContainer}>
                   <Icon
                     name="times-circle"

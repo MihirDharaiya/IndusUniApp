@@ -13,9 +13,111 @@ import {
   ImageBackground,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  query,
+  where,
+  collection,
+  getCountFromServer,
+} from "firebase/firestore";
+import { app } from "../firebase";
+import { useIsFocused } from "@react-navigation/native";
 export default function Analytics({ navigation }) {
+  const isFocused = useIsFocused();
+  const auth = getAuth();
+  const db = getFirestore(app);
+  const useruid = auth.currentUser.uid;
+  const [fid, setFid] = useState("");
+  const [yes, setYes] = useState(0);
+  const [no, setNo] = useState(0);
+  const [dates, setDates] = useState([]);
+  const [totalDoubtsCount, setTotalDoubtsCount] = useState(0);
+  const [totalAnnouncements, setTotalAnnouncements] = useState(0);
+  const getCurrentUser = async () => {
+    const a = await getDoc(doc(db, "faculty", useruid));
+    setFid(a.data().fid);
+  };
+  const getAllData = async () => {
+    getCurrentUser();
+    const doubts = collection(db, "resolveddoubts");
+    const events = collection(db, "events");
+
+    const doubtsCount = await getCountFromServer(
+      query(doubts, where("fid", "==", fid))
+    );
+    const eventsCount = await getCountFromServer(
+      query(events, where("fid", "==", fid))
+    );
+    setTotalDoubtsCount(doubtsCount.data().count);
+    setTotalAnnouncements(eventsCount.data().count);
+
+    const currentYear = new Date().getFullYear();
+
+    const pastDoubts = collection(db, "pastdoubts");
+
+    let first = toString(currentYear - 1);
+    first = first.toString();
+    let second = toString(currentYear - 2);
+    second = second.toString();
+    let third = toString(currentYear - 3);
+    third = third.toString();
+    let forth = currentYear - 4;
+    forth = forth.toString();
+
+    const year1Count = await getCountFromServer(
+      query(
+        pastDoubts,
+        where("batchYear", "==", first),
+        where("fid", "==", fid)
+      )
+    );
+    const year2Count = await getCountFromServer(
+      query(
+        pastDoubts,
+        where("batchYear", "==", second),
+        where("fid", "==", fid)
+      )
+    );
+    const year3Count = await getCountFromServer(
+      query(
+        pastDoubts,
+        where("batchYear", "==", third),
+        where("fid", "==", fid)
+      )
+    );
+    const year4Count = await getCountFromServer(
+      query(
+        pastDoubts,
+        where("batchYear", "==", forth),
+        where("fid", "==", fid)
+      )
+    );
+    let year1 = year1Count.data().count;
+    let year2 = year2Count.data().count;
+    let year3 = year3Count.data().count;
+    let year4 = year4Count.data().count;
+    let arr = [year1, year2, year3, year4];
+    setDates(arr);
+
+    const satisfiedYes = await getCountFromServer(
+      query(pastDoubts, where("satisfy", "==", "yes"), where("fid", "==", fid))
+    );
+    setYes(satisfiedYes.data().count);
+    const satisfiedNo = await getCountFromServer(
+      query(pastDoubts, where("satisfy", "==", "no"), where("fid", "==", fid))
+    );
+    setNo(satisfiedNo.data().count);
+  };
+  useEffect(() => {
+    if (isFocused) {
+      getAllData();
+    }
+  }, [isFocused]);
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.boxContainer}>
@@ -31,7 +133,7 @@ export default function Analytics({ navigation }) {
             >
               <View style={styles.overlay}>
                 <Text style={styles.headline}>Total Doubts solved</Text>
-                <Text style={styles.numbers}>80</Text>
+                <Text style={styles.numbers}>{totalDoubtsCount}</Text>
               </View>
             </ImageBackground>
           </View>
@@ -51,7 +153,7 @@ export default function Analytics({ navigation }) {
                 <Text style={styles.headline}>
                   Total number of Announcements
                 </Text>
-                <Text style={styles.numbers}>10</Text>
+                <Text style={styles.numbers}>{totalAnnouncements}</Text>
               </View>
             </ImageBackground>
           </View>
@@ -65,7 +167,7 @@ export default function Analytics({ navigation }) {
             labels: ["1st", "2nd", "3rd", "4rd"],
             datasets: [
               {
-                data: [20, 45, 28, 60],
+                data: dates,
               },
             ],
           }}
@@ -92,14 +194,14 @@ export default function Analytics({ navigation }) {
           data={[
             {
               name: "Yes",
-              doubts: 100,
+              doubts: yes,
               color: Colors.green,
               legendFontColor: Colors.blue,
               legendFontSize: responsiveFontSize(2),
             },
             {
               name: "No",
-              doubts: 10,
+              doubts: no,
               color: Colors.red,
               legendFontColor: Colors.blue,
               legendFontSize: responsiveFontSize(2),

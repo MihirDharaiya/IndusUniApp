@@ -169,13 +169,14 @@ function AddFaculty(props) {
                   onChange={(e) => setBranch(e.target.value)}
                 >
                   <option></option>
-                  <option>CS</option>
+                  <option>CSE</option>
                   <option>CE</option>
                   <option>IT</option>
                   <option>EE</option>
                   <option>EC</option>
                   <option>ME</option>
                   <option>Civil</option>
+                  <option>AM</option>
                 </select>
               </div>
               <div className="input-div mb-3">
@@ -208,6 +209,7 @@ function AddFaculty(props) {
                   <option>Assistant Professor</option>
                   <option>Associate Professor</option>
                   <option>Professor</option>
+                  <option>Head Of Department</option>
                 </select>
               </div>
 
