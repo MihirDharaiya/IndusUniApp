@@ -17,29 +17,35 @@ import {
   import Card from "../components/Card";
   import { getAuth } from "firebase/auth";
   import { getFirestore } from "firebase/firestore";
-  import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+  import { doc, getDoc, addDoc, collection } from "firebase/firestore";
   import { app } from "../firebase/firebase";
   import PrimaryButton from "../components/PrimaryButton";
   export default function ReportStudent({ route, navigation}) {
     const auth = getAuth();
     const db = getFirestore(app);
-  
+    const user = auth.currentUser.uid;
     const [reason, setReason] = useState("");
     const [error, setError] = useState("");
     const reportStudent = async () => {
-      if (reason.length < 50) {
+      if (reason.length < 30) {
         setError("Mention Reason in detail.");
       } else {
+        let tempDate = new Date();
+        let fDate =
+        tempDate.getDate() +
+        "/" +
+        (tempDate.getMonth() + 1) +
+        "/" +
+        tempDate.getFullYear();
+        const a = await getDoc(doc(db, "users", user));
+        const name = a.data().name;
         await addDoc(collection(db, "reportedstudents"), {
           batchYear: route.params.data.batchYear,
           branch: route.params.data.branch,
-          date: route.params.data.date,
-          subject: route.params.data.subject,
-          description: route.params.data.description,
+          date: fDate,
           enrollnmentNumber: route.params.data.enrollnmentNumber,
-          fid: route.params.data.fid,
-          fname: route.params.data.fname,
           name: route.params.data.name,
+          reportedBy: name,
           raised: "student",
           reason: reason,
         }).then(() => {
@@ -48,7 +54,7 @@ import {
           if (Platform.OS === "android") {
             ToastAndroid.show("Student in being Reported", ToastAndroid.SHORT);
           } else {
-            AlertIOS.alert("Notified", "Student in being Reported");
+            // AlertIOS.alert("Notified", "Student in being Reported");
           }
           navigation.navigate("HomeScreen");
         });

@@ -3,36 +3,38 @@ import {React,useState,useEffect} from 'react'
 import Colors from '../constants/Colors'
 import BorderCard from '../components/BorderCard'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-import PrimaryButton from '../components/PrimaryButton'
 import RoundButton from '../components/RoundButton'
 import Card from '../components/Card'
 import { Linking } from 'react-native';
-import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query, where} from 'firebase/firestore';
+import {getFirestore, getDocs, collection, limit, query, where} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import { getAuth} from "firebase/auth";
-import GreyCard from '../components/GreyCard'
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-export default function StudentProfile({route,navigation,data}) {  
-    const [renderNum, setRenderNum] = useState(1);
-    const [showSection1, setShowSection1] = useState(true);
+export default function StudentProfile({route,navigation}) {  
+    const currentProfileUser = route.params.data.uid;
     const [users,setUsers] = useState([]);
     const db = getFirestore(app);
     const auth=getAuth();
     async function getUsers(){
-        const docRef = query(collection(db,"users") ,where("uid","!=",auth.currentUser.uid),limit(renderNum));
+        const docRef = query(collection(db,"users") ,where("uid","!=",auth.currentUser.uid),limit(4));
         const docSnap = await getDocs(docRef);
         var arr=[]
+        let i =0;
           docSnap.forEach(doc => {
+            if(currentProfileUser != doc.id && i<3){
               arr.push(doc.data())     
+              i++;
+            }
         })
         setUsers(arr)
       }
       useEffect(() => {
         getUsers()
-      },[renderNum])
+      },[])
       function card(data) {
         return (
+          <>
           <View>
             <Pressable
               onPress={() => {
@@ -61,6 +63,7 @@ export default function StudentProfile({route,navigation,data}) {
             </Card>
             </Pressable>
           </View>
+            </>
         )
       }
     return (
@@ -70,7 +73,7 @@ export default function StudentProfile({route,navigation,data}) {
                 <View style={{justifyContent:'space-between', alignItems: 'space-between', flexDirection: 'row'}}>
                 <Pressable
                 onPress={() => {
-                  navigation.navigate("ReportStudent",{data:data});
+                  navigation.navigate("ReportStudent",{data:route.params.data});
                 }}
               >
                 <View style={styles.reportContainer}>
@@ -174,19 +177,10 @@ export default function StudentProfile({route,navigation,data}) {
             data={users}
             renderItem={({item}) => card(item)}
             keyExtractor={data => data.uid}
-            initialNumToRender={1}
+            initialNumToRender={2}
             >
             </FlatList>
         </View>
-        <View style={styles.moreCon}>
-      {renderNum >= 2 ? null : <Pressable
-        onPress={()=>{
-          setRenderNum(3);
-        }}
-        >
-        <Text style={styles.moreText}>... more</Text>
-        </Pressable> }
-      </View>
             </View>
         </ScrollView>
       )

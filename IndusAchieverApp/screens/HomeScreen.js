@@ -3,103 +3,83 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, Pressable, FlatList } from "react-native";
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, Pressable, FlatList, BackHandler } from "react-native";
 import React, { useEffect, useState } from "react";
-import Card from "../components/Card";
 import Colors from "../constants/Colors";
 import ImageTextStack from "../components/ImageTextStack";
-import {getFirestore, getDocs, doc, collection, onSnapshot, limit, query} from 'firebase/firestore';
-import {app} from '../firebase/firebase';
-import { getAuth} from "firebase/auth";
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import PrimaryButton from "../components/PrimaryButton";
+import { Linking } from "react-native";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { useIsFocused } from '@react-navigation/native';
-
+import {
+  doc,
+  getDoc,
+  query,
+  where,
+  collection,
+  getCountFromServer,
+} from "firebase/firestore";
+import { app } from "../firebase/firebase";
 
 export default function HomeScreen({navigation}) {
+
+  function handleBackButtonClick() {
+    alert("Bak")
+    return true;
+  }
   const isFocused = useIsFocused();
-
-  const [faculty,setFaculty] = useState([]);
+  const [totalDoubtsCount, setTotalDoubtsCount] = useState(0);
+  const auth = getAuth();
+  const useruid = auth.currentUser.uid;
   const db = getFirestore(app);
-  const auth=getAuth();
-  const [renderNum, setRenderNum] = useState(2);
-
-async function getFaculty(){
-  const docRef = query(collection(db,"faculty"), limit(renderNum));
-  const docSnap = await getDocs(docRef);
-  var arr=[]
-    docSnap.forEach(doc => {
-        arr.push(doc.data())     
-  })
-  setFaculty(arr)
-}
-useEffect(() => {
-  getFaculty()
-  setRenderNum(2)
-},[isFocused,renderNum])
-
-
-function card(data) {
-  return (
-    <View>
-      <Pressable
-        onPress={() => {
-          navigation.navigate("CreateDoubtScreen",{data:data});
-          
-        }}
-        >
-      <Card>
-        <View style={styles.titleContainer}>
-        <View style={styles.imgContainer}>
-        <Image
-              style={styles.profileImg}
-              source={require("../assets/images/Profile.png")}
-            />        
-        </View>
-        <View style={styles.textContainer}>
-        <Text style={styles.title}>Name:</Text>
-        <Text style={styles.answerTitle}>{data.fname}</Text>
-        <Text style={styles.title}>Designation:</Text>
-        <Text style={styles.answerTitle}>{data.fposition}</Text>
-        </View>      
-        </View>
-      </Card>
-      </Pressable>
-    </View>
-  )
-}
-
+  async function count(){
+    const a = await getDoc(doc(db, "users", useruid));
+    const doubts = collection(db, "activedoubts");
+    const doubtsCount = await getCountFromServer(
+      query(doubts, where("enrollnmentNumber", "==", a.data().enrollnmentNumber))
+    );
+    setTotalDoubtsCount(doubtsCount.data().count);
+  }
+useEffect(()=>{
+  count();
+  BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+  return () => {
+    BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+  };
+},[isFocused])
   return (
     <KeyboardAwareScrollView style={styles.conatiner}>
       <Text style={styles.topText}>Here you can create your{"\n"} respective doubts {"\n"} according to the your branch faculties</Text>
-      <View style={styles.card}>
-        <View>
-      <FlatList
-      data={faculty}
-      renderItem={({item}) => card(item)}
-      keyExtractor={data => data.fid}
-      initialNumToRender={1}
-      >
-      </FlatList>
-      </View>
-      <View style={styles.moreCon}>
-      {renderNum >= 4 ? null : <Pressable
+      <View style={styles.containerImage}>
+        <Image
+          style={styles.image2}
+          source={require("../assets/images/Create.gif")}
+        />
+        </View>
+      <View style={styles.createButton}>
+        <PrimaryButton
         onPress={()=>{
-          setRenderNum(50);
-          console.log(renderNum);
-          getFaculty();
+          navigation.navigate("FacultyList")
         }}
-        >
-        <Text style={styles.moreText}>... more</Text>
-        </Pressable> }
+        iconVisible={true}
+        style={styles.iconRight}
+        iconName="undo"
+        size={responsiveFontSize(2.3)}
+        color={Colors.white}
+        >Create a Doubt</PrimaryButton>
       </View>
+      <View style={styles.card}>
       </View>
         <ImageTextStack onPressActive={() => {navigation.navigate("ActiveDoubts");}}
         onPressQuestions={() => {navigation.navigate("FrequentlyAskedQuestion");}}
+        count={totalDoubtsCount}
         ></ImageTextStack>
         <View style={styles.calendarView}>
           <Pressable
           onPress={() => {
-            navigation.navigate("AcademicCalendar");
+            Linking.openURL("https://indusuni.ac.in/academics/academic-calender.php")
           }}
           >
         <ImageBackground
@@ -121,6 +101,13 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor: Colors.white
   },
+  containerImage: {
+    alignItems: "center",
+  },
+  image2: {
+    width: responsiveWidth(80),
+    height: responsiveWidth(65),
+},
   card:{
   },
   topText: {
@@ -182,4 +169,9 @@ const styles = StyleSheet.create({
   moreCon:{
     marginBottom: 10
   },
+  createButton:{
+    flex: 1,
+    margin: 20,
+    justifyContent: 'center',
+  }
 });

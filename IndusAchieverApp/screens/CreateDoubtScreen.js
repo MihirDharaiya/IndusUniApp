@@ -22,7 +22,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 export default function CreateDoubtScreen({route,navigation}) {
-  
+
   const data = 
     [
       { key: "1", value: "NOC for Internship", selected },
@@ -46,7 +46,6 @@ export default function CreateDoubtScreen({route,navigation}) {
 
     function priority(value){
       const a = value.replace(/\s/g, '')
-      // console.log(dataClone[a]);
       return dataClone[a];
     }
   const auth=getAuth();
@@ -60,49 +59,14 @@ export default function CreateDoubtScreen({route,navigation}) {
   const [error, setError] = useState('');
   const [selected, setSelected] = useState([]);
   const [isOtherSubject, setIsOtherSubject] = useState(false);
-  // const [data, setData] = useState([]);
-
-
-  // const getPriorityData = async ()=> {
-  //   let user = await AsyncStorage.getItem('users');
-  //   user = JSON.parse(user);
-  //   console.log(typeof user, user)
-  //   setenrollnmentNumber(user.enrollnmentNumber);
-  //   setBatchYear(user.batchYear);
-  //   // console.log(user.enrollnmentNumber);
-  //   // console.log(enrollnmentNumber);
-  //   // console.log(batchYear);
-  //   let date = new Date()
-  //   let currentYear = date.getFullYear();
-  //   // let prior = (currentYear - batchYear)-1;
-  //   // if(prior === 3){
-  //   //   await setData(yearOne);
-  //   //   console.log("In IF");
-  //   // }
-  //   // console.log(prior);
-  //   // const value = Priority[prior]
-  //   // setData(Priority[prior])
-  //   // console.log(value);
-  // }
+ 
 useEffect(()=>{
-    // getPriorityData()
-
 },[])
 
   const addDoubt=async()=> {
-    // if(!subject){
-    //   setError('Please Select a Valid Subject !!')
-    // }
-    // else if(otherSubject.length < 15){
-    //   setError('Subject is too small !!')
-      // if(!otherSubject){
-      //   setError('Please Enter a Valid Subject in Detail !!')
-      // }
-    // }
     let user = await AsyncStorage.getItem('users');
     user = JSON.parse(user);
     setenrollnmentNumber(user.enrollnmentNumber);
-  // console.log(typeof user, user)
     if(description.length < 50){
       setError('Please Enter detailed Description !!')
       if(!description){
@@ -111,14 +75,19 @@ useEffect(()=>{
     }
     else{
       setError('');
-      let date = new Date()
-      let currentYear = date.getFullYear();
+      let tempDate = new Date();
+        let fDate =
+        tempDate.getDate() +
+        "/" +
+        (tempDate.getMonth() + 1) +
+        "/" +
+        tempDate.getFullYear();
       addDoc(collection(db, "activedoubts"),{
         subject: subject === "Other" ? otherSubject : subject,
         description: description,
         fname: route.params.data.fname,
         fid: route.params.data.fid,
-        date: date.toDateString(),
+        date: fDate,
         uid: auth.currentUser.uid,
         priority: priority(subject),
         enrollnmentNumber: user.enrollnmentNumber,
@@ -131,7 +100,7 @@ useEffect(()=>{
         } else {
           // AlertIOS.alert("Raised", "Doubt has been created");
         }
-        navigation.navigate('HomeScreen');
+        navigation.navigate('ActiveDoubts');
       })
     }
   }
@@ -177,7 +146,6 @@ useEffect(()=>{
         <Text style={styles.text}>Choose a subject from the frequently {"\n"} asked queries or make a custom one </Text>
       </View>
       <View style={styles.inputField}>
-        {/* {subject === "Other" ? setIsOtherSubject(true) :setIsOtherSubject(false) } */}
         {subject !== "Other" ? 
         <TextInputBoxField 
         title={"Subject:"} 
@@ -212,9 +180,12 @@ useEffect(()=>{
       }
       <View style={styles.buttonStyle}>
       <PrimaryButton
-      onPress={()=> {addDoubt()}}
+      onPress={()=> 
+        {
+          addDoubt()}}
       >Submit</PrimaryButton>
       </View>
+      {/* {isVerified && <SuccessPage/>} */}
     </KeyboardAwareScrollView>
   )
 }
@@ -250,7 +221,7 @@ const styles = StyleSheet.create({
       },
       textContainer:{
         padding: 6,
-        justifyContent: 'flex-end'
+        flexDirection: 'row'
       },
       text: {
         color: Colors.grey,
@@ -284,5 +255,24 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'center'
-      }
+      },
+      textContainer:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 20
+    },
+    textS:{
+        textAlign: 'center',
+        color: Colors.green,
+        fontSize: responsiveFontSize(3.5),
+        fontWeight: '600'
+    },
+    image2: {
+        width: responsiveWidth(80),
+        height: responsiveWidth(65),
+    },
+    containerImage: {
+        alignItems: "center",
+        marginVertical: responsiveHeight(5),
+      },
 })

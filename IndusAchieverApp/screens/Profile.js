@@ -17,36 +17,42 @@ import SecondaryButton from "../components/SecondaryButton";
 import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
 import {getFirestore, getDoc, doc, query, onSnapshot, setDoc} from 'firebase/firestore';
+import { getStorage,ref,uploadBytes } from "firebase/storage";
 import {app} from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserPermissions from "../utilities/UserPermissions.js";
-import * as ImagePicker from 'expo-image-picker';
 
 export default function Profile({navigation}) {
 
 const db = getFirestore(app);
 const auth=getAuth();
+// const storage = getStorage(app);
+
 const [name, setName] = useState("");   
 const [email, setEmail] = useState("");
 const [enrollnmentNumber, setenrollnmentNumber] = useState("");  
 const [branch, setBranch] = useState("");  
 const [batchYear, setBatchYear] = useState("");  
+const [image, setImage] = useState(null);
 
+  // const selectImage = async () => {
+  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //   if (status !== 'granted') {
+  //     alert('Sorry, we need camera roll permissions to make this work!');
+  //     return;
+  //   }
 
-handleProfilePic = async() =>{
-    UserPermissions.getCameraPermission()
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowEditing: true,
-      aspect: [4,3]
-    })
-
-    if(!result.cancelled){
-      this.setState({user: {...this.state.user}})
-    }
-};
-
-
+  //   const result = await ImagePicker.launchImageLibraryAsync();
+  //   if (!result.canceled) {
+  //     setImage(result.uri);
+  //     console.log(result.uri);
+  //     uploadImage(result.uri);
+  //   }
+  // };
+  // const uploadImage = async (uri) => {
+  //   const storageRef = ref(uri);
+  //   return storageRef
+  // };
 
 const showData = async () => {
 let user = await AsyncStorage.getItem('users');
@@ -106,15 +112,14 @@ signOut(auth).then(() => {
           ]}
         >
           <Image
-            source={require("../assets/images/Profile.png")}
             style={styles.image}
-          />
+            source={require("../assets/images/Profile.png")}
+                  />   
         </TouchableHighlight>
       </View>
       <View style={styles.editButtonOuterContainer}>
         <View>
           <PrimaryButton
-          onPress={()=>{handleProfilePic()}}
             textNotVisible={true}
             iconVisible={true}
             style={styles.iconRight}

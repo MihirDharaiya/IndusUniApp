@@ -25,7 +25,6 @@ import ReenterPassword from '../screens/ReenterPassword';
 import EmailVerification from '../screens/EmailVerification';
 import AcademicCalendar from '../screens/AcademicCalendar';
 import StudentProfile from '../screens/StudentProfile';
-import ActiveDoubtModal from '../screens/ActiveDoubtModal';
 import { getAuth } from "firebase/auth";
 import { app } from "../firebase/firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
@@ -33,7 +32,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from 'react';
 import VerifyEmail from '../screens/VerifyEmail';
 import ReportStudent from '../screens/ReportStudent';
-
+import SuccessPage from '../screens/SuccessPage';
+import FacultyList from '../screens/FacultyList';
+import ViewDetails from '../screens/ViewDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -49,6 +50,11 @@ const BottomNavigationBar = () => {
 						component={HomeScreen}
 						options={{ headerShown: false }}
 					/>
+        <Stack.Screen
+          name="FacultyList"
+          component={FacultyList}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="CreateDoubtScreen"
           component={CreateDoubtScreen}
@@ -217,6 +223,14 @@ const BottomNavigationBar = () => {
         <Stack.Screen name="EmailVerification" component={EmailVerification} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyEmail" component={VerifyEmail} options={{ headerShown: false }} />
         <Stack.Screen name="ReportStudent" component={ReportStudent} options={{ headerShown: false }} />
+        <Stack.Screen name="SuccessPage" component={SuccessPage} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Event Details"
+          component={ViewDetails}
+          options={{
+            presentation: "modal",
+          }}
+        />
 			</Stack.Navigator>
     </NavigationContainer>
   )

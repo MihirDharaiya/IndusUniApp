@@ -31,7 +31,7 @@ import { useIsFocused } from '@react-navigation/native';
         navigation.navigate('HomeScreen')
       })
     } 
-    const moveToPastDoubt = async (data) =>{
+    const moveToPastDoubt = async (data,satisfy) =>{
       // console.log(typeof data.doubtId);
       let tempDate = new Date();
       let fDate =
@@ -42,8 +42,9 @@ import { useIsFocused } from '@react-navigation/native';
       tempDate.getFullYear();
       const docRef = doc(db, "resolveddoubts",data.doubtId);
       await deleteDoc(docRef);
-      await addDoc(collection(db, "pastdoubts"), {
+      await addDoc(collection(db, "pastdoubts"),{
         raisedDate: data.date,
+        batchYear: data.batchYear,
         resolvedDate: fDate,
         subject: data.subject,
         description: data.description,
@@ -51,6 +52,7 @@ import { useIsFocused } from '@react-navigation/native';
         fid: data.fid,
         fname: data.fname,
         reply: data.reply,
+        satisfy: satisfy === true ? 'yes' : 'no'
     }).then(()=>{
       navigation.navigate('PastDoubts')
     })
@@ -68,7 +70,6 @@ import { useIsFocused } from '@react-navigation/native';
         var arr =[];
         var arrId = [];
       querySnapshot.forEach((doc) => {
-        // console.log(doc.data());
         arr.push(doc.data())
         arrId.push(doc.id)
       });
@@ -77,7 +78,6 @@ import { useIsFocused } from '@react-navigation/native';
       }
       setResolvedDoubt(arr);
       })
-      // const querySnapshot = await getDocs(q);
     };
 
 
@@ -93,7 +93,6 @@ import { useIsFocused } from '@react-navigation/native';
         var arr =[];
         var arrId = [];
       querySnapshot.forEach((doc) => {
-        // console.log(doc.data());
         arr.push(doc.data())
         arrId.push(doc.id)
       });
@@ -102,18 +101,6 @@ import { useIsFocused } from '@react-navigation/native';
       }
       setDoubt(arr);
       })
-      // const querySnapshot = await getDocs(q);
-      // var arr =[];
-      // var arrId = [];
-      // querySnapshot.forEach((doc) => {
-      //   console.log(doc.data());
-      //   arr.push(doc.data())
-      //   arrId.push(doc.id)
-      // });
-      // for(let i = 0; i<arr.length; i++){
-      //   arr[i]["doubtId"] = arrId[i];
-      // }
-      // setDoubt(arr);
     };
 useEffect(()=>{
   getResolvedDoubt()
@@ -140,16 +127,28 @@ useEffect(()=>{
            </View>
           <View style={styles.outerView}>
             {resolveDoubt ? 
+            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', flex: 1}}>
+              <Pressable
+          onPress={()=>{
+              moveToPastDoubt(data,false)
+          }}
+          >
+          <View style={styles.textIconView}>
+          <Icon name="times-circle" color={Colors.darkred} size={responsiveFontSize(2.5)}/>
+          <Text style={{color:Colors.darkred, fontSize: responsiveFontSize(2.5), fontWeight: '500', paddingLeft:responsiveWidth(1)}}>Not Satisfied</Text>
+        </View>
+        </Pressable>
             <Pressable
             onPress={()=>{
-                moveToPastDoubt(data)
+                moveToPastDoubt(data,true)
             }}
             >
             <View style={styles.textIconView}>
             <Icon name="check-circle" color={Colors.green} size={responsiveFontSize(2.5)}/>
-            <Text style={{color:Colors.green, fontSize: responsiveFontSize(2.5), fontWeight: '500', paddingLeft:responsiveWidth(1)}}>Resolve</Text>
+            <Text style={{color:Colors.green, fontSize: responsiveFontSize(2.5), fontWeight: '500', paddingLeft:responsiveWidth(1)}}>Satisfied</Text>
           </View>
           </Pressable>
+        </View>
             : 
             <Pressable
             onPress={()=>{
@@ -168,7 +167,7 @@ useEffect(()=>{
         )
     }
     return (
-      <ScrollView style={styles.rootContainer}>
+      <View style={styles.rootContainer}>
         <View>
         <View style={styles.titleView}>
             <Icon name="user-clock" color={Colors.grey} size={responsiveFontSize(3)}/>
@@ -194,7 +193,7 @@ useEffect(()=>{
       </FlatList>
       </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
   
@@ -248,9 +247,8 @@ useEffect(()=>{
     },
     outerView: {
       flexDirection: 'row',
-      alignItems: 'flex-end',
-      justifyContent: 'flex-end',
-      paddingTop: 10
+      justifyContent: 'space-evenly',
+      paddingTop: 10,
     },
     line: {
       height: 1,

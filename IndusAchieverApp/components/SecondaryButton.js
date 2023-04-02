@@ -6,6 +6,7 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
+import { useState } from "react";
 
 function SecondaryButton({
   iconVisible,
@@ -16,7 +17,10 @@ function SecondaryButton({
   onPress,
   buttonStyle,
   textStyle,
-}) {
+  selected = false
+}) 
+
+{
   return (
     <View style={[styles.buttonOuterContainer, buttonStyle]}>
       <Pressable
@@ -37,7 +41,7 @@ function SecondaryButton({
         ) : (
           false
         )}
-        <Text style={[styles.buttonText, textStyle]}>{children}</Text>
+        <Text style={[styles.buttonText, textStyle,{color: selected ? Colors.darkred : Colors.blue}]}>{children}</Text>
       </Pressable>
     </View>
   );
@@ -61,10 +65,10 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(3),
     textAlign: "center",
     fontWeight: "bold",
-    color: Colors.blue
   },
   pressed: {
     opacity: 0.75,
+    backgroundColor: Colors.grey,
   },
   iconStyle: {
     padding: 5,

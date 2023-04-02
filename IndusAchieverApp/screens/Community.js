@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
       fontSize: responsiveFontSize(2)
     },
     answerTitle: {
-      fontWeight: '500',
+      fontWeight: '600',
       marginBottom: responsiveHeight(1),
       color: Colors.grey,
-      fontSize: responsiveFontSize(1.8)
+      fontSize: responsiveFontSize(2.1)
     },
     textContainer:{
       padding: 6,

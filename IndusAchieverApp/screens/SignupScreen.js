@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, ImageBackground} from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, ImageBackground,Pressable} from 'react-native'
 import {
     responsiveHeight,
     responsiveWidth,
@@ -15,6 +15,8 @@ import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc} from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useTogglePasswordVisibility } from "../components/ViewPassword";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 
 export default function SignupScreen({navigation}) {
@@ -27,6 +29,8 @@ export default function SignupScreen({navigation}) {
   const [name, setName] = useState('');   
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
   
   const addUser = ()=>{
     const reg =  /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
@@ -126,6 +130,11 @@ export default function SignupScreen({navigation}) {
             enteredValue={enrollnmentNumber}
             enteredValueHandler={(val) =>setenrollnmentNumber(val)}
           />
+          <Pressable onPress={handlePasswordVisibility}>
+              <View style={styles.EyeContainer}>
+                <Icon name={rightIcon} style={styles.eyeIcon} />
+              </View>
+            </Pressable>
           <TextInputField
             title="Password:"
             iconName={"lock"}
@@ -133,7 +142,7 @@ export default function SignupScreen({navigation}) {
             placeholder="Enter Password"
             enteredValue={password}
             enteredValueHandler={(val) =>setPassword(val)}
-            secureTextEntry={true}
+            secureTextEntry={passwordVisibility}
           />
           <TextInputField
             title="Confirm Password:"
@@ -142,7 +151,7 @@ export default function SignupScreen({navigation}) {
             placeholder="Enter Password"
             enteredValue={confirmPassword}
             enteredValueHandler={(val) =>setconfirmPassword(val)}
-            secureTextEntry={true}
+            secureTextEntry={passwordVisibility}
           />
           </View>
             {
@@ -204,5 +213,17 @@ const styles = StyleSheet.create({
     },
     building: {
       height: "100%"
-    }
+    },
+    eyeIcon: {
+      color: "#232323",
+      fontSize: responsiveFontSize(2.3),
+    },
+    EyeContainer: {
+      backgroundColor: "white",
+      width: "100%",
+      borderRadius: 8,
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      paddingRight: 16,
+    },
 })

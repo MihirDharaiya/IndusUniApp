@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Image,
   Pressable,
 } from "react-native";
@@ -22,6 +21,8 @@ import { getAuth, User,signInWithEmailAndPassword,sendEmailVerification } from '
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {app} from '../firebase/firebase';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { useTogglePasswordVisibility } from "../components/ViewPassword";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 
 export default function LoginScreen({navigation}) {
@@ -34,6 +35,8 @@ export default function LoginScreen({navigation}) {
   const [error, setError] = useState('');
   const auth = getAuth();
   const db = getFirestore(app);
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
 
 const clearData = () => {
   AsyncStorage.clear();
@@ -92,6 +95,11 @@ const clearData = () => {
             enteredValueHandler={text => setEmail(text)}
             multiline={true}
           />
+          <Pressable onPress={handlePasswordVisibility}>
+              <View style={styles.EyeContainer}>
+                <Icon name={rightIcon} style={styles.eyeIcon} />
+              </View>
+            </Pressable>
           <TextInputField
             title="Password:"
             iconName={"lock"}
@@ -99,7 +107,7 @@ const clearData = () => {
             placeholder="Enter Password"
             enteredValue={password}
             enteredValueHandler={password => setPassword(password)}
-            secureTextEntry={true}
+            secureTextEntry={passwordVisibility}
           />
 
           <Pressable
@@ -206,6 +214,17 @@ const styles = StyleSheet.create({
   },
   building: {
     flex: 1,
-    // height: responsiveHeight(100)
-  }
+  },
+  eyeIcon: {
+    color: "#232323",
+    fontSize: responsiveFontSize(2.3),
+  },
+  EyeContainer: {
+    backgroundColor: "white",
+    width: "100%",
+    borderRadius: 8,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: 16,
+  },
 });

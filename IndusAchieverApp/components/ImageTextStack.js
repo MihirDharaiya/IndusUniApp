@@ -8,7 +8,7 @@ import {
 import Colors from "../constants/Colors";
 import ActiveDoubts from '../screens/ActiveDoubts';
 
-export default function ImageTextStack({onPressActive, onPressQuestions}) {
+export default function ImageTextStack({onPressActive, onPressQuestions,count}) {
     return (
     <View style={styles.boxContainer}>
       <View style={styles.container}>
@@ -18,7 +18,7 @@ export default function ImageTextStack({onPressActive, onPressQuestions}) {
           style={styles.backdrop1}
         >
           <View style={styles.textContainer}>
-            <Text style={styles.imageNumbers}>3</Text>
+            <Text style={styles.imageNumbers}>{count}</Text>
             <Text style={styles.imageText}> Active Doubts</Text>
           </View>
         </ImageBackground>

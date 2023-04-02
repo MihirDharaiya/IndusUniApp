@@ -10,7 +10,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import BorderCard from "../components/BorderCard";
 import TextInputBoxField from "../components/TextInputBoxField";
 import { getAuth} from "firebase/auth";
-import {getFirestore, getDocs, doc, collection, getDoc, where, query,onSnapshot} from 'firebase/firestore';
+import {getFirestore, getDocs, doc, collection, getDoc, where, query,onSnapshot,orderBy} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 
 
@@ -24,21 +24,14 @@ import {app} from '../firebase/firebase';
     async function getDoubts(){
       const a = await getDoc(doc(db, "users", useruid));
       const enroll = a.data().enrollnmentNumber;
-      const docRef = query(collection(db,"pastdoubts"),where("enrollnmentNumber", "==", enroll));
+      const docRef = query(collection(db,"pastdoubts"),where("enrollnmentNumber", "==", enroll),orderBy("resolvedDate","desc"));
       const un = onSnapshot(docRef,(querySnapshot)=>{
         var arr =[];
       querySnapshot.forEach((doc) => {
-        // console.log(doc.data());
         arr.push(doc.data())
       });
       setDoubts(arr);
       })
-      // const docSnap = await getDocs(docRef);
-      // var arr=[]
-      //   docSnap.forEach(doc => {
-      //       arr.push(doc.data())     
-      // })
-      // setDoubts(arr)
     }
     useEffect(() => {
       getDoubts()
@@ -69,7 +62,7 @@ import {app} from '../firebase/firebase';
         )
       }
     return (
-      <ScrollView style={styles.rootContainer}>
+      <View style={styles.rootContainer}>
         <View>
         <View style={styles.titleView}>
             <Icon name="clock" color={Colors.grey} size={responsiveFontSize(3)}/>
@@ -82,7 +75,7 @@ import {app} from '../firebase/firebase';
       >
       </FlatList>
        </View>
-      </ScrollView>
+      </View>
     );
   }
   
