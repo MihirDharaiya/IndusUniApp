@@ -7,20 +7,43 @@ import {
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
 
-const SuccessPage = () => {
+const SuccessPage = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setModalVisible(false);
+      navigation.navigate("ActiveDoubts");
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
-    <View style={styles.mainContianer}>
-        <View style={styles.textContainer}>
+    <Modal style={styles.mainContianer}
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(false);
+      }}
+    >
+      <View style={styles.mainContianer}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.textContainer}>
             <Text style={styles.text}>Your Doubt Has Been {"\n"} Created Successfully !!</Text>
         </View>
-        <View style={styles.containerImage}>
+      </View>
+      <View style={styles.containerImage}>
         <Image
           style={styles.image2}
           source={require("../assets/images/Success.gif")}
         />
         </View>
         </View>
+    </Modal>
   )
 }
 
@@ -30,12 +53,12 @@ const styles = StyleSheet.create({
     mainContianer:{
         flex: 1,
         backgroundColor: Colors.white,
+        alignItems: 'center',
         justifyContent: 'center'
     },
     textContainer:{
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 20
     },
     text:{
         textAlign: 'center',
@@ -46,9 +69,9 @@ const styles = StyleSheet.create({
     image2: {
         width: responsiveWidth(80),
         height: responsiveWidth(65),
+        marginBottom: responsiveHeight(20)
     },
     containerImage: {
-        alignItems: "center",
-        marginVertical: responsiveHeight(5),
+        // marginVertical: responsiveHeight(5),
       },
 })

@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   ScrollView,
   Image,
+  Linking
 } from "react-native";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
@@ -202,6 +203,21 @@ signOut(auth).then(() => {
         >
           Log Out
         </SecondaryButton>
+        <SecondaryButton
+          iconVisible={true}
+          iconName="envelope"
+          size={responsiveFontSize(3)}
+          color={Colors.blue}
+          textStyle={{ color: Colors.blue }}
+          onPress={() => {
+            Linking.openURL(
+              "mailto: mihirdharaiya.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Student Application&body=" +
+                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
+            );
+          }}
+        >
+          FeedBack
+        </SecondaryButton>
       </View>
     </ScrollView>
   );
@@ -252,6 +268,8 @@ const styles = StyleSheet.create({
     margin: 8,
     alignItems: "center",
     marginTop: 16,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   editButtonInnerContainer: {
     width: responsiveWidth(70),

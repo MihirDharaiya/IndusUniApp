@@ -61,7 +61,7 @@ export default function Notification({navigation }) {
       <View>
         <Pressable
           onPress={() => {
-            navigation.navigate("Event Details", { data: data });
+            navigation.navigate("ViewDetails", { data: data });
           }}
         >
           <BorderCard>

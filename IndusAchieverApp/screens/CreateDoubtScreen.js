@@ -26,6 +26,7 @@ import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import SuccessPage from "./SuccessPage";
 
 export default function CreateDoubtScreen({ route, navigation }) {
   const data = [
@@ -101,7 +102,7 @@ export default function CreateDoubtScreen({ route, navigation }) {
         } else {
           // AlertIOS.alert("Raised", "Doubt has been created");
         }
-        navigation.navigate("ActiveDoubts");
+        navigation.navigate("SuccessPage")
       });
     }
   };
@@ -196,7 +197,6 @@ export default function CreateDoubtScreen({ route, navigation }) {
           Submit
         </PrimaryButton>
       </View>
-      {/* {isVerified && <SuccessPage/>} */}
     </KeyboardAwareScrollView>
   );
 }

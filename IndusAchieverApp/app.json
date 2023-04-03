@@ -5,6 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png"
+    },
     "userInterfaceStyle": "light",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,6 +26,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "03aecdd8-36ab-4e26-8b2c-cf9ace874118"
+      }
     }
   }
 }

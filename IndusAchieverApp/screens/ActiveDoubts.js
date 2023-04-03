@@ -12,7 +12,7 @@ import {
   Pressable,
   BackHandler
 } from "react-native";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useFocusEffect,useCallback } from "react";
 import BorderCard from "../components/BorderCard";
 import Colors from "../constants/Colors";
 import TextInputBoxField from "../components/TextInputBoxField";
@@ -114,14 +114,26 @@ export default function ActiveDoubts({ navigation }) {
   useEffect(() => {
     getResolvedDoubt();
     getUnResolvedDoubt();
-    const backAction = () => {
-      navigation.goBack();
-    };
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
   }, [isFocused]);
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const onBackPress = () => {
+  //       navigation.navigate('HomeScreen');
+  //       return true;
+  //     };
+  //     BackHandler.addEventListener(
+  //       'hardwareBackPress',
+  //       onBackPress
+  //     );
+
+  //     return () => {
+  //       BackHandler.removeEventListener(
+  //         'hardwareBackPress',
+  //         onBackPress
+  //       );
+  //     };
+  //   }, []),
+  // );
 
   function card(data, resolveDoubt) {
     return (

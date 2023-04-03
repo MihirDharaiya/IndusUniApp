@@ -62,7 +62,7 @@ const clearData = () => {
           setPassword('');
           clearData();
           navigation.navigate('Overview')
-          // AsyncStorage.setItem('users', JSON.stringify(fetchData()));
+          AsyncStorage.setItem('users', JSON.stringify(fetchData()));
         }
     })
       .catch((error) => {

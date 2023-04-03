@@ -11,9 +11,9 @@ import {
   ImageBackground,
   Pressable,
   BackHandler,
-  Alert
+  Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import Colors from "../constants/Colors";
 import ImageTextStack from "../components/ImageTextStack";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -21,7 +21,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import { Linking } from "react-native";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import {
   doc,
   getDoc,
@@ -50,25 +50,27 @@ export default function HomeScreen({ navigation }) {
     setTotalDoubtsCount(doubtsCount.data().count);
   }
   useEffect(() => {
+    if (isFocused) {
     count();
-    // const backAction = () => {
-    //   Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-    //     {
-    //       text: 'Cancel',
-    //       onPress: () => null,
-    //       style: 'cancel',
-    //     },
-    //     {text: 'YES', onPress: () => BackHandler.exitApp()},
-    //   ]);
-    //   return true;
-    // };
-    // const backHandler = BackHandler.addEventListener(
-    //   'hardwareBackPress',
-    //   backAction,
-    // );
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
   
-    // return () => backHandler.remove();
+    return () => backHandler.remove();
     
+    }
   }, [isFocused]);
   return (
     <KeyboardAwareScrollView style={styles.conatiner}>

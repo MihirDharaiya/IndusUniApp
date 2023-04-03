@@ -37,6 +37,7 @@ import FacultyList from "../screens/FacultyList";
 import NoInternet from "../screens/NoInternet";
 import VerifyEmail from "../screens/VerifyEmail";
 import ViewDetails from "../screens/ViewDetails";
+import SuccessPage from "../screens/SuccessPage";
 import Icons from "react-native-vector-icons/FontAwesome";
 
 
@@ -149,7 +150,7 @@ import Icons from "react-native-vector-icons/FontAwesome";
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={"Splash"}
+          initialRouteName={"LoginScreen"}
           screenOptions={({}) => ({
             headerStyle: {
               backgroundColor: Colors.blue,
@@ -177,11 +178,6 @@ import Icons from "react-native-vector-icons/FontAwesome";
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Splash"
-            component={Splash}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
             options={{ headerShown: false }}
@@ -204,6 +200,11 @@ import Icons from "react-native-vector-icons/FontAwesome";
           <Stack.Screen
             name="AlumniProfile"
             component={AlumniProfile}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SuccessPage"
+            component={SuccessPage}
             options={{ headerShown: false }}
           />
           <Stack.Screen
