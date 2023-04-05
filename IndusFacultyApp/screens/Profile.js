@@ -9,8 +9,8 @@ import {
   TouchableHighlight,
   ScrollView,
   Image,
-  Text,
-  Pressable,
+  Linking,
+  BackHandler,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../constants/Colors.js";
@@ -50,6 +50,16 @@ export default function Profile({ navigation }) {
       showData();
       clearData();
     }
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   });
   const onSignOut = async () => {
     const auth = getAuth();
@@ -131,14 +141,19 @@ export default function Profile({ navigation }) {
         />
       </View>
       <View style={styles.signOutButtonContainer}>
-        {/* <PrimaryButton
+        <PrimaryButton
           iconVisible={true}
-          iconName="calendar"
+          iconName="envelope"
           size={responsiveFontSize(3)}
-          onPress={() => navigation.navigate("On a Break")}
+          onPress={() => {
+            Linking.openURL(
+              "mailto: jainishpatel.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Faculty Application&body=" +
+                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${id} ${"\n"} ${branch}, ${position}`
+            );
+          }}
         >
-          On Leave
-        </PrimaryButton> */}
+          Feedback
+        </PrimaryButton>
         <SecondaryButton
           iconVisible={true}
           iconName="sign-out-alt"

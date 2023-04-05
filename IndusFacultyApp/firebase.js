@@ -7,8 +7,8 @@ const firebaseConfig = {
   projectId: "indusuniapp-df82f",
   storageBucket: "indusuniapp-df82f.appspot.com",
   messagingSenderId: "873555710986",
-  appId: "1:873555710986:web:a0cb6df6c965d957f4bbf3",
-  measurementId: "G-37Q2WS763C",
+  appId: "1:873555710986:web:4538400ac10f6c3af4bbf3",
+  measurementId: "G-TD20WZDLJJ",
 };
 
 // Initialize Firebase

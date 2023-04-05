@@ -65,40 +65,34 @@ export default function TotalDoubts() {
   function card(data) {
     return (
       <View>
-        <Pressable
-          onPress={() => {
-            navigation.navigate("Event Details", { data: data });
-          }}
-        >
-          <BorderCard>
-            <View style={styles.headingView}>
-              <Text style={styles.headingText}>Raised Date:</Text>
-              <Text style={styles.answerText}>{data.raisedDate}</Text>
-            </View>
-            <View style={styles.headingView}>
-              <Text style={styles.headingText}>Resolved Date:</Text>
-              <Text style={styles.answerText}>{data.resolvedDate}</Text>
-            </View>
-            <View style={styles.headingView}>
-              <Text style={styles.headingText}>Enrollment No:</Text>
-              <Text style={styles.answerText}>{data.enrollnmentNumber}</Text>
-            </View>
+        <BorderCard>
+          <View style={styles.headingView}>
+            <Text style={styles.headingText}>Raised Date:</Text>
+            <Text style={styles.answerText}>{data.raisedDate}</Text>
+          </View>
+          <View style={styles.headingView}>
+            <Text style={styles.headingText}>Resolved Date:</Text>
+            <Text style={styles.answerText}>{data.resolvedDate}</Text>
+          </View>
+          <View style={styles.headingView}>
+            <Text style={styles.headingText}>Enrollment No:</Text>
+            <Text style={styles.answerText}>{data.enrollnmentNumber}</Text>
+          </View>
 
-            <View>
-              <Text numberOfLines={3} style={styles.titleText}>
-                {data.subject}
-              </Text>
-            </View>
-            <View style={styles.mainContainer}>
-              <Text style={styles.fieldName}>Description:</Text>
-              <Text numberOfLines={3}>{data.description}</Text>
-            </View>
-            <View style={styles.mainContainer}>
-              <Text style={styles.replyField}>Reply:</Text>
-              <Text numberOfLines={3}>{data.reply}</Text>
-            </View>
-          </BorderCard>
-        </Pressable>
+          <View>
+            <Text numberOfLines={3} style={styles.titleText}>
+              {data.subject}
+            </Text>
+          </View>
+          <View style={styles.mainContainer}>
+            <Text style={styles.fieldName}>Description:</Text>
+            <Text numberOfLines={3}>{data.description}</Text>
+          </View>
+          <View style={styles.mainContainer}>
+            <Text style={styles.replyField}>Reply:</Text>
+            <Text numberOfLines={3}>{data.reply}</Text>
+          </View>
+        </BorderCard>
       </View>
     );
   }

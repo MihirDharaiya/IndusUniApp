@@ -141,6 +141,7 @@ export default function NavigationBar() {
             fontSize: responsiveFontSize(2.3),
             color: Colors.white,
           },
+          headerTitleAlign: "center",
           headerTintColor: Colors.white,
         })}
       >
@@ -187,7 +188,6 @@ export default function NavigationBar() {
           component={Routes.answerDoubt}
           options={{
             presentation: "modal",
-            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -195,7 +195,6 @@ export default function NavigationBar() {
           component={Routes.reportStudent}
           options={{
             presentation: "modal",
-            headerShown: false,
           }}
         />
         <Stack.Screen

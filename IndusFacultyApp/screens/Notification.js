@@ -22,6 +22,7 @@ import {
   getFirestore,
   where,
   collection,
+  orderBy,
 } from "firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
 export default function Notification({ route, navigation }) {

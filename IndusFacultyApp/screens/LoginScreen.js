@@ -57,6 +57,7 @@ export default function LoginScreen({ navigation }) {
     AsyncStorage.clear();
   };
   const handleLogin = async () => {
+    console.log(email);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
@@ -81,58 +82,63 @@ export default function LoginScreen({ navigation }) {
   };
   return (
     <KeyboardAwareScrollView style={styles.mainContainer}>
-      <View style={styles.containerImage}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/IndusFacultyLogo.png")}
-        />
-      </View>
-      <Card>
-        <View>
-          <TextInputField
-            title="Username:"
-            iconName={"at"}
-            iconStyle={{ marginRight: responsiveWidth(2) }}
-            size={responsiveFontSize(3.7)}
-            placeholder="Enter Username"
-            enteredValue={email}
-            enteredValueHandler={(text) => setEmail(text)}
-            multiline={true}
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
+        <View style={styles.containerImage}>
+          <Image
+            style={styles.image}
+            source={require("../assets/images/IndusFacultyLogo.png")}
           />
-          <Pressable onPress={handlePasswordVisibility}>
-            <View style={styles.EyeContainer}>
-              <Icon name={rightIcon} style={styles.eyeIcon} />
-            </View>
-          </Pressable>
-          <TextInputField
-            title="Password:"
-            iconName={"lock"}
-            size={responsiveFontSize(4)}
-            placeholder="Enter Password"
-            enteredValue={password}
-            enteredValueHandler={(password) => setPassword(password)}
-            secureTextEntry={passwordVisibility}
-          />
+        </View>
+        <Card cardStyle={{ marginBottom: responsiveHeight(25) }}>
+          <View>
+            <TextInputField
+              title="Username:"
+              iconName={"at"}
+              iconStyle={{ marginRight: responsiveWidth(2) }}
+              size={responsiveFontSize(3.7)}
+              placeholder="Enter Username"
+              enteredValue={email}
+              enteredValueHandler={(text) => setEmail(text)}
+              multiline={true}
+            />
+            <Pressable onPress={handlePasswordVisibility}>
+              <View style={styles.EyeContainer}>
+                <Icon name={rightIcon} style={styles.eyeIcon} />
+              </View>
+            </Pressable>
+            <TextInputField
+              title="Password:"
+              iconName={"lock"}
+              size={responsiveFontSize(4)}
+              placeholder="Enter Password"
+              enteredValue={password}
+              enteredValueHandler={(password) => setPassword(password)}
+              secureTextEntry={passwordVisibility}
+            />
 
-          <Pressable
-            onPress={() => {
-              navigation.navigate("ForgotPassword");
-            }}
-            style={({ pressed }) =>
-              pressed
-                ? [styles.buttonInnerContainer, styles.pressed]
-                : styles.buttonInnerContainer
-            }
-          >
-            <View style={styles.forgotPassContainer}>
-              <Text style={styles.forgotPass}>Forgot Password?</Text>
-            </View>
-          </Pressable>
-        </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={() => handleLogin()}>LogIn</PrimaryButton>
-        </View>
-      </Card>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("ForgotPassword");
+              }}
+              style={({ pressed }) =>
+                pressed
+                  ? [styles.buttonInnerContainer, styles.pressed]
+                  : styles.buttonInnerContainer
+              }
+            >
+              <View style={styles.forgotPassContainer}>
+                <Text style={styles.forgotPass}>Forgot Password?</Text>
+              </View>
+            </Pressable>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={() => handleLogin()}>LogIn</PrimaryButton>
+          </View>
+        </Card>
+      </ImageBackground>
     </KeyboardAwareScrollView>
   );
 }
@@ -141,6 +147,10 @@ const styles = StyleSheet.create({
   rootScreen: {
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  building: {
+    flex: 1,
+    resizeMode: "cover",
   },
 
   signUpContainer: {

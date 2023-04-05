@@ -13,6 +13,8 @@ import {
   ToastAndroid,
   Platform,
   AlertIOS,
+  BackHandler,
+  Alert,
 } from "react-native";
 import Colors from "../constants/Colors";
 import React, { useEffect, useState } from "react";
@@ -33,10 +35,11 @@ import {
   deleteDoc,
   addDoc,
 } from "firebase/firestore";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
   const auth = getAuth();
+  const route = useRoute();
   const useruid = auth.currentUser.uid;
   const db = getFirestore(app);
   const [fid, setFid] = useState("");
@@ -50,6 +53,23 @@ export default function HomeScreen({ navigation }) {
       setGenerateDoubt(true);
       getDoubtData();
     }
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, [isFocused]);
   const getCurrentUser = async () => {
     const a = await getDoc(doc(db, "faculty", useruid));
@@ -150,7 +170,7 @@ export default function HomeScreen({ navigation }) {
               </View>
               <Pressable
                 onPress={() => {
-                  navigation.navigate("ReportStudent", { data: data });
+                  navigation.navigate("ReportStudent", { data: wholeData });
                 }}
               >
                 <View style={styles.reportContainer}>

@@ -39,6 +39,9 @@ export default function VerifyEmail({ navigation }) {
             <Text style={styles.subText}>
               Follow the Link in the Email to Verify the register email ID.
             </Text>
+            <Text style={styles.subText}>
+              Please Check Spam folder if not received in the inbox.
+            </Text>
           </View>
           <PrimaryButton
             onPress={() => {

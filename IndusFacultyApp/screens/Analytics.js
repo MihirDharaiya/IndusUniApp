@@ -9,9 +9,9 @@ import {
   Text,
   View,
   ScrollView,
-  Image,
   ImageBackground,
   Pressable,
+  BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
@@ -44,16 +44,12 @@ export default function Analytics({ navigation }) {
   };
   const getAllData = async () => {
     getCurrentUser();
-    const doubts = collection(db, "resolveddoubts");
     const events = collection(db, "events");
 
-    const doubtsCount = await getCountFromServer(
-      query(doubts, where("fid", "==", fid))
-    );
     const eventsCount = await getCountFromServer(
       query(events, where("fid", "==", fid))
     );
-    setTotalDoubtsCount(doubtsCount.data().count);
+
     setTotalAnnouncements(eventsCount.data().count);
 
     const currentYear = new Date().getFullYear();
@@ -102,6 +98,7 @@ export default function Analytics({ navigation }) {
     let year3 = year3Count.data().count;
     let year4 = year4Count.data().count;
     let arr = [year1, year2, year3, year4];
+    setTotalDoubtsCount(year1 + year2 + year3 + year4);
     setDates(arr);
 
     const satisfiedYes = await getCountFromServer(
@@ -117,6 +114,16 @@ export default function Analytics({ navigation }) {
     if (isFocused) {
       getAllData();
     }
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, [isFocused]);
   return (
     <ScrollView style={styles.rootContainer}>

@@ -65,46 +65,40 @@ export default function TotalAnnouncements() {
   function card(data) {
     return (
       <View>
-        <Pressable
-          onPress={() => {
-            navigation.navigate("Event Details", { data: data });
-          }}
-        >
-          <BorderCard>
-            <View style={styles.headingView}>
-              <Text style={styles.headingText}>Event Date:</Text>
-              <Text style={styles.answerText}>{data.date}</Text>
-            </View>
-            <View style={styles.headingView}>
-              <Text style={styles.headingText}>Registration Date:</Text>
-              <Text style={styles.answerText}>{data.registerDate}</Text>
-            </View>
+        <BorderCard>
+          <View style={styles.headingView}>
+            <Text style={styles.headingText}>Event Date:</Text>
+            <Text style={styles.answerText}>{data.date}</Text>
+          </View>
+          <View style={styles.headingView}>
+            <Text style={styles.headingText}>Registration Date:</Text>
+            <Text style={styles.answerText}>{data.registerDate}</Text>
+          </View>
 
-            <View>
-              <Text style={styles.titleText}>{data.title}</Text>
+          <View>
+            <Text style={styles.titleText}>{data.title}</Text>
+          </View>
+          <View style={styles.mainContainer}>
+            <Text style={styles.fieldName}>Description:</Text>
+            <Text>{data.description}</Text>
+          </View>
+          {!data.link ? null : (
+            <View style={styles.LinkContainer}>
+              <Text style={styles.fieldName}>Link:</Text>
+              <Text
+                style={{
+                  color: Colors.darkred,
+                  marginTop: responsiveHeight(0.2),
+                }}
+                onPress={() => {
+                  Linking.openURL(data.link);
+                }}
+              >
+                {data.link}
+              </Text>
             </View>
-            <View style={styles.mainContainer}>
-              <Text style={styles.fieldName}>Description:</Text>
-              <Text>{data.description}</Text>
-            </View>
-            {!data.link ? null : (
-              <View style={styles.LinkContainer}>
-                <Text style={styles.fieldName}>Link:</Text>
-                <Text
-                  style={{
-                    color: Colors.darkred,
-                    marginTop: responsiveHeight(0.2),
-                  }}
-                  onPress={() => {
-                    Linking.openURL(data.link);
-                  }}
-                >
-                  {data.link}
-                </Text>
-              </View>
-            )}
-          </BorderCard>
-        </Pressable>
+          )}
+        </BorderCard>
       </View>
     );
   }

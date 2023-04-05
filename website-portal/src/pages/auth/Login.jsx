@@ -13,12 +13,17 @@ function Login(props) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const regex = /^[a-z][a-z0-9._]*@gmail\.com$/i;
 
-    try {
-      await logIn(email, password);
-      navigate("/");
-    } catch (error) {
-      console.log(error.message);
+    if (regex.test(email)) {
+      try {
+        await logIn(email, password);
+        navigate("/");
+      } catch (error) {
+        alert(error.message);
+      }
+    } else {
+      alert("Invalid email");
     }
   };
   return (

@@ -17,7 +17,7 @@ import Colors from "../constants/Colors";
 import Card from "../components/Card";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { doc, setDoc, deleteDoc, addDoc, collection } from "firebase/firestore";
 import { app } from "../firebase";
 import PrimaryButton from "../components/PrimaryButton";
 export default function ReportStudent({ route, navigation }) {
@@ -30,6 +30,8 @@ export default function ReportStudent({ route, navigation }) {
     if (reason.length < 50) {
       setError("Mention Reason in detail.");
     } else {
+      const docRef = doc(db, "activedoubts", route.params.data.uid);
+      await deleteDoc(docRef);
       await addDoc(collection(db, "reportedstudents"), {
         batchYear: route.params.data.batchYear,
         branch: route.params.data.branch,

@@ -1,10 +1,7 @@
-import { StyleSheet, SafeAreaView} from 'react-native';
-import NavigationBar from './Navigation/NavigationBar';
+import { StyleSheet, SafeAreaView } from "react-native";
+import NavigationBar from "./Navigation/NavigationBar";
 import InternetConnectionAlert from "react-native-internet-connection-alert";
 import { StatusBar } from "expo-status-bar";
-
-
-
 
 export default function App() {
   return (
@@ -13,7 +10,7 @@ export default function App() {
         console.log("Connection State: ", connectionState);
       }}
     >
-    <SafeAreaView style={styles.rootScreen}>
+      <SafeAreaView style={styles.rootScreen}>
         <StatusBar style="auto" />
         <NavigationBar />
       </SafeAreaView>

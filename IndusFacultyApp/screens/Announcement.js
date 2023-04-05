@@ -11,6 +11,8 @@ import {
   ToastAndroid,
   Platform,
   AlertIOS,
+  BackHandler,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -24,7 +26,8 @@ import { getFirestore } from "firebase/firestore";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { app } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export default function Announcement() {
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+export default function Announcement({ navigation }) {
   const data = [
     { key: "1", value: "Students", selected },
     { key: "2", value: "Faculties" },
@@ -38,7 +41,6 @@ export default function Announcement() {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [dateText, setDateText] = useState("No Date");
-  const [todayDateText, settodayDateText] = useState("No Date");
 
   const [lastDateMode, setLastDateMode] = useState("date");
   const [lastDateShow, setLastDateShow] = useState(false);
@@ -66,14 +68,7 @@ export default function Announcement() {
       (tempDate.getMonth() + 1) +
       "/" +
       tempDate.getFullYear();
-    let todayDate = new Date();
-    let tDate =
-      todayDate.getDate() +
-      "/" +
-      (todayDate.getMonth() + 1) +
-      "/" +
-      todayDate.getFullYear();
-    settodayDateText(tDate);
+
     setDateText(fDate);
   };
   const lasDateShowMode = (currentMode) => {
@@ -93,11 +88,22 @@ export default function Announcement() {
       tempDate.getFullYear();
     setlastDateText(fDate);
   };
+  function clearDate() {
+    setDate(new Date());
+    setDateText("No Date");
+    setLastDate(new Date());
+    setlastDateText("No Date");
+  }
   const addEvent = async () => {
-    if (dateText < todayDateText) {
+    let todayDate = new Date();
+    let a = dateText.split("/");
+    let eventDate = new Date(a[2], a[1], a[0]);
+    let b = lastDateText.split("/");
+    let regDate = new Date(b[2], b[1], b[0]);
+    if (eventDate < todayDate) {
       setError("Previous date is not allowed");
-    } else if (dateText < lastDateText) {
-      setError("Registration Date can't be a Previous date.");
+    } else if (eventDate < regDate) {
+      setError("Registration Date can't be an After date.");
     } else if (dateText === "No Date") {
       setError("Please Enter Valid Date!!");
     } else if (title.length < 15) {
@@ -128,10 +134,7 @@ export default function Announcement() {
         fname: user.fname,
         fid: user.fid,
       }).then(() => {
-        setDate(new Date());
-        setDateText("No Date");
-        setLastDate(new Date());
-        setlastDateText("No Date");
+        clearDate();
         setLink("");
         setTitle("");
         setDesc("");
@@ -144,8 +147,20 @@ export default function Announcement() {
       });
     }
   };
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
   return (
-    <ScrollView style={styles.rootContainer}>
+    <KeyboardAwareScrollView style={styles.rootContainer}>
       <View style={styles.mainContainer}>
         <View style={styles.container}>
           <View style={styles.textContainer}>
@@ -203,7 +218,9 @@ export default function Announcement() {
             />
           )}
         </View>
-
+        <Pressable onPress={() => clearDate()}>
+          <Text style={styles.clear}>Clear Date</Text>
+        </Pressable>
         <TextInputBoxField
           title={"Title"}
           lines={1}
@@ -264,7 +281,7 @@ export default function Announcement() {
           eventDateData="12/08/23"
         ></GreyCard>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -303,6 +320,11 @@ const styles = StyleSheet.create({
   pastEventText: {
     fontSize: responsiveFontSize(2),
     fontWeight: "bold",
+  },
+  clear: {
+    textAlign: "center",
+    color: Colors.darkred,
+    fontSize: responsiveFontSize(2),
   },
   container: {
     flex: 1,
