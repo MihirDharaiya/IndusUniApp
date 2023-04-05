@@ -64,10 +64,12 @@ const handleReset = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white
+    flex: 1,
+    backgroundColor: Colors.white,
   },
   logoContainer: {
     alignItems: "center",
+    marginTop: responsiveHeight(3)
   },
   logo: {
     width: responsiveWidth(70),

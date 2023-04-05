@@ -215,7 +215,7 @@ signOut(auth).then(() => {
           onPress={() => {
             Linking.openURL(
               "mailto: mihirdharaiya.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Student Application&body=" +
-                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${id} ${"\n"} ${branch}, ${position}`
+                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${branch}, ${batchYear}`
             );
           }}
         >

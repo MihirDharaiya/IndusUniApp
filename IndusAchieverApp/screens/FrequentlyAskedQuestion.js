@@ -41,6 +41,7 @@ container: {
 },
 header: {
   marginBottom: 20,
+  marginTop: responsiveHeight(3)
 },
 title: {
   fontSize: responsiveFontSize(2.7),
