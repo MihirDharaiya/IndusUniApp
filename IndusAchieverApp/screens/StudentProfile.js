@@ -123,7 +123,9 @@ export default function StudentProfile({route,navigation}) {
                     }}/>
                     <View style={styles.roundButtonView}>
                     <RoundButton
-                    onPress={()=>{Linking.openURL(route.params.data.github)}}
+                    onPress={()=>{
+                      route.params.data.github != "" ? 
+                      Linking.openURL(route.params.data.github):  alert("User Profile is Incomplete !!")}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -141,7 +143,9 @@ export default function StudentProfile({route,navigation}) {
                     color={Colors.white}
                     ></RoundButton>
                     <RoundButton
-                    onPress={()=>{Linking.openURL(route.params.data.linkedIn)}}
+                    onPress={()=>{
+                      route.params.data.linkedIn != "" ? 
+                      Linking.openURL(route.params.data.linkedIn):  alert("User Profile is Incomplete !!")}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -150,7 +154,9 @@ export default function StudentProfile({route,navigation}) {
                     color={Colors.white}
                     ></RoundButton>
                     <RoundButton
-                    onPress={()=>{Linking.openURL(route.params.data.instagram)}}
+                    onPress={()=>{
+                      route.params.data.instagram != "" ? 
+                      Linking.openURL(route.params.data.instagram):  alert("User Profile is Incomplete !!")}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -159,7 +165,9 @@ export default function StudentProfile({route,navigation}) {
                     color={Colors.white}
                     ></RoundButton>
                     <RoundButton
-                    onPress={()=>{Linking.openURL(route.params.data.twitter)}}
+                    onPress={()=>{
+                      route.params.data.twitter != "" ? 
+                      Linking.openURL(route.params.data.twitter):  alert("User Profile is Incomplete !!")}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -190,7 +198,8 @@ export default function StudentProfile({route,navigation}) {
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-        backgroundColor: Colors.white
+        backgroundColor: Colors.white,
+        marginTop: responsiveHeight(1),
     },
     image:{
         justifyContent: 'center',

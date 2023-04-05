@@ -3,7 +3,7 @@ import {
     responsiveWidth,
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
-import { StyleSheet, Text, View, ScrollView, FlatList } from "react-native";
+import { StyleSheet, Text, View, ScrollView, FlatList,BackHandler } from "react-native";
 import {React, useEffect, useState} from "react";
 import Colors from "../constants/Colors";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -15,7 +15,7 @@ import {app} from '../firebase/firebase';
 
 
   
-  export default function PastDoubts() {
+  export default function PastDoubts({navigation}) {
     const auth=getAuth();
     const useruid = auth.currentUser.uid;
     const [doubts,setDoubts] = useState([]);
@@ -35,6 +35,16 @@ import {app} from '../firebase/firebase';
     }
     useEffect(() => {
       getDoubts()
+      const backAction = () => {
+        navigation.navigate("HomeScreen")
+        return true;
+      };
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
+    
+      return () => backHandler.remove();
     },[])
     function card(data) {
       return (

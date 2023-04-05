@@ -39,6 +39,7 @@ import VerifyEmail from "../screens/VerifyEmail";
 import ViewDetails from "../screens/ViewDetails";
 import SuccessPage from "../screens/SuccessPage";
 import Icons from "react-native-vector-icons/FontAwesome";
+import ReportStudent from '../screens/ReportStudent'
 
 
   const Stack = createNativeStackNavigator();
@@ -57,12 +58,16 @@ import Icons from "react-native-vector-icons/FontAwesome";
     const getUserData = async () => {
       const a = await getDoc(doc(db, "users", useruid));
       AsyncStorage.setItem("users", JSON.stringify(a.data()));
+      // console.log("In get user data",a.data());
+      // console.log(useruid);
     };
   
     useEffect(() => {
       async function fetchData() {
         await AsyncStorage.removeItem("users");
         let user = await AsyncStorage.getItem("users");
+        user = JSON.parse(user);
+        // console.log(typeof user, user);
         if (!user) {
           getUserData();
         }
@@ -169,6 +174,7 @@ import Icons from "react-native-vector-icons/FontAwesome";
               fontSize: responsiveFontSize(2.3),
               color: Colors.white,
             },
+            headerTitleAlign: "center",
             headerTintColor: Colors.white,
           })}
         >
@@ -210,7 +216,7 @@ import Icons from "react-native-vector-icons/FontAwesome";
           <Stack.Screen
             name="StudentProfile"
             component={StudentProfile}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="CreateDoubtScreen"
@@ -250,7 +256,12 @@ import Icons from "react-native-vector-icons/FontAwesome";
           <Stack.Screen
             name="ViewDetails"
             component={ViewDetails}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="ReportStudent"
+            component={ReportStudent}
+            options={{ headerShown: true }}
           />
           <Stack.Screen name="Notifications" component={Notification} />
         </Stack.Navigator>

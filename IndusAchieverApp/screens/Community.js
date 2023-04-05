@@ -1,4 +1,4 @@
-import { StyleSheet,View, Button, Text, FlatList, Pressable, Image} from 'react-native'
+import { StyleSheet,View, Button, Text, FlatList, Pressable, Image,BackHandler} from 'react-native'
 import {React,useState,useEffect} from 'react'
 import FlexedButtons from '../components/FlexedButtons'
 import PrimaryButton from '../components/PrimaryButton'
@@ -31,6 +31,16 @@ export default function Community({navigation}) {
   }
   useEffect(() => {
     getUsers()
+    const backAction = () => {
+      navigation.navigate("HomeScreen")
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+  
+    return () => backHandler.remove();
   },[])
 
   const toggleSections = () => {
@@ -102,7 +112,7 @@ export default function Community({navigation}) {
 const styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
-      backgroundColor: Colors.white
+      backgroundColor: Colors.white,
     },
     yearStyle:{
       color: Colors.darkred,

@@ -9,26 +9,28 @@ import {
   TouchableHighlight,
   ScrollView,
   Image,
-  Linking
+  Linking,
+  BackHandler
 } from "react-native";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { getAuth, signOut } from "firebase/auth";
 import {getFirestore, getDoc, doc, query, onSnapshot, setDoc} from 'firebase/firestore';
 import { getStorage,ref,uploadBytes } from "firebase/storage";
 import {app} from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserPermissions from "../utilities/UserPermissions.js";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Profile({navigation}) {
 
 const db = getFirestore(app);
 const auth=getAuth();
 // const storage = getStorage(app);
-
+const isFocused = useIsFocused();
 const [name, setName] = useState("");   
 const [email, setEmail] = useState("");
 const [enrollnmentNumber, setenrollnmentNumber] = useState("");  
@@ -89,9 +91,20 @@ const clearData = () => {
 //     getUser();
 // },[]);
 useEffect(()=>{
+  if (isFocused) {
   showData();
   clearData();
-},[]);
+  const backAction = () => {
+    navigation.navigate("HomeScreen")
+    return true;
+  };
+  const backHandler = BackHandler.addEventListener(
+    'hardwareBackPress',
+    backAction,
+  );
+  return () => backHandler.remove();
+  }
+},[isFocused]);
 
 const onSignOut= async() => {
 const auth = getAuth();
@@ -105,6 +118,7 @@ signOut(auth).then(() => {
   }
   return (
     <ScrollView style={styles.rootContainer}>
+      <View>
       <View style={styles.imageContainer}>
         <TouchableHighlight
           style={[
@@ -192,32 +206,35 @@ signOut(auth).then(() => {
           enteredValue={batchYear}
         />
       </View>
-      <View style={styles.buttonOuterContainer}>
+      <View style={styles.signOutButtonContainer}>
+        <View style={{width:responsiveWidth(50)}}>
+        <PrimaryButton
+          iconVisible={true}
+          iconName="envelope"
+          size={responsiveFontSize(3)}
+          onPress={() => {
+            Linking.openURL(
+              "mailto: mihirdharaiya.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Student Application&body=" +
+                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${id} ${"\n"} ${branch}, ${position}`
+            );
+          }}
+        >
+          Feedback
+        </PrimaryButton>
+        </View>
+        <View style={{width:responsiveWidth(45)}}>
         <SecondaryButton
           iconVisible={true}
           iconName="sign-out-alt"
           size={responsiveFontSize(3)}
           color={Colors.blue}
           textStyle={{ color: Colors.blue }}
-          onPress={()=> onSignOut()}
+          onPress={() => onSignOut()}
         >
           Log Out
         </SecondaryButton>
-        <SecondaryButton
-          iconVisible={true}
-          iconName="envelope"
-          size={responsiveFontSize(3)}
-          color={Colors.blue}
-          textStyle={{ color: Colors.blue }}
-          onPress={() => {
-            Linking.openURL(
-              "mailto: mihirdharaiya.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Student Application&body=" +
-                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
-            );
-          }}
-        >
-          FeedBack
-        </SecondaryButton>
+        </View>
+      </View>
       </View>
     </ScrollView>
   );
@@ -264,12 +281,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveWidth(10),
   },
   buttonOuterContainer: {
-    borderRadius: 17,
-    margin: 8,
-    alignItems: "center",
+    paddingHorizontal: 16,
+    // alignItems: "center",
     marginTop: 16,
     flexDirection: 'row',
-    justifyContent: 'center'
+    // justifyContent: 'center',
   },
   editButtonInnerContainer: {
     width: responsiveWidth(70),
@@ -277,6 +293,13 @@ const styles = StyleSheet.create({
   },
   editPhone: {
     flexDirection: 'row'
+  },
+  signOutButtonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 16,
+    flexDirection: "row",
+    marginHorizontal: 10,
   },
   editIcon: {
     // paddingTop: 10

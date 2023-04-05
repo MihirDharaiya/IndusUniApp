@@ -1,15 +1,23 @@
-import { StyleSheet, SafeAreaView,  StatusBar, Image, View, KeyboardAvoidingView} from 'react-native';
-import NoInternet from './screens/NoInternet';
-import SuccessPage from './screens/SuccessPage';
+import { StyleSheet, SafeAreaView} from 'react-native';
 import NavigationBar from './Navigation/NavigationBar';
+import InternetConnectionAlert from "react-native-internet-connection-alert";
+import { StatusBar } from "expo-status-bar";
+
+
 
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.rootScreen} >
-    {/* <SuccessPage></SuccessPage> */}
-    <NavigationBar></NavigationBar>
-    </SafeAreaView>
+    <InternetConnectionAlert
+      onChange={(connectionState) => {
+        console.log("Connection State: ", connectionState);
+      }}
+    >
+    <SafeAreaView style={styles.rootScreen}>
+        <StatusBar style="auto" />
+        <NavigationBar />
+      </SafeAreaView>
+    </InternetConnectionAlert>
   );
 }
 
@@ -17,5 +25,6 @@ const styles = StyleSheet.create({
   rootScreen: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    background: "#fff",
   },
 });

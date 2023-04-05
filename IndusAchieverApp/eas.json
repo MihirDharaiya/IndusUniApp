@@ -1,14 +1,28 @@
 {
-    "cli": {
-      "version": ">= 0.34.0"
+  "cli": {
+    "version": ">= 3.8.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
+      }
     },
-    "submit": {
-      "production": {
-        "android": {
-          "serviceAccountKeyPath": "../path/to/api-xxx-yyy-zzz.json",
-          "track": "internal"
-        }
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    },
+    "production": {
+      "ios": {
+        "resourceClass": "m-medium"
       }
     }
+  },
+  "submit": {
+    "production": {}
   }
-  
+}

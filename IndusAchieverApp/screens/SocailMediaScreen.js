@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView,ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
 import {
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     },
     secondButton: {
         width: responsiveWidth(35),
-        height: responsiveHeight(8), 
+        height: responsiveHeight(20), 
         marginTop: responsiveHeight(3)
     }
 })

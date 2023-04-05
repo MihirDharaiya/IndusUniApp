@@ -39,6 +39,9 @@ import {
               <Text style={styles.subText}>
                 Follow the Link in the Email to Verify the register email ID.
               </Text>
+              <Text style={styles.subText}>
+                Please check Spam folder if not received in the inbox.
+              </Text>
             </View>
             <PrimaryButton
               onPress={() => {
@@ -55,7 +58,6 @@ import {
   
   const styles = StyleSheet.create({
     rootContainer: {
-      marginVertical: 16,
       flex: 1,
       backgroundColor: Colors.white,
     },
@@ -67,7 +69,7 @@ import {
       marginBottom: responsiveHeight(5),
     },
     logo: {
-      width: responsiveWidth(70),
+      width: responsiveWidth(90),
       height: responsiveWidth(35),
       marginVertical: 15,
     },

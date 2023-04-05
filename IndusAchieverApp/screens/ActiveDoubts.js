@@ -114,30 +114,21 @@ export default function ActiveDoubts({ navigation }) {
   useEffect(() => {
     getResolvedDoubt();
     getUnResolvedDoubt();
+    const backAction = () => {
+      navigation.navigate("HomeScreen")
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+  
+    return () => backHandler.remove();
+    
   }, [isFocused]);
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const onBackPress = () => {
-  //       navigation.navigate('HomeScreen');
-  //       return true;
-  //     };
-  //     BackHandler.addEventListener(
-  //       'hardwareBackPress',
-  //       onBackPress
-  //     );
-
-  //     return () => {
-  //       BackHandler.removeEventListener(
-  //         'hardwareBackPress',
-  //         onBackPress
-  //       );
-  //     };
-  //   }, []),
-  // );
-
   function card(data, resolveDoubt) {
     return (
-      <View>
+      <View style={{flex:1}}>
         <BorderCard>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Faculty Name:</Text>
@@ -255,7 +246,7 @@ export default function ActiveDoubts({ navigation }) {
     );
   }
   return (
-    <View style={styles.rootContainer}>
+    <ScrollView style={styles.rootContainer}>
       <View>
         <View style={styles.titleView}>
           <Icon
@@ -283,7 +274,7 @@ export default function ActiveDoubts({ navigation }) {
           ></FlatList>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
