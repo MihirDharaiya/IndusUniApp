@@ -19,7 +19,7 @@ useEffect(() => {
       setLogin(false);
       navigation.navigate("LoginScreen");
     }
-    // console.log("user", isLogiIn);
+    console.log("user", isLogiIn);
   });
 }, [app]);
 

@@ -34,16 +34,16 @@ import {app} from '../firebase/firebase';
       })
     }
     useEffect(() => {
-      getDoubts()
+      getDoubts();
       const backAction = () => {
-        navigation.navigate("HomeScreen")
+        navigation.navigate("HomeScreen");
         return true;
       };
       const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        backAction,
+        "hardwareBackPress",
+        backAction
       );
-    
+  
       return () => backHandler.remove();
     },[])
     function card(data) {
@@ -56,16 +56,18 @@ import {app} from '../firebase/firebase';
             <TextInputBoxField title={'Reply:'} editable={false} enteredValue={data.reply} multiline={true} textStyle={{color:Colors.darkred}}></TextInputBoxField>
 
           </View>
-          <View style={styles.headingView}>
+          <View style={{flexDirection:'row',flex:1,justifyContent: 'space-between'}}>
+          <View style={styles.leftView}>
             <Text style={styles.headingText}>Raised On:</Text>
-            <Text style={styles.headingText}>Resolved On:</Text>
-          </View>
-          <View style={styles.answerView}>
             <Text style={styles.answerText}>{data.raisedDate}</Text>
-            <Text style={styles.answerText2}>{data.resolvedDate}</Text>
+          </View>
+          <View style={styles.rightView}>
+          <Text style={styles.headingText}>Resolved On:</Text>
+            <Text style={styles.answerText}>{data.resolvedDate}</Text>
+          </View>
           </View>
           <View style={styles.facultyView}>
-            <Text style={styles.facultyText}><Text style={{fontWeight: '700', color: Colors.black}}>By:</Text> {data.fname}</Text>
+            <Text style={styles.facultyText}><Text style={{fontWeight: '700', color: Colors.black}}>By - </Text> {data.fname}</Text>
           </View>
         </BorderCard>
        </View>
@@ -113,39 +115,21 @@ import {app} from '../firebase/firebase';
       width: responsiveWidth(80),
       // flexWrap: 'wrap'
     },
-    headingView: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingBottom: responsiveHeight(0.5),
-      paddingLeft: responsiveWidth(0.6),
-      paddingRight: responsiveWidth(0.3),
-      paddingTop: responsiveHeight(2)
+    leftView:{
+      marginTop: responsiveHeight(1),
     },
-    headingText: {
-      fontWeight: '700',
-      fontSize: responsiveFontSize(2)
+    rightView:{
+      marginTop: responsiveHeight(1),
+      justifyContent: 'center'
     },
-    answerView:{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingLeft: responsiveWidth(0.6),
-      paddingRight: responsiveWidth(0.3),
-      paddingBottom: responsiveHeight(1)
-    },
-    answerText: {
-      fontWeight: '700',
+    headingText:{
       fontSize: responsiveFontSize(2),
-      color:Colors.grey,
-      width: responsiveWidth(50),
-      flexWrap: 'wrap'
+      fontWeight: '600'
     },
-    answerText2: {
-      fontWeight: '700',
+    answerText:{
       fontSize: responsiveFontSize(2),
-      color:Colors.grey,
-      width: responsiveWidth(50),
-      flexWrap: 'wrap',
-      marginLeft: responsiveWidth(7)
+      fontWeight: '600',
+      color: Colors.lightgrey
     },
     nameView:{
       flexDirection: 'row',
@@ -160,7 +144,7 @@ import {app} from '../firebase/firebase';
     facultyText:{
       fontWeight: '700',
       fontSize: responsiveFontSize(2),
-      color:Colors.grey,
+      color:Colors.navyblue,
       width: responsiveWidth(50),
       flexWrap: 'wrap',
       textAlign: 'center',
@@ -172,7 +156,6 @@ import {app} from '../firebase/firebase';
       fontSize: responsiveFontSize(2),
       textAlign: 'center',
       alignItems: 'center',
-      
     }
   });
   

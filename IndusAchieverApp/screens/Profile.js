@@ -16,21 +16,17 @@ import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
-import {getFirestore, getDoc, doc, query, onSnapshot, setDoc} from 'firebase/firestore';
-import { getStorage,ref,uploadBytes } from "firebase/storage";
+import {getFirestore} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UserPermissions from "../utilities/UserPermissions.js";
-import { useIsFocused } from "@react-navigation/native";
 
 export default function Profile({navigation}) {
 
 const db = getFirestore(app);
 const auth=getAuth();
-// const storage = getStorage(app);
-const isFocused = useIsFocused();
+
 const [name, setName] = useState("");   
 const [email, setEmail] = useState("");
 const [enrollnmentNumber, setenrollnmentNumber] = useState("");  
@@ -38,29 +34,10 @@ const [branch, setBranch] = useState("");
 const [batchYear, setBatchYear] = useState("");  
 const [image, setImage] = useState(null);
 
-  // const selectImage = async () => {
-  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //   if (status !== 'granted') {
-  //     alert('Sorry, we need camera roll permissions to make this work!');
-  //     return;
-  //   }
-
-  //   const result = await ImagePicker.launchImageLibraryAsync();
-  //   if (!result.canceled) {
-  //     setImage(result.uri);
-  //     console.log(result.uri);
-  //     uploadImage(result.uri);
-  //   }
-  // };
-  // const uploadImage = async (uri) => {
-  //   const storageRef = ref(uri);
-  //   return storageRef
-  // };
-
 const showData = async () => {
 let user = await AsyncStorage.getItem('users');
     user = JSON.parse(user);
-    console.log(typeof user, user);
+    // console.log(typeof user, user);
     setName(user.name);
     setEmail(user.email);
     setenrollnmentNumber(user.enrollnmentNumber);
@@ -71,40 +48,20 @@ const clearData = () => {
     AsyncStorage.clear();
   }
 
-// useEffect(()=>{
-//   const getUser = async () => {
-//     const docRef = doc(db, "users",auth.currentUser.uid);
-//     const docSnap = await getDoc(docRef);
-    
-//     if (docSnap.exists()) {
-//       setName(docSnap.data().name)
-//       setEmail(docSnap.data().email)
-//       setenrollnmentNumber(docSnap.data().enrollnmentNumber)
-//       setBatchYear(docSnap.data().batchYear)
-//       setBranch(docSnap.data().branch)
-  
-//     } else {
-//       // doc.data() will be undefined in this case
-//       console.log("No such document!");
-//     }
-//     }
-//     getUser();
-// },[]);
 useEffect(()=>{
-  if (isFocused) {
   showData();
   clearData();
   const backAction = () => {
-    navigation.navigate("HomeScreen")
+    navigation.navigate("HomeScreen");
     return true;
   };
   const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress',
-    backAction,
+    "hardwareBackPress",
+    backAction
   );
+
   return () => backHandler.remove();
-  }
-},[isFocused]);
+},[]);
 
 const onSignOut= async() => {
 const auth = getAuth();
@@ -118,7 +75,6 @@ signOut(auth).then(() => {
   }
   return (
     <ScrollView style={styles.rootContainer}>
-      <View>
       <View style={styles.imageContainer}>
         <TouchableHighlight
           style={[
@@ -133,7 +89,7 @@ signOut(auth).then(() => {
         </TouchableHighlight>
       </View>
       <View style={styles.editButtonOuterContainer}>
-        <View>
+        {/* <View>
           <PrimaryButton
             textNotVisible={true}
             iconVisible={true}
@@ -142,7 +98,7 @@ signOut(auth).then(() => {
             size={responsiveFontSize(2.3)}
             color={Colors.white}
           ></PrimaryButton>
-        </View>
+        </View> */}
         <View>
           <PrimaryButton
           textNotVisible={true}
@@ -166,6 +122,7 @@ signOut(auth).then(() => {
           placeholder="Name"
           editable={false}
           enteredValue={name}
+          textStyle={{color: Colors.black}}
         />
         <TextInputField
           title="Email:"
@@ -176,6 +133,7 @@ signOut(auth).then(() => {
           editable={false}
           enteredValue={email}
           multiline={true}
+          textStyle={{color: Colors.black}}
         />
         <TextInputField
           title="Enrollnment Number:"
@@ -186,6 +144,7 @@ signOut(auth).then(() => {
           style={{ marginRight: 3 }}
           editable={false}
           enteredValue={enrollnmentNumber}
+          textStyle={{color: Colors.black}}
         />
         <TextInputField
           title="Branch:"
@@ -195,6 +154,7 @@ signOut(auth).then(() => {
           placeholder="Department name"
           editable={false}
           enteredValue={branch}
+          textStyle={{color: Colors.black}}
         />
         <TextInputField
           title="Batch Year:"
@@ -204,37 +164,39 @@ signOut(auth).then(() => {
           placeholder="2017"
           editable={false}
           enteredValue={batchYear}
+          textStyle={{color: Colors.black}}       
         />
       </View>
-      <View style={styles.signOutButtonContainer}>
-        <View style={{width:responsiveWidth(50)}}>
-        <PrimaryButton
+      <View style={styles.buttonOuterContainer}>
+        <View style={{width: responsiveWidth(50)}}>
+      <PrimaryButton
           iconVisible={true}
           iconName="envelope"
           size={responsiveFontSize(3)}
+          color={Colors.white}
+          textStyle={{ color: Colors.white , fontSize: responsiveFontSize(2.5), marginVertical: 2.5}}
           onPress={() => {
             Linking.openURL(
               "mailto: mihirdharaiya.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Student Application&body=" +
-                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${branch}, ${batchYear}`
+                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
             );
           }}
         >
-          Feedback
+          FeedBack
         </PrimaryButton>
         </View>
-        <View style={{width:responsiveWidth(45)}}>
+        <View style={{width: responsiveWidth(45)}}>
         <SecondaryButton
           iconVisible={true}
           iconName="sign-out-alt"
           size={responsiveFontSize(3)}
           color={Colors.blue}
-          textStyle={{ color: Colors.blue }}
-          onPress={() => onSignOut()}
+          textStyle={{ color: Colors.blue, fontSize: responsiveFontSize(2.4) }}
+          onPress={()=> onSignOut()}
         >
           Log Out
         </SecondaryButton>
         </View>
-      </View>
       </View>
     </ScrollView>
   );
@@ -277,15 +239,15 @@ const styles = StyleSheet.create({
 
   editButtonOuterContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     paddingHorizontal: responsiveWidth(10),
   },
   buttonOuterContainer: {
     paddingHorizontal: 16,
-    // alignItems: "center",
+    alignItems: "center",
     marginTop: 16,
     flexDirection: 'row',
-    // justifyContent: 'center',
+    justifyContent: 'center'
   },
   editButtonInnerContainer: {
     width: responsiveWidth(70),
@@ -293,13 +255,6 @@ const styles = StyleSheet.create({
   },
   editPhone: {
     flexDirection: 'row'
-  },
-  signOutButtonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 16,
-    flexDirection: "row",
-    marginHorizontal: 10,
   },
   editIcon: {
     // paddingTop: 10

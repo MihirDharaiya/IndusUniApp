@@ -1,19 +1,15 @@
-import { StyleSheet, SafeAreaView } from "react-native";
-import NavigationBar from "./Navigation/NavigationBar";
-import InternetConnectionAlert from "react-native-internet-connection-alert";
+import { StyleSheet, SafeAreaView} from 'react-native';
+import NavigationBar from './Navigation/NavigationBar';
 import { StatusBar } from "expo-status-bar";
+import InternetConnectionAlert from "react-native-internet-connection-alert";
 
 export default function App() {
   return (
-    <InternetConnectionAlert
-      onChange={(connectionState) => {
-        console.log("Connection State: ", connectionState);
-      }}
-    >
-      <SafeAreaView style={styles.rootScreen}>
-        <StatusBar style="auto" />
-        <NavigationBar />
-      </SafeAreaView>
+    <InternetConnectionAlert>
+    <SafeAreaView style={styles.rootScreen}>
+    <StatusBar style="auto" />
+    <NavigationBar></NavigationBar>
+    </SafeAreaView>
     </InternetConnectionAlert>
   );
 }

@@ -18,6 +18,7 @@ import {
   limit,
   query,
   where,
+  onSnapshot
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";
@@ -62,23 +63,37 @@ const FacultyList = ({ navigation }) => {
       collection(db, "faculty"),
       where("fbranch", "==", branch)
     );
-    const docSnap = await getDocs(docRef);
-    var arr = [];
-    docSnap.forEach((doc) => {
-      arr.push(doc.data());
+    const un = onSnapshot(docRef, (querySnapshot) => {
+      var arr = [];
+      querySnapshot.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      setFaculty(arr);
     });
-    setFaculty(arr);
+    // const docSnap = await getDocs(docRef);
+    // var arr = [];
+    // docSnap.forEach((doc) => {
+    //   arr.push(doc.data());
+    // });
+    // setFaculty(arr);
   }
 
   async function getFaculty() {
     const a = await getDoc(doc(db, "users", useruid));
     const docRef = query(collection(db, "faculty"));
-    const docSnap = await getDocs(docRef);
-    var arr = [];
-    docSnap.forEach((doc) => {
-      arr.push(doc.data());
+    const un = onSnapshot(docRef, (querySnapshot) => {
+      var arr = [];
+      querySnapshot.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      setFaculty(arr);
     });
-    setFaculty(arr);
+    // const docSnap = await getDocs(docRef);
+    // var arr = [];
+    // docSnap.forEach((doc) => {
+    //   arr.push(doc.data());
+    // });
+    // setFaculty(arr);
   }
   useEffect(() => {
     getFacultyBranch();
@@ -176,7 +191,7 @@ const FacultyList = ({ navigation }) => {
             onPress={() => {
               Linking.openURL(
                 "mailto: indusuniapp@gmail.com?subject=Faculty Not Found in the Provided List&body=" +
-                  `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
+                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
               );
             }}
           >
@@ -190,7 +205,7 @@ const FacultyList = ({ navigation }) => {
             renderItem={({ item }) => card(item)}
             keyExtractor={(data) => data.fid}
             initialNumToRender={1}
-            style={{ marginBottom: responsiveHeight(20) }}
+            style={{ marginBottom: responsiveHeight(23) }}
           ></FlatList>
         </View>
       )}
@@ -247,7 +262,7 @@ const styles = StyleSheet.create({
     paddingLeft: responsiveWidth(2),
   },
   titleView: {
-    paddingTop: responsiveHeight(2),
+    paddingTop: responsiveHeight(5.5),
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

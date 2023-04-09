@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView,ToastAndroid } from 'react-native'
+import { StyleSheet, Text, View, ScrollView,ToastAndroid,Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
 import {
@@ -7,10 +7,7 @@ import {
     responsiveFontSize,
   } from "react-native-responsive-dimensions";
 import Colors from '../constants/Colors';
-import AltTextField from '../components/AltTextField';
-import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
-import GreyCard from '../components/GreyCard';
 import { getAuth} from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
 import {doc,setDoc, addDoc, collection, updateDoc,getDoc} from 'firebase/firestore';
@@ -135,6 +132,15 @@ const dataExist = async() =>{
                 <Text>{skill}</Text>
               </GreyCard>
             </View> */}
+            <View style={styles.suggestionView}>
+                    <Text style={styles.suggestionText}>Add Skills</Text>
+                </View>
+                <View style={styles.containerImage}>
+                <Image
+                  style={styles.image2}
+                  source={require("../assets/images/coming_soon.gif")}
+                />
+              </View>
         <View style={styles.secondButton}>
         <SecondaryButton
         iconVisible={true}
@@ -164,6 +170,22 @@ const styles = StyleSheet.create({
         padding: 20,
         fontSize: responsiveFontSize(3),
         color:Colors.grey
+    },
+    image2:{
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: responsiveHeight(30),
+      width: responsiveHeight(40),
+      borderWidth:1
+    },
+    suggestionText:{
+      color: Colors.navyblue,
+      fontSize: responsiveFontSize(3),
+      fontWeight: 'bold'
+    },
+    suggestionView:{
+        margin: 10,
+        alignItems: 'center'
     },
     inputField: {
         justifyContent: 'center',

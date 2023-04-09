@@ -39,8 +39,8 @@ import {
               <Text style={styles.subText}>
                 Follow the Link in the Email to Verify the register email ID.
               </Text>
-              <Text style={styles.subText}>
-                Please check Spam folder if not received in the inbox.
+              <Text style={styles.subText2}>
+              Please Check Spam folder if not received in the inbox.
               </Text>
             </View>
             <PrimaryButton
@@ -58,6 +58,7 @@ import {
   
   const styles = StyleSheet.create({
     rootContainer: {
+      marginVertical: 16,
       flex: 1,
       backgroundColor: Colors.white,
     },
@@ -67,9 +68,10 @@ import {
     logoContainer: {
       alignItems: "center",
       marginBottom: responsiveHeight(5),
+      marginTop: responsiveHeight(5),
     },
     logo: {
-      width: responsiveWidth(90),
+      width: responsiveWidth(95),
       height: responsiveWidth(35),
       marginVertical: 15,
     },
@@ -95,5 +97,11 @@ import {
       fontSize: responsiveFontSize(2.3),
       textAlign: "center",
       color: Colors.grey,
+    },
+    subText2: {
+      fontSize: responsiveFontSize(2.3),
+      textAlign: "center",
+      color: Colors.grey,
+      paddingTop: 10
     },
   });

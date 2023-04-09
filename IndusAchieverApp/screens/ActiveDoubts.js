@@ -115,20 +115,19 @@ export default function ActiveDoubts({ navigation }) {
     getResolvedDoubt();
     getUnResolvedDoubt();
     const backAction = () => {
-      navigation.navigate("HomeScreen")
+      navigation.navigate("HomeScreen");
       return true;
     };
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      "hardwareBackPress",
+      backAction
     );
-  
     return () => backHandler.remove();
-    
   }, [isFocused]);
+
   function card(data, resolveDoubt) {
     return (
-      <View style={{flex:1}}>
+      <View>
         <BorderCard>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Faculty Name:</Text>
@@ -164,8 +163,9 @@ export default function ActiveDoubts({ navigation }) {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-evenly",
+                  justifyContent: "space-around",
                   flex: 1,
+                  
                 }}
               >
                 <Pressable
@@ -177,12 +177,12 @@ export default function ActiveDoubts({ navigation }) {
                     <Icon
                       name="times-circle"
                       color={Colors.darkred}
-                      size={responsiveFontSize(2.5)}
+                      size={responsiveFontSize(2.2)}
                     />
                     <Text
                       style={{
                         color: Colors.darkred,
-                        fontSize: responsiveFontSize(2.5),
+                        fontSize: responsiveFontSize(2.3),
                         fontWeight: "500",
                         paddingLeft: responsiveWidth(1),
                       }}
@@ -200,12 +200,12 @@ export default function ActiveDoubts({ navigation }) {
                     <Icon
                       name="check-circle"
                       color={Colors.green}
-                      size={responsiveFontSize(2.5)}
+                      size={responsiveFontSize(2.2)}
                     />
                     <Text
                       style={{
                         color: Colors.green,
-                        fontSize: responsiveFontSize(2.5),
+                        fontSize: responsiveFontSize(2.3),
                         fontWeight: "500",
                         paddingLeft: responsiveWidth(1),
                       }}
@@ -225,7 +225,7 @@ export default function ActiveDoubts({ navigation }) {
                   <Icon
                     name="times-circle"
                     color={Colors.darkred}
-                    size={responsiveFontSize(3.5)}
+                    size={responsiveFontSize(2.2)}
                   />
                   <Text
                     style={{
@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
   textIconView: {
     flexDirection: "row",
     padding: responsiveWidth(0.5),
+    alignItems: 'center'
   },
   outerView: {
     flexDirection: "row",

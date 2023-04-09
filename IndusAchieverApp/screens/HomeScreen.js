@@ -92,7 +92,7 @@ export default function HomeScreen({ navigation }) {
           iconVisible={true}
           style={styles.iconRight}
           iconName="undo"
-          size={responsiveFontSize(2.3)}
+          size={responsiveFontSize(3)}
           color={Colors.white}
         >
           Create a Doubt
@@ -104,7 +104,7 @@ export default function HomeScreen({ navigation }) {
           navigation.navigate("ActiveDoubts");
         }}
         onPressQuestions={() => {
-          navigation.navigate("FrequentlyAskedQuestion");
+          navigation.navigate("FAQ");
         }}
         count={totalDoubtsCount}
       ></ImageTextStack>

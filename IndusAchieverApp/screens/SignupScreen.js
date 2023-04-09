@@ -57,19 +57,14 @@ export default function SignupScreen({navigation}) {
         x += str.charAt(i)
       }
       var arr = x.split('.');
-      const data = { 
-        email: email,
-        name: name,
-        enrollnmentNumber: enrollnmentNumber,
-        branch: arr[1].toUpperCase(),
-        batchYear: "20"+arr[0]
+      if(arr[1] === 'cse'){
+        arr[1] = 'cs';
       }
       createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
         const user = userCredential.user;   
         sendEmailVerification(user);
         setDoc(doc(db, "users",user.uid), {
-        //  data
         email: email,
         name: name,
         enrollnmentNumber: enrollnmentNumber,
@@ -77,7 +72,6 @@ export default function SignupScreen({navigation}) {
         batchYear: "20"+arr[0],
         uid: auth.currentUser.uid
         }).then(()=>{
-          // navigation.navigate('tabClientNavigator');
           navigation.navigate("VerifyEmail");
           AsyncStorage.setItem('users', JSON.stringify(data));
         });

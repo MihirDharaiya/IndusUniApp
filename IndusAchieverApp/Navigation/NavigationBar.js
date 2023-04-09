@@ -39,7 +39,7 @@ import VerifyEmail from "../screens/VerifyEmail";
 import ViewDetails from "../screens/ViewDetails";
 import SuccessPage from "../screens/SuccessPage";
 import Icons from "react-native-vector-icons/FontAwesome";
-import ReportStudent from '../screens/ReportStudent'
+import ReportStudent from "../screens/ReportStudent";
 
 
   const Stack = createNativeStackNavigator();
@@ -58,16 +58,12 @@ import ReportStudent from '../screens/ReportStudent'
     const getUserData = async () => {
       const a = await getDoc(doc(db, "users", useruid));
       AsyncStorage.setItem("users", JSON.stringify(a.data()));
-      // console.log("In get user data",a.data());
-      // console.log(useruid);
     };
   
     useEffect(() => {
       async function fetchData() {
         await AsyncStorage.removeItem("users");
         let user = await AsyncStorage.getItem("users");
-        user = JSON.parse(user);
-        // console.log(typeof user, user);
         if (!user) {
           getUserData();
         }
@@ -174,10 +170,15 @@ import ReportStudent from '../screens/ReportStudent'
               fontSize: responsiveFontSize(2.3),
               color: Colors.white,
             },
-            headerTitleAlign: "center",
+            headerTitleAlign:"center",
             headerTintColor: Colors.white,
           })}
         >
+          <Stack.Screen
+            name="Splash"
+            component={Splash}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Overview"
             component={Overview}
@@ -214,14 +215,14 @@ import ReportStudent from '../screens/ReportStudent'
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="StudentProfile"
+            name="Student Profile"
             component={StudentProfile}
             options={{ headerShown: true }}
           />
           <Stack.Screen
             name="CreateDoubtScreen"
             component={CreateDoubtScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="FacultyList"
@@ -234,9 +235,9 @@ import ReportStudent from '../screens/ReportStudent'
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="FrequentlyAskedQuestion"
+            name="FAQ"
             component={FrequentlyAskedQuestion}
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="NoInternet"

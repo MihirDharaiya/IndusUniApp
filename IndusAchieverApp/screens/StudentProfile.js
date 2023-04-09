@@ -4,7 +4,6 @@ import Colors from '../constants/Colors'
 import BorderCard from '../components/BorderCard'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import RoundButton from '../components/RoundButton'
-import Card from '../components/Card'
 import { Linking } from 'react-native';
 import {getFirestore, getDocs, collection, limit, query, where} from 'firebase/firestore';
 import {app} from '../firebase/firebase';
@@ -32,43 +31,9 @@ export default function StudentProfile({route,navigation}) {
       useEffect(() => {
         getUsers()
       },[])
-      function card(data) {
-        return (
-          <>
-          <View>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("StudentProfile",{data:data});
-                
-              }}
-              >
-            <Card>
-            <View style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-            <Text style={styles.yearStyle}><Text style={{fontWeight: '700', color: Colors.black}}>Batch Year:</Text> {data.batchYear}</Text>
-            </View>
-              <View style={styles.titleContainer}>
-              <View style={styles.imgContainer}>
-              <Image
-                    style={styles.profileImg}
-                    source={require("../assets/images/Profile.png")}
-                  />        
-              </View>
-              <View style={styles.textContainer}>
-              <Text style={styles.title}>Name:</Text>
-              <Text style={styles.answerTitle}>{data.name}</Text>
-              <Text style={styles.title}>Branch:</Text>
-              <Text style={styles.answerTitle}>{data.branch}</Text>
-              </View>      
-              </View>
-            </Card>
-            </Pressable>
-          </View>
-            </>
-        )
-      }
     return (
         <ScrollView style={styles.rootContainer}>
-            <View>
+            <View style={{marginTop: 10}}>
                 <BorderCard>
                 <View style={{justifyContent:'space-between', alignItems: 'space-between', flexDirection: 'row'}}>
                 <Pressable
@@ -96,7 +61,6 @@ export default function StudentProfile({route,navigation}) {
                   </Text>
                 </View>
               </Pressable>        
-            <Text style={styles.yearStyle}>{route.params.data.batchYear}</Text>
             </View>
                     <View style={styles.image}>
                     <Image 
@@ -124,8 +88,8 @@ export default function StudentProfile({route,navigation}) {
                     <View style={styles.roundButtonView}>
                     <RoundButton
                     onPress={()=>{
-                      route.params.data.github != "" ? 
-                      Linking.openURL(route.params.data.github):  alert("User Profile is Incomplete !!")}}
+                      typeof(route.params.data.github) == "string" && route.params.data.github != ""?
+                      Linking.openURL(route.params.data.github): alert('User Profile is Incomplete')}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -134,7 +98,8 @@ export default function StudentProfile({route,navigation}) {
                     color={Colors.white}
                     ></RoundButton>
                     <RoundButton
-                    onPress={()=>{Linking.openURL("mailto:"+route.params.data.email)}}
+                    onPress={()=>{
+                      Linking.openURL("mailto:"+route.params.data.email)}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -144,8 +109,8 @@ export default function StudentProfile({route,navigation}) {
                     ></RoundButton>
                     <RoundButton
                     onPress={()=>{
-                      route.params.data.linkedIn != "" ? 
-                      Linking.openURL(route.params.data.linkedIn):  alert("User Profile is Incomplete !!")}}
+                      typeof(route.params.data.linkedIn) == "string" && route.params.data.linkedIn != ""?
+                      Linking.openURL(route.params.data.linkedIn) :alert('User Profile is Incomplete')}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -155,8 +120,8 @@ export default function StudentProfile({route,navigation}) {
                     ></RoundButton>
                     <RoundButton
                     onPress={()=>{
-                      route.params.data.instagram != "" ? 
-                      Linking.openURL(route.params.data.instagram):  alert("User Profile is Incomplete !!")}}
+                      typeof(route.params.data.instagram) == "string" && route.params.data.instagram != "" ?
+                      Linking.openURL(route.params.data.instagram): alert('User Profile is Incomplete')}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -166,8 +131,8 @@ export default function StudentProfile({route,navigation}) {
                     ></RoundButton>
                     <RoundButton
                     onPress={()=>{
-                      route.params.data.twitter != "" ? 
-                      Linking.openURL(route.params.data.twitter):  alert("User Profile is Incomplete !!")}}
+                      typeof(route.params.data.twitter) == "string" && route.params.data.twitter != ""?
+                      Linking.openURL(route.params.data.twitter): alert('User Profile is Incomplete')}}
                     textNotVisible={true}
                     iconVisible={true}
                     style={styles.iconRight}
@@ -178,17 +143,14 @@ export default function StudentProfile({route,navigation}) {
                     </View>
                 </BorderCard>
                 <View style={styles.suggestionView}>
-                    <Text style={styles.suggestionText}>Suggestions:</Text>
+                    <Text style={styles.suggestionText}>Skills</Text>
                 </View>
-                <View>
-        <FlatList
-            data={users}
-            renderItem={({item}) => card(item)}
-            keyExtractor={data => data.uid}
-            initialNumToRender={2}
-            >
-            </FlatList>
-        </View>
+                <View style={styles.containerImage}>
+                <Image
+                  style={styles.image2}
+                  source={require("../assets/images/coming_soon.gif")}
+                />
+              </View>
             </View>
         </ScrollView>
       )
@@ -198,12 +160,18 @@ export default function StudentProfile({route,navigation}) {
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-        backgroundColor: Colors.white,
-        marginTop: responsiveHeight(1),
+        backgroundColor: Colors.white
     },
     image:{
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    image2:{
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: responsiveHeight(30),
+      width: responsiveHeight(40),
+      borderWidth:1
     },
     yearStyle:{
         color: Colors.darkred,
@@ -241,11 +209,12 @@ const styles = StyleSheet.create({
     },
     suggestionText:{
         color: Colors.darkred,
-        fontSize: responsiveFontSize(2.7),
+        fontSize: responsiveFontSize(3),
         fontWeight: 'bold'
     },
     suggestionView:{
-        margin: 10
+        margin: 10,
+        alignItems: 'center'
     },
     titleContainer: {
         flexDirection: 'row'

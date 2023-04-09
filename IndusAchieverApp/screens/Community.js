@@ -1,8 +1,5 @@
 import { StyleSheet,View, Button, Text, FlatList, Pressable, Image,BackHandler} from 'react-native'
 import {React,useState,useEffect} from 'react'
-import FlexedButtons from '../components/FlexedButtons'
-import PrimaryButton from '../components/PrimaryButton'
-import SecondaryTextInputField from '../components/SecondaryTextInputField'
 import {
   responsiveHeight,
   responsiveWidth,
@@ -30,16 +27,16 @@ export default function Community({navigation}) {
     setUsers(arr)
   }
   useEffect(() => {
-    getUsers()
+    getUsers();
     const backAction = () => {
-      navigation.navigate("HomeScreen")
+      navigation.navigate("HomeScreen");
       return true;
     };
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      "hardwareBackPress",
+      backAction
     );
-  
+
     return () => backHandler.remove();
   },[])
 
@@ -51,7 +48,7 @@ export default function Community({navigation}) {
       <View>
         <Pressable
           onPress={() => {
-            navigation.navigate("StudentProfile",{data:data});
+            navigation.navigate("Student Profile",{data:data});
             
           }}
           >
@@ -80,7 +77,7 @@ export default function Community({navigation}) {
   }
   return (
     <View style={styles.rootContainer}>
-      <View>
+      <View style={{marginTop:10}}>
       {/* <FlexedButtons></FlexedButtons> */}
       {/* <View style={styles.container}>
         <View style={styles.searchBox}>
@@ -112,7 +109,7 @@ export default function Community({navigation}) {
 const styles = StyleSheet.create({
     rootContainer: {
       flex: 1,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white
     },
     yearStyle:{
       color: Colors.darkred,

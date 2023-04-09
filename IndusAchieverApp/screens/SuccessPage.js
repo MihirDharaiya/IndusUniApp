@@ -14,7 +14,7 @@ const SuccessPage = ({navigation}) => {
     const timeout = setTimeout(() => {
       setModalVisible(false);
       navigation.navigate("ActiveDoubts");
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearTimeout(timeout);
