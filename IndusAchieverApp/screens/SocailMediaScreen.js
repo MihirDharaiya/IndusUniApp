@@ -175,8 +175,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       height: responsiveHeight(30),
-      width: responsiveHeight(40),
-      borderWidth:1
+      width: responsiveHeight(40), 
     },
     suggestionText:{
       color: Colors.navyblue,
