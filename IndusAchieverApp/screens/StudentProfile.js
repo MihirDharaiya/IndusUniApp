@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       height: responsiveHeight(30),
       width: responsiveHeight(40),
-      borderWidth:1
     },
     yearStyle:{
         color: Colors.darkred,
