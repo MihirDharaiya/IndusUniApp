@@ -23,6 +23,10 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "/Users/mihirdharaiya/Desktop/IndusUniApp/IndusAchieverApp/pc-api-8839314526729108457-331-4ebb48fc8a66.json"
+      }
+    }
   }
 }
