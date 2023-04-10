@@ -57,7 +57,6 @@ export default function LoginScreen({ navigation }) {
     AsyncStorage.clear();
   };
   const handleLogin = async () => {
-    console.log(email);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;

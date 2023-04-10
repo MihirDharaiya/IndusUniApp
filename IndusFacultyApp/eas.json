@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 3.8.1"
+    "version": ">= 3.9.0"
   },
   "build": {
     "development": {
@@ -23,6 +23,10 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "/Users/macku/Desktop/Projects/IndusUniApp/IndusFacultyApp/pc-api-8839314526729108457-331-4ebb48fc8a66.json"
+      }
+    }
   }
 }

@@ -12,6 +12,7 @@ import {
   ImageBackground,
   Pressable,
   BackHandler,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
@@ -32,6 +33,7 @@ export default function Analytics({ navigation }) {
   const auth = getAuth();
   const db = getFirestore(app);
   const useruid = auth.currentUser.uid;
+  const [load, setLoad] = useState(false);
   const [fid, setFid] = useState("");
   const [yes, setYes] = useState(0);
   const [no, setNo] = useState(0);
@@ -43,6 +45,7 @@ export default function Analytics({ navigation }) {
     setFid(a.data().fid);
   };
   const getAllData = async () => {
+    setLoad(true);
     getCurrentUser();
     const events = collection(db, "events");
 
@@ -100,7 +103,6 @@ export default function Analytics({ navigation }) {
     let arr = [year1, year2, year3, year4];
     setTotalDoubtsCount(year1 + year2 + year3 + year4);
     setDates(arr);
-
     const satisfiedYes = await getCountFromServer(
       query(pastDoubts, where("satisfy", "==", "yes"), where("fid", "==", fid))
     );
@@ -111,9 +113,8 @@ export default function Analytics({ navigation }) {
     setNo(satisfiedNo.data().count);
   };
   useEffect(() => {
-    if (isFocused) {
-      getAllData();
-    }
+    getAllData();
+    setLoad(false);
     const backAction = () => {
       navigation.navigate("Home");
       return true;
@@ -122,111 +123,116 @@ export default function Analytics({ navigation }) {
       "hardwareBackPress",
       backAction
     );
-
     return () => backHandler.remove();
-  }, [isFocused]);
+  }, [navigation.isFocused]);
   return (
-    <ScrollView style={styles.rootContainer}>
-      <View style={styles.boxContainer}>
-        <Pressable
-          onPress={() => {
-            navigation.navigate("Total Doubts");
-          }}
-        >
-          <View style={styles.container}>
-            <ImageBackground
-              source={require("../assets/images/DoubtSolved.png")}
-              style={styles.backdrop}
+    <>
+      {!load ? (
+        <ScrollView style={styles.rootContainer}>
+          <View style={styles.boxContainer}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Total Doubts");
+              }}
             >
-              <View style={styles.overlay}>
-                <Text style={styles.headline}>Total Doubts solved</Text>
-                <Text style={styles.numbers}>{totalDoubtsCount}</Text>
+              <View style={styles.container}>
+                <ImageBackground
+                  source={require("../assets/images/DoubtSolved.png")}
+                  style={styles.backdrop}
+                >
+                  <View style={styles.overlay}>
+                    <Text style={styles.headline}>Total Doubts solved</Text>
+                    <Text style={styles.numbers}>{totalDoubtsCount}</Text>
+                  </View>
+                </ImageBackground>
               </View>
-            </ImageBackground>
-          </View>
-        </Pressable>
+            </Pressable>
 
-        <Pressable
-          onPress={() => {
-            navigation.navigate("Total Announcements");
-          }}
-        >
-          <View style={styles.container}>
-            <ImageBackground
-              source={require("../assets/images/Announcements.png")}
-              style={styles.backdrop}
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Total Announcements");
+              }}
             >
-              <View style={styles.overlay}>
-                <Text style={styles.headline}>
-                  Total number of Announcements
-                </Text>
-                <Text style={styles.numbers}>{totalAnnouncements}</Text>
+              <View style={styles.container}>
+                <ImageBackground
+                  source={require("../assets/images/Announcements.png")}
+                  style={styles.backdrop}
+                >
+                  <View style={styles.overlay}>
+                    <Text style={styles.headline}>
+                      Total number of Announcements
+                    </Text>
+                    <Text style={styles.numbers}>{totalAnnouncements}</Text>
+                  </View>
+                </ImageBackground>
               </View>
-            </ImageBackground>
+            </Pressable>
           </View>
-        </Pressable>
-      </View>
 
-      <View style={styles.barChartContainer}>
-        <Text style={styles.chartText}>Number of Doubts Raised</Text>
-        <BarChart
-          data={{
-            labels: ["1st", "2nd", "3rd", "4rd"],
-            datasets: [
-              {
-                data: dates,
-              },
-            ],
-          }}
-          width={responsiveWidth(93)}
-          height={220}
-          fromZero={true}
-          showValuesOnTopOfBars={true}
-          chartConfig={{
-            backgroundGradientFrom: Colors.extralightgrey,
-            backgroundGradientTo: Colors.extralightgrey,
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(25, 49, 90, ${opacity})`,
-            style: {
-              paddingVertical: 8,
-              marginHorizontal: 16,
-            },
-          }}
-          style={styles.chart}
-        />
-      </View>
-      <View style={styles.PieChartContainer}>
-        <Text style={styles.chartText}>Satisfaction Rate</Text>
-        <PieChart
-          data={[
-            {
-              name: "Yes",
-              doubts: yes,
-              color: Colors.green,
-              legendFontColor: Colors.blue,
-              legendFontSize: responsiveFontSize(2),
-            },
-            {
-              name: "No",
-              doubts: no,
-              color: Colors.red,
-              legendFontColor: Colors.blue,
-              legendFontSize: responsiveFontSize(2),
-            },
-          ]}
-          width={responsiveWidth(93)}
-          height={220}
-          chartConfig={{
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(25, 49, 90, ${opacity})`,
-          }}
-          accessor="doubts"
-          backgroundColor="transparent"
-          paddingLeft="15"
-          style={styles.chart}
-        />
-      </View>
-    </ScrollView>
+          <View style={styles.barChartContainer}>
+            <Text style={styles.chartText}>Number of Doubts Raised</Text>
+            <BarChart
+              data={{
+                labels: ["1st", "2nd", "3rd", "4rd"],
+                datasets: [
+                  {
+                    data: dates,
+                  },
+                ],
+              }}
+              width={responsiveWidth(93)}
+              height={220}
+              fromZero={true}
+              showValuesOnTopOfBars={true}
+              chartConfig={{
+                backgroundGradientFrom: Colors.extralightgrey,
+                backgroundGradientTo: Colors.extralightgrey,
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(25, 49, 90, ${opacity})`,
+                style: {
+                  paddingVertical: 8,
+                  marginHorizontal: 16,
+                },
+              }}
+              style={styles.chart}
+            />
+          </View>
+          <View style={styles.PieChartContainer}>
+            <Text style={styles.chartText}>Satisfaction Rate</Text>
+            <PieChart
+              data={[
+                {
+                  name: "Yes",
+                  doubts: yes,
+                  color: Colors.green,
+                  legendFontColor: Colors.blue,
+                  legendFontSize: responsiveFontSize(2),
+                },
+                {
+                  name: "No",
+                  doubts: no,
+                  color: Colors.red,
+                  legendFontColor: Colors.blue,
+                  legendFontSize: responsiveFontSize(2),
+                },
+              ]}
+              width={responsiveWidth(93)}
+              height={220}
+              chartConfig={{
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(25, 49, 90, ${opacity})`,
+              }}
+              accessor="doubts"
+              backgroundColor="transparent"
+              paddingLeft="15"
+              style={styles.chart}
+            />
+          </View>
+        </ScrollView>
+      ) : (
+        <ActivityIndicator animating={true} style={styles.ActivityIndicator} />
+      )}
+    </>
   );
 }
 

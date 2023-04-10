@@ -21,7 +21,6 @@ const Splash = ({ navigation }) => {
         setLogin(false);
         navigation.navigate("LoginScreen");
       }
-      // console.log("user", isLogiIn);
     });
   }, [app]);
 
