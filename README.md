@@ -59,7 +59,7 @@
 
 # Application Usage Demo Video
 
-## [Youtube Video Link](https://youtu.be/L2v39VQyNFA)
+## [Youtube Video Link](https://youtu.be/qSjtPJ-du-c)
 
 <br>
 
