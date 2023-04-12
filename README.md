@@ -59,10 +59,9 @@
 
 # Application Usage Demo Video
 
-## [Youtube Video Link](https://youtu.be/qSjtPJ-du-c)
+### [Youtube Video Link](https://youtu.be/qSjtPJ-du-c)
 
-<br>
-
+#### Kindly Follow the link to get better understanding of the application usage. 
 <p align="center">
   <img src="static/youtube.png" width="800" height="450"style="border-radius:15px"/>
 </p>
@@ -71,15 +70,15 @@
 
 # Tech Stack
 
-#### Mobile application:
+### Mobile application:
 
-- React.native
+- #### React.native
 
-#### Website:
+### Website:
 
-- Frontend: React.js
-- Backend: Flask or node.js
+- #### Frontend: React.js
+- #### Backend: node.js
 
-#### Database:
+### Database:
 
-- FireBase
+- #### FireBase
