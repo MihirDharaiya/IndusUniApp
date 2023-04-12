@@ -5,6 +5,8 @@ import {
   Image,
   ScrollView,
   ImageBackground,
+  Alert,
+  BackHandler,
 } from "react-native";
 import {
   responsiveHeight,
@@ -16,7 +18,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import Colors from "../constants/Colors";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export default function ForgotPassword({ navigation }) {
   const [email, setEmail] = useState("");
   const auth = getAuth();
@@ -27,6 +29,17 @@ export default function ForgotPassword({ navigation }) {
       })
       .catch((error) => alert(error.message));
   };
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate("LoginScreen");
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  });
   return (
     <ScrollView style={styles.rootContainer}>
       <ImageBackground

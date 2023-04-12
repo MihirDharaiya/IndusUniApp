@@ -12,7 +12,7 @@ import {
   ImageBackground,
   Pressable,
   BackHandler,
-  ActivityIndicator,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
@@ -28,12 +28,13 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase";
 import { useIsFocused } from "@react-navigation/native";
+import SecondaryButton from "../components/SecondaryButton";
 export default function Analytics({ navigation }) {
   const isFocused = useIsFocused();
   const auth = getAuth();
   const db = getFirestore(app);
   const useruid = auth.currentUser.uid;
-  const [load, setLoad] = useState(false);
+  const [getData, setGetData] = useState(false);
   const [fid, setFid] = useState("");
   const [yes, setYes] = useState(0);
   const [no, setNo] = useState(0);
@@ -45,7 +46,6 @@ export default function Analytics({ navigation }) {
     setFid(a.data().fid);
   };
   const getAllData = async () => {
-    setLoad(true);
     getCurrentUser();
     const events = collection(db, "events");
 
@@ -103,6 +103,7 @@ export default function Analytics({ navigation }) {
     let arr = [year1, year2, year3, year4];
     setTotalDoubtsCount(year1 + year2 + year3 + year4);
     setDates(arr);
+
     const satisfiedYes = await getCountFromServer(
       query(pastDoubts, where("satisfy", "==", "yes"), where("fid", "==", fid))
     );
@@ -113,8 +114,11 @@ export default function Analytics({ navigation }) {
     setNo(satisfiedNo.data().count);
   };
   useEffect(() => {
+    if (isFocused) {
+      setGetData(false);
+    }
     getAllData();
-    setLoad(false);
+    setGetData(false);
     const backAction = () => {
       navigation.navigate("Home");
       return true;
@@ -123,12 +127,13 @@ export default function Analytics({ navigation }) {
       "hardwareBackPress",
       backAction
     );
+
     return () => backHandler.remove();
-  }, [navigation.isFocused]);
+  }, [isFocused]);
   return (
-    <>
-      {!load ? (
-        <ScrollView style={styles.rootContainer}>
+    <ScrollView style={styles.rootContainer}>
+      {getData ? (
+        <>
           <View style={styles.boxContainer}>
             <Pressable
               onPress={() => {
@@ -228,11 +233,39 @@ export default function Analytics({ navigation }) {
               style={styles.chart}
             />
           </View>
-        </ScrollView>
+        </>
       ) : (
-        <ActivityIndicator animating={true} style={styles.ActivityIndicator} />
+        <>
+          <View style={styles.generateDataContainer}>
+            <View>
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>Get Detailed Analysis</Text>
+              </View>
+            </View>
+            <View style={styles.containerImage}>
+              <Image
+                style={styles.image2}
+                source={require("../assets/images/Loading.gif")}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              paddingHorizontal: 24,
+            }}
+          >
+            <SecondaryButton
+              onPress={() => {
+                getAllData();
+                setGetData(true);
+              }}
+            >
+              Get Analysis
+            </SecondaryButton>
+          </View>
+        </>
       )}
-    </>
+    </ScrollView>
   );
 }
 
@@ -241,6 +274,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
   },
+
   barChartContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -292,5 +326,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     paddingHorizontal: 8,
+  },
+  generateDataContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  textContainer: {
+    marginTop: responsiveHeight(15),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    textAlign: "center",
+    color: Colors.green,
+    fontSize: responsiveFontSize(3.5),
+    fontWeight: "600",
+  },
+  containerImage: {
+    flex: 1,
+    alignItems: "center",
+  },
+  image2: {
+    width: responsiveWidth(80),
+    height: responsiveWidth(65),
+    marginBottom: responsiveHeight(20),
   },
 });

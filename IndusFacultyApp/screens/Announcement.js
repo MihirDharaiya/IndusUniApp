@@ -259,9 +259,6 @@ export default function Announcement({ navigation }) {
           }}
         />
       </View>
-      <View style={styles.buttonContainer}>
-        <PrimaryButton onPress={addEvent}> Post </PrimaryButton>
-      </View>
       {error == "" ? null : (
         <View style={{ paddingTop: 10 }}>
           <Text style={{ color: Colors.red, textAlign: "center" }}>
@@ -269,17 +266,8 @@ export default function Announcement({ navigation }) {
           </Text>
         </View>
       )}
-      <View style={styles.pastEventContainer}>
-        <View style={styles.pastEventTextContainer}>
-          <Text style={styles.pastEventText}>Past Made Events :</Text>
-        </View>
-        <GreyCard
-          isDetails={true}
-          nameText="jainish"
-          enrollNoText="IU1941230105"
-          titleText="Webinar on C++"
-          eventDateData="12/08/23"
-        ></GreyCard>
+      <View style={styles.buttonContainer}>
+        <PrimaryButton onPress={addEvent}> Post </PrimaryButton>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -310,16 +298,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: -5,
     alignItems: "center",
-  },
-  pastEventContainer: {
-    padding: 8,
-  },
-  pastEventTextContainer: {
-    marginVertical: 4,
-  },
-  pastEventText: {
-    fontSize: responsiveFontSize(2),
-    fontWeight: "bold",
   },
   clear: {
     textAlign: "center",

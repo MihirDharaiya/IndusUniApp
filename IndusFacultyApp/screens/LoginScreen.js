@@ -7,20 +7,21 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Image,
   Pressable,
   ImageBackground,
   ToastAndroid,
   Platform,
   AlertIOS,
+  BackHandler,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../constants/Colors";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
 import TextInputField from "../components/TextInputField";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -37,6 +38,7 @@ export default function LoginScreen({ navigation }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
   const VerifyEmail = async (user) => {
@@ -56,28 +58,61 @@ export default function LoginScreen({ navigation }) {
   const clearData = () => {
     AsyncStorage.clear();
   };
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        "Hold on!",
+        "Are you sure you want to Exit the Application?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => null,
+            style: "cancel",
+          },
+          { text: "YES", onPress: () => BackHandler.exitApp() },
+        ]
+      );
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  });
   const handleLogin = async () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        if (!user.emailVerified) {
-          navigation.navigate("VerifyEmail");
-          VerifyEmail(user);
-        } else {
-          clearData();
-          navigation.navigate("Overview");
-        }
-      })
-      .catch((error) => {
-        setEmail("");
-        setPassword("");
-        const errorCode = error.code.replace("auth/", "");
-        if (Platform.OS === "android") {
-          ToastAndroid.show(errorCode, ToastAndroid.SHORT);
-        } else {
-          AlertIOS.alert("title", "text");
-        }
-      });
+    const reg = /[a-z]+\.[a-z]+@indusuni\.ac\.in/i;
+    if (!reg.test(email) && email !== "jainish9726@gmail.com") {
+      setEmail("");
+      setPassword("");
+      setError("Please Enter Valid University Email !!");
+    } else if (password == "") {
+      setError("Pleaser Enter Password");
+    } else {
+      setError("");
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredentials) => {
+          const user = userCredentials.user;
+          if (!user.emailVerified) {
+            navigation.navigate("VerifyEmail");
+            VerifyEmail(user);
+          } else {
+            clearData();
+            navigation.navigate("Overview");
+          }
+        })
+        .catch((error) => {
+          setEmail("");
+          setPassword("");
+          const errorCode = error.code.replace("auth/", "");
+          if (Platform.OS === "android") {
+            ToastAndroid.show(errorCode, ToastAndroid.SHORT);
+          } else {
+            AlertIOS.alert("title", "text");
+          }
+        });
+    }
   };
   return (
     <KeyboardAwareScrollView style={styles.mainContainer}>
@@ -133,6 +168,13 @@ export default function LoginScreen({ navigation }) {
               </View>
             </Pressable>
           </View>
+          {error == "" ? null : (
+            <View style={{ paddingBottom: 10 }}>
+              <Text style={{ color: Colors.red, textAlign: "center" }}>
+                {error}
+              </Text>
+            </View>
+          )}
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={() => handleLogin()}>LogIn</PrimaryButton>
           </View>

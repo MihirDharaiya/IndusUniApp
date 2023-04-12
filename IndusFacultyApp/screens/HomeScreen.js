@@ -52,9 +52,12 @@ export default function HomeScreen({ navigation }) {
       setNoData(false);
       setGenerateDoubt(true);
       getDoubtData();
+      if (data.length === 0) {
+        setNoData(true);
+      }
     }
     const backAction = () => {
-      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+      Alert.alert("Hold on!", "Are you sure you want to Exit the App?", [
         {
           text: "Cancel",
           onPress: () => null,
@@ -100,6 +103,7 @@ export default function HomeScreen({ navigation }) {
           });
           break;
         } else {
+          setData([]);
           setNoData(true);
           setGenerateDoubt(false);
         }

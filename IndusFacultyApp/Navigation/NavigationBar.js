@@ -183,6 +183,7 @@ export default function NavigationBar() {
           name="Total Announcements"
           component={Routes.totalAnnouncements}
         />
+
         <Stack.Screen
           name="AnswerDoubt"
           component={Routes.answerDoubt}
