@@ -26,6 +26,7 @@ import {
   getFirestore,
   where,
   collection,
+  orderBy,
 } from "firebase/firestore";
 export default function TotalAnnouncements() {
   const auth = getAuth();
@@ -41,7 +42,11 @@ export default function TotalAnnouncements() {
   const getAnnouncements = async () => {
     getCurrentUser();
     const doubts = collection(db, "events");
-    const q = query(doubts, where("fid", "==", fid));
+    const q = query(
+      doubts,
+      where("fid", "==", fid),
+      orderBy("createdAt", "desc")
+    );
     const docSnap = await getDocs(q);
     if (!docSnap.empty) {
       var arr = [];

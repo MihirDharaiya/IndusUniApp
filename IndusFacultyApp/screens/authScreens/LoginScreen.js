@@ -17,25 +17,26 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import Colors from "../constants/Colors";
-import Card from "../components/Card";
-import PrimaryButton from "../components/PrimaryButton";
-import TextInputField from "../components/TextInputField";
-import React, { useEffect, useState } from "react";
+import Colors from "../../constants/Colors";
+import Card from "../../components/Card";
+import PrimaryButton from "../../components/PrimaryButton";
+import TextInputField from "../../components/TextInputField";
+import React, { useEffect, useState, useContext } from "react";
 import {
   getAuth,
   signInWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { app } from "../firebase";
+import { app } from "../../firebase";
 import { getFirestore } from "firebase/firestore";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useTogglePasswordVisibility } from "../components/ViewPassword";
+import { useTogglePasswordVisibility } from "../../components/ViewPassword";
+import { SignInContext } from "../../context/AuthContext";
 export default function LoginScreen({ navigation }) {
   // Firebase requirements
   const auth = getAuth();
   const db = getFirestore(app);
-
+  const { dispatchSignedIn } = useContext(SignInContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -88,10 +89,10 @@ export default function LoginScreen({ navigation }) {
       setPassword("");
       setError("Please Enter Valid University Email !!");
     } else if (password == "") {
-      setError("Pleaser Enter Password");
+      setError("Please Enter Password");
     } else {
       setError("");
-      signInWithEmailAndPassword(auth, email, password)
+      const userData = await signInWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
           const user = userCredentials.user;
           if (!user.emailVerified) {
@@ -106,24 +107,28 @@ export default function LoginScreen({ navigation }) {
           setEmail("");
           setPassword("");
           const errorCode = error.code.replace("auth/", "");
-          if (Platform.OS === "android") {
-            ToastAndroid.show(errorCode, ToastAndroid.SHORT);
-          } else {
-            AlertIOS.alert("title", "text");
+          if (errorCode) {
+            setError("Invalid User");
           }
         });
+      if (userData) {
+        dispatchSignedIn({
+          type: "UPDATE_SIGN_IN",
+          payload: { userToken: "signed-in" },
+        });
+      }
     }
   };
   return (
     <KeyboardAwareScrollView style={styles.mainContainer}>
       <ImageBackground
         style={styles.building}
-        source={require("../assets/images/IndusMainBuilding.png")}
+        source={require("../../assets/images/IndusMainBuilding.png")}
       >
         <View style={styles.containerImage}>
           <Image
             style={styles.image}
-            source={require("../assets/images/IndusFacultyLogo.png")}
+            source={require("../../assets/images/IndusFacultyLogo.png")}
           />
         </View>
         <Card cardStyle={{ marginBottom: responsiveHeight(25) }}>
@@ -176,7 +181,7 @@ export default function LoginScreen({ navigation }) {
             </View>
           )}
           <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={() => handleLogin()}>LogIn</PrimaryButton>
+            <PrimaryButton onPress={() => handleLogin()}>Login</PrimaryButton>
           </View>
         </Card>
       </ImageBackground>

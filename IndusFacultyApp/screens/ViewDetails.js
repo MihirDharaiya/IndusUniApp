@@ -20,7 +20,7 @@ const ViewDetails = ({ route, navigation }) => {
 
       <View style={styles.headingView}>
         <Text style={styles.headingText}>Event Date:</Text>
-        <Text style={styles.answerText2}>{route.params.data.date}</Text>
+        <Text style={styles.answerText2}>{route.params.data.eventDate}</Text>
       </View>
       {route.params.data.registerDate ? (
         <View style={styles.headingView}>

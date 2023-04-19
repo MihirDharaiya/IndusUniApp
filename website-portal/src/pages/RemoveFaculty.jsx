@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./styles/RemoveFaculty.css";
-import { getFirestore, getDocs, collection, query } from "firebase/firestore";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import app from "../firebase";
 function RemoveFaculty(props) {
   const db = getFirestore(app);
   const [faculty, setFaculty] = useState([]);
 
   const getFaculty = async () => {
-    const docRef = query(collection(db, "faculty"));
+    const docRef = query(collection(db, "faculty"), orderBy("fid"));
     const docSnap = await getDocs(docRef);
     var arr = [];
     var arrId = [];

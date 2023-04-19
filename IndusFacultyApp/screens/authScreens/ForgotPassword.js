@@ -13,10 +13,10 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import Card from "../components/Card";
-import PrimaryButton from "../components/PrimaryButton";
-import SecondaryTextInputField from "../components/SecondaryTextInputField";
-import Colors from "../constants/Colors";
+import Card from "../../components/Card";
+import PrimaryButton from "../../components/PrimaryButton";
+import SecondaryTextInputField from "../../components/SecondaryTextInputField";
+import Colors from "../../constants/Colors";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState, useEffect } from "react";
 export default function ForgotPassword({ navigation }) {
@@ -44,19 +44,19 @@ export default function ForgotPassword({ navigation }) {
     <ScrollView style={styles.rootContainer}>
       <ImageBackground
         style={styles.building}
-        source={require("../assets/images/IndusMainBuilding.png")}
+        source={require("../../assets/images/IndusMainBuilding.png")}
       >
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require("../assets/images/IndusFacultyLogo.png")}
+            source={require("../../assets/images/IndusFacultyLogo.png")}
           />
         </View>
         <Card>
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require("../assets/images/ForgotPasswordIcon.png")}
+              source={require("../../assets/images/ForgotPasswordIcon.png")}
             />
           </View>
           <View style={styles.mainTextContainer}>

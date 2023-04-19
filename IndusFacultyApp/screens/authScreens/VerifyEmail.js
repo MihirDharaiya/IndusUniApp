@@ -11,33 +11,36 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import Card from "../components/Card";
-import PrimaryButton from "../components/PrimaryButton";
-import Colors from "../constants/Colors";
+import Card from "../../components/Card";
+import PrimaryButton from "../../components/PrimaryButton";
+import Colors from "../../constants/Colors";
 export default function VerifyEmail({ navigation }) {
   return (
     <ScrollView style={styles.rootContainer}>
       <ImageBackground
         style={styles.building}
-        source={require("../assets/images/IndusMainBuilding.png")}
+        source={require("../../assets/images/IndusMainBuilding.png")}
       >
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require("../assets/images/IndusFacultyLogo.png")}
+            source={require("../../assets/images/IndusFacultyLogo.png")}
           />
         </View>
         <Card>
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require("../assets/images/ResetPasswordLinkSendIcon.png")}
+              source={require("../../assets/images/VerifyEmailIcon.png")}
             />
           </View>
           <View style={styles.mainTextContainer}>
             <Text style={styles.mainText}>Check Your Email !!</Text>
             <Text style={styles.subText}>
-              Follow the Link in the Email to Reset the Password.
+              Follow the Link in the Email to Verify the register email ID.
+            </Text>
+            <Text style={styles.subText}>
+              Please Check Spam folder if not received in the inbox.
             </Text>
           </View>
           <PrimaryButton

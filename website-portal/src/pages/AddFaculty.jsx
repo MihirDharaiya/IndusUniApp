@@ -26,8 +26,7 @@ function AddFaculty(props) {
   const db = getFirestore(app);
 
   function generatePassword() {
-    var chars =
-      "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var chars = "0123456789abcdefghijklmnopqrstuvwxyz";
     var passwordLength = 6;
     var password = "";
     for (var i = 0; i <= passwordLength; i++) {
@@ -169,7 +168,7 @@ function AddFaculty(props) {
                   onChange={(e) => setBranch(e.target.value)}
                 >
                   <option></option>
-                  <option>CSE</option>
+                  <option>CS</option>
                   <option>CE</option>
                   <option>IT</option>
                   <option>EE</option>

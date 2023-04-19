@@ -26,6 +26,7 @@ import {
   getFirestore,
   where,
   collection,
+  orderBy,
 } from "firebase/firestore";
 export default function TotalDoubts() {
   const auth = getAuth();
@@ -41,7 +42,11 @@ export default function TotalDoubts() {
   const getDoubts = async () => {
     getCurrentUser();
     const doubts = collection(db, "pastdoubts");
-    const q = query(doubts, where("fid", "==", fid));
+    const q = query(
+      doubts,
+      where("fid", "==", fid),
+      orderBy("createdAt", "desc")
+    );
     const docSnap = await getDocs(q);
     if (!docSnap.empty) {
       var arr = [];
@@ -68,11 +73,11 @@ export default function TotalDoubts() {
         <BorderCard>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Raised Date:</Text>
-            <Text style={styles.answerText}>{data.raisedDate}</Text>
+            <Text style={styles.answerText}>{data.raisedOn}</Text>
           </View>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Resolved Date:</Text>
-            <Text style={styles.answerText}>{data.resolvedDate}</Text>
+            <Text style={styles.answerText}>{data.resolvedOn}</Text>
           </View>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Enrollment No:</Text>

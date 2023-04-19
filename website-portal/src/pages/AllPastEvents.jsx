@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./styles/AddFaculty.css";
-import { getFirestore, getDocs, collection, query } from "firebase/firestore";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import app from "../firebase";
 
 function AllPastEvents(props) {
   const db = getFirestore(app);
   const [events, setEvents] = useState([]);
   const getEvents = async () => {
-    const docRef = query(collection(db, "events"));
+    const docRef = query(collection(db, "events"), orderBy("date", "desc"));
     const docSnap = await getDocs(docRef);
     var arr = [];
     docSnap.forEach((doc) => {

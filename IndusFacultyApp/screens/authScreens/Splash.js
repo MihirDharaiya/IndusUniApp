@@ -1,25 +1,38 @@
 import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
-import React from "react";
-import Colors from "../constants/Colors";
+import React, { useContext } from "react";
+import Colors from "../../constants/Colors";
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
-import { app } from "../firebase";
-import { useState, useEffect } from "react";
+import { app } from "../../firebase";
+import { useEffect } from "react";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { SignInContext } from "../../context/AuthContext";
 const Splash = ({ navigation }) => {
-  const [isLogiIn, setLogin] = useState(false);
   const auth = getAuth();
+  const { dispatchSignedIn } = useContext(SignInContext);
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      setModalVisible(false);
+    }, 3000);
+    clearTimeout(timeout);
     auth.onAuthStateChanged((user) => {
       if (user) {
-        setLogin(true);
+        dispatchSignedIn({
+          type: "UPDATE_SIGN_IN",
+          payload: { userToken: "signed-in" },
+        });
+        console.log(user);
         navigation.navigate("Overview");
       } else {
-        setLogin(false);
+        dispatchSignedIn({
+          type: "UPDATE_SIGN_IN",
+          payload: { userToken: null },
+        });
         navigation.navigate("LoginScreen");
+        console.log("in Else condition");
       }
     });
   }, [app]);
@@ -28,13 +41,13 @@ const Splash = ({ navigation }) => {
     <View style={styles.rootContainer}>
       <ImageBackground
         style={styles.building}
-        source={require("../assets/images/IndusMainBuilding.png")}
+        source={require("../../assets/images/IndusMainBuilding.png")}
         resizeMode="cover"
       >
         <View style={styles.containerImage}>
           <Image
             style={styles.logo}
-            source={require("../assets/images/IndusLogo.png")}
+            source={require("../../assets/images/IndusLogo.png")}
           />
         </View>
         <View style={styles.textView}>

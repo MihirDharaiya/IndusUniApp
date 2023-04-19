@@ -4,9 +4,7 @@ import {
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/FontAwesome5";
 import React, { useEffect } from "react";
 import Routes from "./Routes";
@@ -16,7 +14,6 @@ import { getAuth } from "firebase/auth";
 import { app } from "../firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 const Home = "Home";
@@ -24,7 +21,7 @@ const Analytics = "Analytics";
 const Announcement = "Announcement";
 const Profile = "Profile";
 
-function Overview() {
+export default function ClientTabs() {
   const auth = getAuth();
   const useruid = auth.currentUser.uid;
   const db = getFirestore(app);
@@ -116,97 +113,6 @@ function Overview() {
       <BottomTabs.Screen name="Announcement" component={Routes.announcement} />
       <BottomTabs.Screen name="Profile" component={Routes.profile} />
     </BottomTabs.Navigator>
-  );
-}
-export default function NavigationBar() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={"Splash"}
-        screenOptions={({}) => ({
-          headerStyle: {
-            backgroundColor: Colors.blue,
-            borderBottomWidth: 1,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-          },
-          headerTitleStyle: {
-            fontSize: responsiveFontSize(2.3),
-            color: Colors.white,
-          },
-          headerTitleAlign: "center",
-          headerTintColor: Colors.white,
-        })}
-      >
-        <Stack.Screen
-          name="Overview"
-          component={Overview}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Splash"
-          component={Routes.splash}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="LoginScreen"
-          component={Routes.loginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={Routes.forgotPassword}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="VerifyEmail"
-          component={Routes.verifyEmail}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ResetPasswordLinkSend"
-          component={Routes.resetPasswordLinkSend}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Announcements" component={Routes.notification} />
-
-        <Stack.Screen name="Total Doubts" component={Routes.totalDoubts} />
-        <Stack.Screen name="On a Break" component={Routes.onLeave} />
-        <Stack.Screen
-          name="Total Announcements"
-          component={Routes.totalAnnouncements}
-        />
-
-        <Stack.Screen
-          name="AnswerDoubt"
-          component={Routes.answerDoubt}
-          options={{
-            presentation: "modal",
-          }}
-        />
-        <Stack.Screen
-          name="ReportStudent"
-          component={Routes.reportStudent}
-          options={{
-            presentation: "modal",
-          }}
-        />
-        <Stack.Screen
-          name="Event Details"
-          component={Routes.viewDetails}
-          options={{
-            presentation: "modal",
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 

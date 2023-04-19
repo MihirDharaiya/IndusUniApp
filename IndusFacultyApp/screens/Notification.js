@@ -23,32 +23,39 @@ import {
   where,
   collection,
   orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
 export default function Notification({ route, navigation }) {
   const isFocused = useIsFocused();
   const db = getFirestore(app);
-  const [noData, setNoData] = useState(true);
+  const [noData, setNoData] = useState(false);
   const [events, setEvents] = useState([]);
 
   const getEvents = async () => {
     const doubts = collection(db, "events");
-    const q = query(doubts, where("category", "!=", "1"));
-    const docSnap = await getDocs(q);
-    if (!docSnap.empty) {
+    const q = query(
+      doubts,
+      orderBy("category", "desc"),
+      where("category", "!=", "1"),
+      orderBy("createdAt", "desc")
+    );
+    const un = onSnapshot(q, (querySnapshot) => {
       var arr = [];
       var arrId = [];
-      docSnap.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
         arr.push(doc.data());
         arrId.push(doc.id);
       });
       for (let i = 0; i < arr.length; i++) {
         arr[i]["eventId"] = arrId[i];
       }
-      setEvents(arr);
-    } else {
-      setNoData(true);
-    }
+      if (arr.length !== 0) {
+        setEvents(arr);
+      } else {
+        setNoData(true);
+      }
+    });
   };
   useEffect(() => {
     if (isFocused) {
@@ -71,7 +78,7 @@ export default function Notification({ route, navigation }) {
             </View>
             <View style={styles.answerView}>
               <Text style={styles.answerText}>{data.fname}</Text>
-              <Text style={styles.answerText2}>{data.date}</Text>
+              <Text style={styles.answerText2}>{data.eventDate}</Text>
             </View>
             <View>
               <Text numberOfLines={3} style={styles.titleText}>

@@ -1,14 +1,17 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import NavigationBar from "./Navigation/NavigationBar";
+import RootNavigator from "./Navigation/RootNavigation";
+import { SignInContextProvider } from "./context/AuthContext";
 import InternetConnectionAlert from "react-native-internet-connection-alert";
 export default function App() {
   return (
     <InternetConnectionAlert>
-      <SafeAreaView style={styles.rootScreen}>
-        <StatusBar style="auto" />
-        <NavigationBar />
-      </SafeAreaView>
+      <SignInContextProvider>
+        <SafeAreaView style={styles.rootScreen}>
+          <StatusBar style="auto" />
+          <RootNavigator />
+        </SafeAreaView>
+      </SignInContextProvider>
     </InternetConnectionAlert>
   );
 }

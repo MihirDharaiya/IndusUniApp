@@ -6,13 +6,11 @@ import {
 import {
   StyleSheet,
   View,
-  TouchableHighlight,
   ScrollView,
   Image,
   Linking,
   BackHandler,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
 import React, { useState, useEffect } from "react";
@@ -21,16 +19,17 @@ import SecondaryButton from "../components/SecondaryButton";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
-import { app } from "../firebase";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { app, storageRef } from "../firebase";
+import "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
 export default function Profile({ navigation }) {
   const isFocused = useIsFocused();
-  const storage = getStorage(app);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [branch, setBranch] = useState("");
   const [position, setPosition] = useState("");
   const [id, setId] = useState("");
+  const [image, setImage] = useState(null);
 
   const showData = async () => {
     let user = await AsyncStorage.getItem("users");
@@ -77,7 +76,7 @@ export default function Profile({ navigation }) {
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.imageContainer}>
-        <TouchableHighlight
+        <View
           style={[
             styles.profileImgContainer,
             { borderColor: "black", borderWidth: 2 },
@@ -87,7 +86,7 @@ export default function Profile({ navigation }) {
             source={require("../assets/images/Profile.png")}
             style={styles.image}
           />
-        </TouchableHighlight>
+        </View>
       </View>
       <View style={styles.buttonOuterContainer}>
         <View style={styles.buttonInnerContainer}>

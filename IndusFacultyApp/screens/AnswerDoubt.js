@@ -31,8 +31,15 @@ export default function ReportStudent({ route, navigation }) {
     } else {
       const docRef = doc(db, "activedoubts", route.params.data.uid);
       await deleteDoc(docRef);
+      let tempDate = new Date();
+      let fDate =
+        tempDate.getDate() +
+        "/" +
+        (tempDate.getMonth() + 1) +
+        "/" +
+        tempDate.getFullYear();
       await addDoc(collection(db, "resolveddoubts"), {
-        date: route.params.data.date,
+        raisedOn: route.params.data.raisedOn,
         subject: route.params.data.subject,
         description: route.params.data.description,
         enrollnmentNumber: route.params.data.enrollnmentNumber,
@@ -41,6 +48,7 @@ export default function ReportStudent({ route, navigation }) {
         name: route.params.data.name,
         batchYear: route.params.data.batchYear,
         reply: reply,
+        resolvedOn: fDate,
       }).then(() => {
         setReply("");
 

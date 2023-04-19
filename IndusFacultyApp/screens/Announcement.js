@@ -23,7 +23,7 @@ import Colors from "../constants/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { serverTimestamp, addDoc, collection } from "firebase/firestore";
 import { app } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -125,7 +125,7 @@ export default function Announcement({ navigation }) {
       let user = await AsyncStorage.getItem("users");
       user = JSON.parse(user);
       await addDoc(collection(db, "events"), {
-        date: dateText,
+        eventDate: dateText,
         title: title,
         description: desc,
         link: link,
@@ -133,6 +133,7 @@ export default function Announcement({ navigation }) {
         registerDate: nolastdate ? "" : lastDateText,
         fname: user.fname,
         fid: user.fid,
+        createdAt: serverTimestamp(),
       }).then(() => {
         clearDate();
         setLink("");
@@ -253,7 +254,6 @@ export default function Announcement({ navigation }) {
           data={data}
           search={false}
           placeholder="Students"
-          set
           dropdownStyles={{
             backgroundColor: Colors.extralightgrey,
           }}

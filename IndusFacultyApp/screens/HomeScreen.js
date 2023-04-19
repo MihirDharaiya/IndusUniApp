@@ -169,12 +169,12 @@ export default function HomeScreen({ navigation }) {
                   Raised on:
                 </Text>
                 <Text style={[styles.text, { fontWeight: "600" }]}>
-                  {data.date}
+                  {data.raisedOn}
                 </Text>
               </View>
               <Pressable
                 onPress={() => {
-                  navigation.navigate("ReportStudent", { data: wholeData });
+                  navigation.navigate("Report Student", { data: wholeData });
                 }}
               >
                 <View style={styles.reportContainer}>
@@ -259,7 +259,7 @@ export default function HomeScreen({ navigation }) {
               </Pressable>
               <Pressable
                 onPress={() => {
-                  navigation.navigate("AnswerDoubt", { data: wholeData });
+                  navigation.navigate("Answer Doubt", { data: wholeData });
                 }}
               >
                 <View style={styles.reportInnerContainer}>
