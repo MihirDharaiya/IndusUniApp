@@ -9,69 +9,75 @@ import {
   View,
   Image,
   Pressable,
+  ToastAndroid
 } from "react-native";
 import Colors from "../constants/Colors";
 import Card from "../components/Card";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
 import TextInputField from "../components/TextInputField";
-import { useState,useEffect } from "react";
-import {getFirestore, getDoc, doc, query, onSnapshot} from 'firebase/firestore';
-import { getAuth, User,signInWithEmailAndPassword,sendEmailVerification } from 'firebase/auth';
+import { useState, useEffect } from "react";
+import { getFirestore, getDoc, doc, query, onSnapshot } from 'firebase/firestore';
+import { getAuth, User, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {app} from '../firebase/firebase';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { app } from '../firebase/firebase';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTogglePasswordVisibility } from "../components/ViewPassword";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [enrollnmentNumber, setenrollnmentNumber] = useState('');  
-  const [branch, setBranch] = useState('');  
-  const [batchYear, setBatchYear] = useState('');  
+  const [enrollnmentNumber, setenrollnmentNumber] = useState('');
+  const [branch, setBranch] = useState('');
+  const [batchYear, setBatchYear] = useState('');
   const [error, setError] = useState('');
   const auth = getAuth();
   const db = getFirestore(app);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 
-const clearData = () => {
-  AsyncStorage.clear();
-};
+  const clearData = () => {
+    AsyncStorage.clear();
+  };
   const onSignIn = () => {
-    const reg =  /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
-    if(!reg.test(email) && email !== "achivtest@gmail.com" ){
+    const reg = /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
+    if (!reg.test(email) && email !== "achivtest@gmail.com") {
       setError('Please Enter Valid University Email !!')
     }
-    else if(password=='' || password.length<=8){
+    else if (password == '' || password.length <= 8) {
       setError('Pleaser Enter Valid Password')
     }
-    else{
+    else {
       setError("")
       signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        if (!user.emailVerified && email !== "achivtest@gmail.com" ) {
-          navigation.navigate("VerifyEmail");
-          sendEmailVerification(user);
-        } else {
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (!user.emailVerified && email !== "achivtest@gmail.com") {
+            navigation.navigate("VerifyEmail");
+            sendEmailVerification(user);
+          } else {
+            setEmail('');
+            setPassword('');
+            clearData();
+            navigation.navigate('Overview')
+            AsyncStorage.setItem('users', JSON.stringify(fetchData()));
+          }
+        })
+        .catch((error) => {
+          // setError('Invalid User !')
+          const errorCode = error.code.replace("auth/", "");
+          if (errorCode) {
+            // ToastAndroid.show(errorCode, ToastAndroid.SHORT);
+            setError("Invalid User !!")
+          } else {
+            // AlertIOS.alert("title", "text");
+          }
           setEmail('');
           setPassword('');
-          clearData();
-          navigation.navigate('Overview')
-          AsyncStorage.setItem('users', JSON.stringify(fetchData()));
-        }
-    })
-      .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setError('Invalid User !')
-      setEmail('');
-      setPassword('');
-      });
+        });
     }
   }
 
@@ -86,20 +92,20 @@ const clearData = () => {
       <Card>
         <View>
           <TextInputField
-            title="Username:"
+            title="Email:"
             iconName={"user-alt"}
-            iconStyle={{ marginRight: responsiveWidth(2)}}
+            iconStyle={{ marginRight: responsiveWidth(2) }}
             size={responsiveFontSize(3.7)}
-            placeholder="Enter Username"
+            placeholder="Enter Email"
             enteredValue={email}
             enteredValueHandler={text => setEmail(text)}
             multiline={true}
           />
           <Pressable onPress={handlePasswordVisibility}>
-              <View style={styles.EyeContainer}>
-                <Icon name={rightIcon} style={styles.eyeIcon} />
-              </View>
-            </Pressable>
+            <View style={styles.EyeContainer}>
+              <Icon name={rightIcon} style={styles.eyeIcon} />
+            </View>
+          </Pressable>
           <TextInputField
             title="Password:"
             iconName={"lock"}
@@ -111,9 +117,9 @@ const clearData = () => {
           />
 
           <Pressable
-          onPress={()=> {
-            navigation.navigate('ForgotPassword')
-          }}
+            onPress={() => {
+              navigation.navigate('ForgotPassword')
+            }}
             style={({ pressed }) =>
               pressed
                 ? [styles.buttonInnerContainer, styles.pressed]
@@ -126,16 +132,16 @@ const clearData = () => {
           </Pressable>
         </View>
         {
-        error==''?null:(<View style={{paddingBottom: 10}}>
-          <Text style={{color: Colors.red, textAlign: 'center'}}>
-            {error}
-          </Text>
-        </View>)
-      }
+          error == '' ? null : (<View style={{ paddingBottom: 10 }}>
+            <Text style={{ color: Colors.red, textAlign: 'center' }}>
+              {error}
+            </Text>
+          </View>)
+        }
         <View style={styles.buttonContainer}>
           <PrimaryButton
-          onPress={()=> onSignIn()}
-          >LogIn</PrimaryButton>
+            onPress={() => onSignIn()}
+          >Login</PrimaryButton>
         </View>
       </Card>
 
@@ -163,9 +169,9 @@ const clearData = () => {
           <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
         </View>
         <SecondaryButton
-        onPress={()=> {
-          navigation.navigate('SignUpScreen')
-        }}
+          onPress={() => {
+            navigation.navigate('SignUpScreen')
+          }}
         >Sign Up</SecondaryButton>
       </View>
     </KeyboardAwareScrollView>

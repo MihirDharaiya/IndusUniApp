@@ -22,7 +22,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import { SelectList } from "react-native-dropdown-select-list";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -64,7 +64,7 @@ export default function CreateDoubtScreen({ route, navigation }) {
   const [selected, setSelected] = useState([]);
   const [isOtherSubject, setIsOtherSubject] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const addDoubt = async () => {
     let user = await AsyncStorage.getItem("users");
@@ -89,13 +89,14 @@ export default function CreateDoubtScreen({ route, navigation }) {
         description: description,
         fname: route.params.data.fname,
         fid: route.params.data.fid,
-        date: fDate,
+        raisedOn: fDate,
         uid: auth.currentUser.uid,
         priority: priority(subject),
         enrollnmentNumber: user.enrollnmentNumber,
         batchYear: user.batchYear,
         branch: user.branch,
         name: user.name,
+        createdAt: serverTimestamp(),
       }).then(() => {
         if (Platform.OS === "android") {
           ToastAndroid.show("Doubt has been created", ToastAndroid.SHORT);

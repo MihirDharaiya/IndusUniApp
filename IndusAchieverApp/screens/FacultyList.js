@@ -18,7 +18,8 @@ import {
   limit,
   query,
   where,
-  onSnapshot
+  onSnapshot,
+  orderBy
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";

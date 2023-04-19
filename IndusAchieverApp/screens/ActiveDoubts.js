@@ -12,7 +12,7 @@ import {
   Pressable,
   BackHandler
 } from "react-native";
-import React, { useState, useEffect, useFocusEffect,useCallback } from "react";
+import React, { useState, useEffect, useFocusEffect, useCallback } from "react";
 import BorderCard from "../components/BorderCard";
 import Colors from "../constants/Colors";
 import TextInputBoxField from "../components/TextInputBoxField";
@@ -28,6 +28,7 @@ import {
   where,
   deleteDoc,
   addDoc,
+  orderBy
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, User } from "firebase/auth";
@@ -59,15 +60,16 @@ export default function ActiveDoubts({ navigation }) {
     const docRef = doc(db, "resolveddoubts", data.doubtId);
     await deleteDoc(docRef);
     await addDoc(collection(db, "pastdoubts"), {
-      raisedDate: data.date,
+      raisedOn: data.raisedOn,
       batchYear: data.batchYear,
-      resolvedDate: fDate,
+      resolvedOn: fDate,
       subject: data.subject,
       description: data.description,
       enrollnmentNumber: data.enrollnmentNumber,
       fid: data.fid,
       fname: data.fname,
       reply: data.reply,
+      createdAt: data.createdAt,
       satisfy: satisfy === true ? "yes" : "no",
     }).then(() => {
       navigation.navigate("PastDoubts");
@@ -78,7 +80,7 @@ export default function ActiveDoubts({ navigation }) {
     const a = await getDoc(doc(db, "users", useruid));
     const enroll = a.data().enrollnmentNumber;
     const doubts = collection(db, "resolveddoubts");
-    const q = query(doubts, where("enrollnmentNumber", "==", enroll));
+    const q = query(doubts, where("enrollnmentNumber", "==", enroll), orderBy("createdAt", "desc"));
     const un = onSnapshot(q, (querySnapshot) => {
       var arr = [];
       var arrId = [];
@@ -97,7 +99,7 @@ export default function ActiveDoubts({ navigation }) {
     const a = await getDoc(doc(db, "users", useruid));
     const enroll = a.data().enrollnmentNumber;
     const doubts = collection(db, "activedoubts");
-    const q = query(doubts, where("enrollnmentNumber", "==", enroll));
+    const q = query(doubts, where("enrollnmentNumber", "==", enroll), orderBy("createdAt", "desc"));
     const un = onSnapshot(q, (querySnapshot) => {
       var arr = [];
       var arrId = [];
@@ -135,7 +137,7 @@ export default function ActiveDoubts({ navigation }) {
           </View>
           <View style={styles.answerView}>
             <Text style={styles.answerText}>{data.fname}</Text>
-            <Text style={styles.answerText}>{data.date}</Text>
+            <Text style={styles.answerText}>{data.raisedOn}</Text>
           </View>
           <View style={styles.inputField}>
             <TextInputBoxField
@@ -165,7 +167,7 @@ export default function ActiveDoubts({ navigation }) {
                   flexDirection: "row",
                   justifyContent: "space-around",
                   flex: 1,
-                  
+
                 }}
               >
                 <Pressable
