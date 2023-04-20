@@ -13,14 +13,35 @@ import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
 import PrimaryButton from '../components/PrimaryButton';
+import filter from "lodash.filter";
+
 
 export default function Community({ navigation }) {
   const [showSection1, setShowSection1] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
+  const [data, setData] = useState([]);
+
   const db = getFirestore(app);
   const auth = getAuth();
   const isFocused = useIsFocused();
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const formattedQuery = query.toLowerCase();
+    const filteredData = filter(users, (us) => {
+      return contains(us, formattedQuery);
+    });
+    setUsers(filteredData);
+  }
+  const contains = ({ name, branch }, query) => {
+    if (name.includes(query) || branch.includes(query)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
   async function getUsers() {
     const docRef = query(collection(db, "users"), where("uid", "!=", auth.currentUser.uid));
     const docSnap = await getDocs(docRef);
@@ -28,7 +49,8 @@ export default function Community({ navigation }) {
     docSnap.forEach(doc => {
       arr.push(doc.data())
     })
-    setUsers(arr)
+    setUsers(arr);
+    setData(arr);
   }
   useEffect(() => {
     getUsers();
@@ -86,17 +108,16 @@ export default function Community({ navigation }) {
   return (
     <View style={styles.rootContainer}>
       <View style={{ marginTop: 10 }}>
-        {/* <FlexedButtons></FlexedButtons> */}
         <View style={styles.container}>
           <View style={styles.searchBox}>
             <SecondaryTextInputField
+              enteredValue={searchQuery}
+              enteredValueHandler={(query) => {
+                handleSearch(query)
+              }}
+              clearButtonMode={"always"}
               placeholder={"Search By Name"}
             ></SecondaryTextInputField>
-          </View>
-          <View style={styles.button}>
-            <PrimaryButton
-              textStyle={{ fontSize: responsiveFontSize(2.4) }}
-            >Search</PrimaryButton>
           </View>
         </View>
         <View>
@@ -123,8 +144,8 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   container: {
+    marginHorizontal: 10,
     flexDirection: 'row',
-    margin: 10,
     alignItems: 'center',
     justifyContent: 'center'
   },

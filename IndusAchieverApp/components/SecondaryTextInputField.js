@@ -14,6 +14,7 @@ export default function SecondaryTextInputField({
   maxLength,
   enteredValue,
   enteredValueHandler,
+  clearButtonMode
 }) {
   return (
     <View style={styles.searchSection}>
@@ -24,6 +25,7 @@ export default function SecondaryTextInputField({
         color={Colors.grey}
       />
       <TextInput
+        clearButtonMode={clearButtonMode}
         style={styles.input}
         placeholder={placeholder}
         maxLength={maxLength}
