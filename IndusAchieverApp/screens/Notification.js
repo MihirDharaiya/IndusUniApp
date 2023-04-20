@@ -23,7 +23,7 @@ import {
   where,
   collection,
   orderBy,
-  onSnapshot
+  onSnapshot,
 } from "firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
 export default function Notification({ navigation }) {
@@ -32,27 +32,6 @@ export default function Notification({ navigation }) {
   const [noData, setNoData] = useState(false);
   const [events, setEvents] = useState([]);
 
-  // const getEvents = async () => {
-  //   const doubts = collection(db, "events");
-  //   const q = query(doubts, orderBy("category", "desc"), where("category", "!=", "2"), orderBy("createdAt", "desc"),);
-  //   const un = onSnapshot(q, (querySnapshot) => {
-  //     var arr = [];
-  //     var arrId = [];
-  //     querySnapshot.forEach((doc) => {
-  //       arr.push(doc.data());
-  //       arrId.push(doc.id);
-  //     });
-  //     for (let i = 0; i < arr.length; i++) {
-  //       arr[i]["eventId"] = arrId[i];
-  //     }
-  //     if (arr.length !== 0) {
-  //       setEvents(arr);
-  //     }
-  //     else {
-  //       setNoData(true);
-  //     }
-  //   });
-  // };
   const getEvents = async () => {
     const doubts = collection(db, "events");
     const q = query(

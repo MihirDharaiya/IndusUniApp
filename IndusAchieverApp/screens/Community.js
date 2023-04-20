@@ -29,10 +29,10 @@ import {
 import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
-import SecondaryTextInputField from '../components/SecondaryTextInputField'
-import PrimaryButton from '../components/PrimaryButton';
+import SecondaryTextInputField from "../components/SecondaryTextInputField";
+import PrimaryButton from "../components/PrimaryButton";
 import filter from "lodash.filter";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Community({ navigation }) {
   const [showSection1, setShowSection1] = useState(true);
@@ -43,18 +43,25 @@ export default function Community({ navigation }) {
   const db = getFirestore(app);
   const auth = getAuth();
   const isFocused = useIsFocused();
-
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
   async function getUsers() {
     const docRef = query(
       collection(db, "users"),
       where("uid", "!=", auth.currentUser.uid)
     );
     const docSnap = await getDocs(docRef);
-    var arr = []
-    docSnap.forEach(doc => {
-      arr.push(doc.data())
-    })
-    setUsers(arr)
+    var arr = [];
+    let i = 0;
+    docSnap.forEach((doc) => {
+      arr.push(doc.data());
+      arr[i]["name"] = arr[i]["name"].toLowerCase();
+      i++;
+    });
+    setUsers(arr);
   }
   useEffect(() => {
     getUsers();
@@ -81,8 +88,8 @@ export default function Community({ navigation }) {
     });
     setUsers(filterData);
   };
-  const contains = ({ name }, query) => {
-    if (name.includes(query)) {
+  const contains = ({ name, batchYear }, query) => {
+    if (name.includes(query) || batchYear.includes(query)) {
       return true;
     }
     return false;
@@ -116,7 +123,7 @@ export default function Community({ navigation }) {
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.title}>Name:</Text>
-                <Text style={styles.answerTitle}>{data.name}</Text>
+                <Text style={styles.answerTitle}>{toTitleCase(data.name)}</Text>
                 <Text style={styles.title}>Branch:</Text>
                 <Text style={styles.answerTitle}>{data.branch}</Text>
               </View>
@@ -136,19 +143,19 @@ export default function Community({ navigation }) {
               placeholder={"Search By Name"}
               enteredValue={searchQuery}
               enteredValueHandler={(query) => {
-                handleSearch(query)
+                handleSearch(query);
               }}
             ></SecondaryTextInputField>
           </View>
         </View>
-        <View>
+        <SafeAreaView style={{ paddingBottom: responsiveHeight(27) }}>
           <FlatList
             data={users}
             renderItem={({ item }) => card(item)}
             keyExtractor={(data) => data.uid}
             initialNumToRender={1}
           ></FlatList>
-        </View>
+        </SafeAreaView>
       </View>
     </View>
   );
@@ -156,7 +163,6 @@ export default function Community({ navigation }) {
 
 const styles = StyleSheet.create({
   rootContainer: {
-    flex: 1,
     backgroundColor: Colors.white,
   },
   yearStyle: {
@@ -165,13 +171,12 @@ const styles = StyleSheet.create({
   },
   container: {
     marginHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchBox: {
     flex: 1,
-    // width: responsiveWidth(60),
     marginTop: responsiveHeight(1.1),
     marginHorizontal: responsiveWidth(2),
   },

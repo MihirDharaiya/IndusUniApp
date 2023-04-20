@@ -10,9 +10,9 @@ import {
   ScrollView,
   FlatList,
   Pressable,
-  BackHandler
+  BackHandler,
 } from "react-native";
-import React, { useState, useEffect, useFocusEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import BorderCard from "../components/BorderCard";
 import Colors from "../constants/Colors";
 import TextInputBoxField from "../components/TextInputBoxField";
@@ -28,7 +28,7 @@ import {
   where,
   deleteDoc,
   addDoc,
-  orderBy
+  orderBy,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, User } from "firebase/auth";
@@ -80,7 +80,11 @@ export default function ActiveDoubts({ navigation }) {
     const a = await getDoc(doc(db, "users", useruid));
     const enroll = a.data().enrollnmentNumber;
     const doubts = collection(db, "resolveddoubts");
-    const q = query(doubts, where("enrollnmentNumber", "==", enroll), orderBy("createdAt", "desc"));
+    const q = query(
+      doubts,
+      where("enrollnmentNumber", "==", enroll),
+      orderBy("createdAt", "desc")
+    );
     const un = onSnapshot(q, (querySnapshot) => {
       var arr = [];
       var arrId = [];
@@ -99,7 +103,11 @@ export default function ActiveDoubts({ navigation }) {
     const a = await getDoc(doc(db, "users", useruid));
     const enroll = a.data().enrollnmentNumber;
     const doubts = collection(db, "activedoubts");
-    const q = query(doubts, where("enrollnmentNumber", "==", enroll), orderBy("createdAt", "desc"));
+    const q = query(
+      doubts,
+      where("enrollnmentNumber", "==", enroll),
+      orderBy("createdAt", "desc")
+    );
     const un = onSnapshot(q, (querySnapshot) => {
       var arr = [];
       var arrId = [];
@@ -167,7 +175,6 @@ export default function ActiveDoubts({ navigation }) {
                   flexDirection: "row",
                   justifyContent: "space-around",
                   flex: 1,
-
                 }}
               >
                 <Pressable
@@ -327,7 +334,7 @@ const styles = StyleSheet.create({
   textIconView: {
     flexDirection: "row",
     padding: responsiveWidth(0.5),
-    alignItems: 'center'
+    alignItems: "center",
   },
   outerView: {
     flexDirection: "row",

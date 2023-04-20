@@ -1,14 +1,14 @@
 # IndusUniApp
 
-## Indus Achiever: This aims to solve the doubts and queries of all the students of Indus University. The application has been designed with a user-friendly interface and advanced features that will make it easier for you to resolve doubts which were earlier solved via email.
+### Indus Achiever: This aims to solve the doubts and queries of all the students of Indus University. The application has been designed with a user-friendly interface and advanced features that will make it easier for you to resolve doubts which were earlier solved via email.
 
 <br>
 
-## Indus Faculty: is designed to solve the doubts raised by students on another app named Indus Achiever. The application will provide a platform for students to connect with their respective faculty members and get their doubts cleared in a timely and efficient manner.
+### Indus Faculty: is designed to solve the doubts raised by students on another app named Indus Achiever. The application will provide a platform for students to connect with their respective faculty members and get their doubts cleared in a timely and efficient manner.
 
 <br>
 
-## Admin Portal: is designed to manage faculties like to Add and Remove them. Apart from this action against reported students can also be taken.
+### Admin Portal: is designed to manage faculties like to Add and Remove them. Apart from this action against reported students can also be taken.
 
 <br>
 
@@ -61,7 +61,8 @@
 
 ### [Youtube Video Link](https://youtu.be/qSjtPJ-du-c)
 
-#### Kindly Follow the link to get better understanding of the application usage. 
+#### Kindly Follow the link to get better understanding of the application usage.
+
 <p align="center">
   <img src="static/youtube.png" width="800" height="450"style="border-radius:15px"/>
 </p>
