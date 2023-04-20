@@ -1,14 +1,32 @@
-import { StyleSheet, View, Button, Text, FlatList, Pressable, Image, BackHandler } from 'react-native'
-import { React, useState, useEffect } from 'react'
+import {
+  StyleSheet,
+  View,
+  Button,
+  Text,
+  FlatList,
+  Pressable,
+  Image,
+  BackHandler,
+} from "react-native";
+import { React, useState, useEffect } from "react";
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import Colors from '../constants/Colors';
-import Card from '../components/Card'
-import { getFirestore, getDocs, doc, collection, onSnapshot, limit, query, where } from 'firebase/firestore';
-import { app } from '../firebase/firebase';
+import Colors from "../constants/Colors";
+import Card from "../components/Card";
+import {
+  getFirestore,
+  getDocs,
+  doc,
+  collection,
+  onSnapshot,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
+import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 import SecondaryTextInputField from '../components/SecondaryTextInputField'
@@ -26,31 +44,17 @@ export default function Community({ navigation }) {
   const auth = getAuth();
   const isFocused = useIsFocused();
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const formattedQuery = query.toLowerCase();
-    const filteredData = filter(users, (us) => {
-      return contains(us, formattedQuery);
-    });
-    setUsers(filteredData);
-  }
-  const contains = ({ name, branch }, query) => {
-    if (name.includes(query) || branch.includes(query)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
   async function getUsers() {
-    const docRef = query(collection(db, "users"), where("uid", "!=", auth.currentUser.uid));
+    const docRef = query(
+      collection(db, "users"),
+      where("uid", "!=", auth.currentUser.uid)
+    );
     const docSnap = await getDocs(docRef);
     var arr = []
     docSnap.forEach(doc => {
       arr.push(doc.data())
     })
-    setUsers(arr);
-    setData(arr);
+    setUsers(arr)
   }
   useEffect(() => {
     getUsers();
@@ -64,34 +68,51 @@ export default function Community({ navigation }) {
     );
 
     return () => backHandler.remove();
-  }, [isFocused])
+  }, [isFocused]);
 
   const toggleSections = () => {
     setShowSection1(!showSection1);
   };
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const formatquery = query.toLowerCase();
+    const filterData = filter(users, (user) => {
+      return contains(user, formatquery);
+    });
+    setUsers(filterData);
+  };
+  const contains = ({ name }, query) => {
+    if (name.includes(query)) {
+      return true;
+    }
+    return false;
+  };
   function card(data) {
     const prof = data.profileImg;
-    const profile = { uri: data.profileImg }
-    const default_prof = require('../assets/images/Profile.png');
+    const profile = { uri: data.profileImg };
+    const default_prof = require("../assets/images/Profile.png");
     let icon = prof === "" ? default_prof : profile;
     return (
       <View>
         <Pressable
           onPress={() => {
             navigation.navigate("Student Profile", { data: data });
-
           }}
         >
           <Card>
-            <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-              <Text style={styles.yearStyle}><Text style={{ fontWeight: '700', color: Colors.black }}>Batch Year:</Text> {data.batchYear}</Text>
+            <View
+              style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
+            >
+              <Text style={styles.yearStyle}>
+                <Text style={{ fontWeight: "700", color: Colors.black }}>
+                  Batch Year:
+                </Text>{" "}
+                {data.batchYear}
+              </Text>
             </View>
             <View style={styles.titleContainer}>
               <View style={styles.imgContainer}>
-                <Image
-                  style={styles.profileImage}
-                  source={icon}
-                />
+                <Image style={styles.profileImage} source={icon} />
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.title}>Name:</Text>
@@ -103,7 +124,7 @@ export default function Community({ navigation }) {
           </Card>
         </Pressable>
       </View>
-    )
+    );
   }
   return (
     <View style={styles.rootContainer}>
@@ -111,37 +132,36 @@ export default function Community({ navigation }) {
         <View style={styles.container}>
           <View style={styles.searchBox}>
             <SecondaryTextInputField
-              enteredValue={searchQuery}
-              enteredValueHandler={(query) => {
-                handleSearch(query)
-              }}
-              clearButtonMode={"always"}
               placeholder={"Search By Name"}
             ></SecondaryTextInputField>
+          </View>
+          <View style={styles.button}>
+            <PrimaryButton
+              textStyle={{ fontSize: responsiveFontSize(2.4) }}
+            >Search</PrimaryButton>
           </View>
         </View>
         <View>
           <FlatList
             data={users}
             renderItem={({ item }) => card(item)}
-            keyExtractor={data => data.uid}
+            keyExtractor={(data) => data.uid}
             initialNumToRender={1}
-          >
-          </FlatList>
+          ></FlatList>
         </View>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   yearStyle: {
     color: Colors.darkred,
-    fontWeight: '700'
+    fontWeight: "700",
   },
   container: {
     marginHorizontal: 10,
@@ -153,28 +173,28 @@ const styles = StyleSheet.create({
     flex: 1,
     // width: responsiveWidth(60),
     marginTop: responsiveHeight(1.1),
-    marginHorizontal: responsiveWidth(2)
+    marginHorizontal: responsiveWidth(2),
   },
   button: {
     // width: responsiveWidth(35)
   },
   titleContainer: {
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   title: {
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: responsiveHeight(1),
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
   },
   answerTitle: {
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: responsiveHeight(1),
     color: Colors.grey,
-    fontSize: responsiveFontSize(2.1)
+    fontSize: responsiveFontSize(2.1),
   },
   textContainer: {
     padding: 6,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   imgContainer: {
     margin: 10,
@@ -193,5 +213,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  }
+  },
 });

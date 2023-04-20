@@ -19,7 +19,7 @@ import {
   query,
   where,
   onSnapshot,
-  orderBy
+  orderBy,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";
@@ -103,8 +103,8 @@ const FacultyList = ({ navigation }) => {
 
   function card(data) {
     const prof = data.profileImg;
-    const profile = { uri: data.profileImg }
-    const default_prof = require('../assets/images/Profile.png');
+    const profile = { uri: data.profileImg };
+    const default_prof = require("../assets/images/Profile.png");
     let icon = prof === "" ? default_prof : profile;
     return (
       <View>
@@ -116,16 +116,17 @@ const FacultyList = ({ navigation }) => {
           <Card>
             <View style={styles.titleContainer}>
               <View style={styles.imgContainer}>
-                <Image
-                  style={styles.profileImg}
-                  source={icon}
-                />
+                <Image style={styles.profileImg} source={icon} />
               </View>
               <View style={styles.textContainer}>
-                <Text style={styles.title}>Name:</Text>
-                <Text style={styles.answerTitle}>{data.fname}</Text>
-                <Text style={styles.title}>Designation:</Text>
-                <Text style={styles.answerTitle}>{data.fposition}</Text>
+                <View style={{ paddingBottom: 8 }}>
+                  <Text style={styles.title}>Name:</Text>
+                  <Text style={styles.answerTitle}>{data.fname}</Text>
+                </View>
+                <View style={{ paddingBottom: 8 }}>
+                  <Text style={styles.title}>Designation:</Text>
+                  <Text style={styles.answerTitle}>{data.fposition}</Text>
+                </View>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.title}>Branch: </Text>
                   <Text style={styles.answerTitle}>{data.fbranch}</Text>
@@ -196,7 +197,7 @@ const FacultyList = ({ navigation }) => {
             onPress={() => {
               Linking.openURL(
                 "mailto: indusuniapp@gmail.com?subject=Faculty Not Found in the Provided List&body=" +
-                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
+                  `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
               );
             }}
           >
@@ -245,7 +246,8 @@ const styles = StyleSheet.create({
     marginBottom: responsiveHeight(2),
   },
   imgContainer: {
-    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileImg: {
     width: responsiveWidth(30),
@@ -257,7 +259,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "800",
-    marginBottom: responsiveHeight(1),
     fontSize: responsiveFontSize(2),
   },
   activeText: {
@@ -271,11 +272,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingBottom: responsiveHeight(2),
   },
   answerTitle: {
     fontWeight: "500",
-    marginBottom: responsiveHeight(1),
+
     color: Colors.grey,
     fontSize: responsiveFontSize(2.1),
     flexWrap: "wrap",

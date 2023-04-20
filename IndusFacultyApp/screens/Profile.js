@@ -10,6 +10,7 @@ import {
   Image,
   Linking,
   BackHandler,
+  Platform,
 } from "react-native";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
@@ -19,18 +20,36 @@ import SecondaryButton from "../components/SecondaryButton";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
-import { app, storageRef } from "../firebase";
-import "firebase/storage";
+import { app } from "../firebase";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import {
+  getBytes,
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 export default function Profile({ navigation }) {
   const isFocused = useIsFocused();
+  const storage = getStorage(app);
+  const auth = getAuth();
+  const db = getFirestore(app);
+  const default_prof = require("../assets/images/Profile.png");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [branch, setBranch] = useState("");
   const [position, setPosition] = useState("");
   const [id, setId] = useState("");
   const [image, setImage] = useState(null);
-
+  const userData = doc(db, "faculty", auth.currentUser.uid);
   const showData = async () => {
     let user = await AsyncStorage.getItem("users");
     user = JSON.parse(user);
@@ -40,11 +59,61 @@ export default function Profile({ navigation }) {
     setBranch(user.fbranch);
     setPosition(user.fposition);
     setId(user.fid);
+    setImage(user.profileImg);
   };
   const clearData = () => {
     AsyncStorage.clear();
   };
+  const PickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    let finalImg = await ImageManipulator.manipulateAsync(
+      result.uri,
+      [{ resize: { width: 300, height: 300 } }],
+      { compress: 0.1, format: ImageManipulator.SaveFormat.PNG }
+    );
+    if (!finalImg.canceled) {
+      const res = finalImg.uri.split("ImageManipulator/")[1].trim();
+      setImage(finalImg.uri);
+      const img = await fetch(finalImg.uri);
+      const by = await img.blob();
+      const refs = ref(
+        storage,
+        "gs://indusuniapp-df82f.appspot.com/" + auth.currentUser.uid
+      );
+      uploadBytes(refs, by).then(() => {
+        // console.log(res);
+        getDownloadURL(refs).then((url) => {
+          const xhr = new XMLHttpRequest();
+          xhr.responseType = "blob";
+          xhr.onload = (event) => {
+            const blob = xhr.response;
+          };
+          xhr.open("GET", url);
+          xhr.send();
+          // console.log(url);
+          updateDoc(userData, {
+            profileImg: url,
+          });
+        });
+      });
+    }
+  };
   useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("No permission");
+        }
+      }
+    })();
     if (isFocused) {
       showData();
       clearData();
@@ -83,8 +152,8 @@ export default function Profile({ navigation }) {
           ]}
         >
           <Image
-            source={require("../assets/images/Profile.png")}
             style={styles.image}
+            source={image === "" ? default_prof : { uri: image }}
           />
         </View>
       </View>
@@ -97,6 +166,7 @@ export default function Profile({ navigation }) {
             iconName="upload"
             size={responsiveFontSize(2.3)}
             color={Colors.white}
+            onPress={PickImage}
           ></PrimaryButton>
         </View>
       </View>
@@ -181,6 +251,7 @@ const styles = StyleSheet.create({
   profileImgContainer: {
     width: responsiveWidth(27),
     height: responsiveWidth(27),
+    borderRadius: responsiveWidth(27) / 2,
     borderRadius: 50,
     alignItems: "center",
     paddingTop: 2,
@@ -197,7 +268,7 @@ const styles = StyleSheet.create({
   image: {
     width: responsiveWidth(25),
     height: responsiveWidth(25),
-    borderRadius: responsiveWidth(50),
+    borderRadius: responsiveWidth(25) / 2,
   },
 
   buttonOuterContainer: {

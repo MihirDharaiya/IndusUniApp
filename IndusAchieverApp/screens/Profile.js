@@ -11,24 +11,36 @@ import {
   Image,
   Linking,
   BackHandler,
-  Platform
+  Platform,
 } from "react-native";
 import Colors from "../constants/Colors.js";
 import TextInputField from "../components/TextInputField";
 import PrimaryButton from "../components/PrimaryButton";
 import SecondaryButton from "../components/SecondaryButton";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
-import { getFirestore, collection, addDoc, updateDoc, doc } from 'firebase/firestore';
-import { app } from '../firebase/firebase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker';
-import { getBytes, getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { app } from "../firebase/firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
+import {
+  getBytes,
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import * as ImageManipulator from "expo-image-manipulator";
 export default function Profile({ navigation }) {
   const storage = getStorage(app);
   const db = getFirestore(app);
-  const default_prof = require('../assets/images/Profile.png');
+  const default_prof = require("../assets/images/Profile.png");
   const auth = getAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,10 +48,9 @@ export default function Profile({ navigation }) {
   const [branch, setBranch] = useState("");
   const [batchYear, setBatchYear] = useState("");
   const [image, setImage] = useState(null);
-  // const [profileImg, setProfileImg] = useState("");
   const userData = doc(db, "users", auth.currentUser.uid);
   const showData = async () => {
-    let user = await AsyncStorage.getItem('users');
+    let user = await AsyncStorage.getItem("users");
     user = JSON.parse(user);
     // console.log(typeof user, user);
     setName(user.name);
@@ -47,51 +58,59 @@ export default function Profile({ navigation }) {
     setenrollnmentNumber(user.enrollnmentNumber);
     setBatchYear(user.batchYear);
     setBranch(user.branch);
-    setImage(user.profileImg)
+    setImage(user.profileImg);
   };
   const clearData = () => {
     AsyncStorage.clear();
-  }
+  };
 
   const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1
-    })
-    console.log(result);
-    if (!result.canceled) {
-      const res = result.uri.split("ImagePicker/")[1].trim()
-      setImage(result.uri);
-      const img = await fetch(result.uri);
+      quality: 1,
+    });
+
+    let finalImg = await ImageManipulator.manipulateAsync(
+      result.uri,
+      [{ resize: { width: 300, height: 300 } }],
+      { compress: 0.1, format: ImageManipulator.SaveFormat.PNG }
+    );
+    if (!finalImg.canceled) {
+      const res = finalImg.uri.split("ImageManipulator/")[1].trim();
+      setImage(finalImg.uri);
+      const img = await fetch(finalImg.uri);
       const by = await img.blob();
-      const refs = ref(storage, 'gs://indusuniapp-df82f.appspot.com/' + auth.currentUser.uid);
+      const refs = ref(
+        storage,
+        "gs://indusuniapp-df82f.appspot.com/" + auth.currentUser.uid
+      );
       uploadBytes(refs, by).then(() => {
-        console.log(res);
+        // console.log(res);
         getDownloadURL(refs).then((url) => {
           const xhr = new XMLHttpRequest();
-          xhr.responseType = 'blob';
+          xhr.responseType = "blob";
           xhr.onload = (event) => {
             const blob = xhr.response;
           };
-          xhr.open('GET', url);
+          xhr.open("GET", url);
           xhr.send();
-          console.log(url);
+          // console.log(url);
           updateDoc(userData, {
-            profileImg: url
-          })
-        })
+            profileImg: url,
+          });
+        });
       });
     }
-  }
+  };
   useEffect(() => {
-
     (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert("No permission")
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("No permission");
         }
       }
     })();
@@ -111,13 +130,15 @@ export default function Profile({ navigation }) {
   const onSignOut = async () => {
     const auth = getAuth();
     await AsyncStorage.removeItem("users");
-    signOut(auth).then(() => {
-      clearData();
-      navigation.navigate('LoginScreen')
-    }).catch((error) => {
-      alert('Something went wrong please try again !')
-    });
-  }
+    signOut(auth)
+      .then(() => {
+        clearData();
+        navigation.navigate("LoginScreen");
+      })
+      .catch((error) => {
+        alert("Something went wrong please try again !");
+      });
+  };
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.imageContainer}>
@@ -220,11 +241,15 @@ export default function Profile({ navigation }) {
             iconName="envelope"
             size={responsiveFontSize(3)}
             color={Colors.white}
-            textStyle={{ color: Colors.white, fontSize: responsiveFontSize(2.5), marginVertical: 2.5 }}
+            textStyle={{
+              color: Colors.white,
+              fontSize: responsiveFontSize(2.5),
+              marginVertical: 2.5,
+            }}
             onPress={() => {
               Linking.openURL(
                 "mailto: mihirdharaiya.19.cs@iite.indusuni.ac.in?subject=Feedback Related to the Student Application&body=" +
-                `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
+                  `${"\n"} Regards, ${"\n"} ${name} ${"\n"} ${enrollnmentNumber} ${"\n"} ${branch}, ${batchYear}`
               );
             }}
           >
@@ -237,7 +262,10 @@ export default function Profile({ navigation }) {
             iconName="sign-out-alt"
             size={responsiveFontSize(3)}
             color={Colors.blue}
-            textStyle={{ color: Colors.blue, fontSize: responsiveFontSize(2.4) }}
+            textStyle={{
+              color: Colors.blue,
+              fontSize: responsiveFontSize(2.4),
+            }}
             onPress={() => onSignOut()}
           >
             Log Out
@@ -251,7 +279,7 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   inputFieldsContainer: {
     paddingHorizontal: responsiveWidth(5),
@@ -292,17 +320,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     alignItems: "center",
     marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
   },
   editButtonInnerContainer: {
     width: responsiveWidth(70),
-    height: responsiveHeight(10)
+    height: responsiveHeight(10),
   },
   editPhone: {
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   editIcon: {
     // paddingTop: 10
-  }
+  },
 });

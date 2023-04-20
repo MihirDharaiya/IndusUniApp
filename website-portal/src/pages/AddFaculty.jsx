@@ -90,6 +90,7 @@ function AddFaculty(props) {
           fbranch: branch,
           fposition: position,
           fid: id,
+          profileImg: "",
         });
       })
       .then(() => {
