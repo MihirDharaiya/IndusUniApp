@@ -40,6 +40,7 @@ export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
   const auth = getAuth();
   const route = useRoute();
+  const default_prof = require("../assets/images/Profile.png");
   const useruid = auth.currentUser.uid;
   const db = getFirestore(app);
   const [fid, setFid] = useState("");
@@ -47,6 +48,7 @@ export default function HomeScreen({ navigation }) {
   const [data, setData] = useState([]);
   const [noData, setNoData] = useState(false);
   const [generateDoubt, setGenerateDoubt] = useState(true);
+  const [image, setImage] = useState(null);
   useEffect(() => {
     if (isFocused) {
       setNoData(false);
@@ -78,6 +80,10 @@ export default function HomeScreen({ navigation }) {
     const a = await getDoc(doc(db, "faculty", useruid));
     setFid(a.data().fid);
   };
+  const studentImg = async (uid) => {
+    const a = await getDoc(doc(db, "users", uid));
+    setImage(a.data().profileImg);
+  };
   const getDoubtData = async () => {
     setGenerateDoubt(false);
     getCurrentUser();
@@ -95,6 +101,7 @@ export default function HomeScreen({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             setData(doc.data());
+            studentImg(data.uid);
             const clone = doc.data();
             clone["uid"] = doc.id;
             setWholeData(clone);
@@ -202,7 +209,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.imgContainer}>
                 <Image
                   style={styles.profileImg}
-                  source={require("../assets/images/Profile.png")}
+                  source={image === "" ? default_prof : { uri: image }}
                 />
               </View>
               <View style={styles.studentsContainer}>
@@ -341,9 +348,9 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   profileImg: {
-    width: responsiveWidth(24),
-    height: responsiveWidth(24),
-    borderRadius: 25,
+    width: responsiveWidth(25),
+    height: responsiveWidth(25),
+    borderRadius: responsiveWidth(25) / 2,
   },
   textContainer: {
     flexDirection: "row",
