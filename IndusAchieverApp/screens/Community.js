@@ -132,13 +132,13 @@ export default function Community({ navigation }) {
         <View style={styles.container}>
           <View style={styles.searchBox}>
             <SecondaryTextInputField
+              clearButtonMode={"always"}
               placeholder={"Search By Name"}
+              enteredValue={searchQuery}
+              enteredValueHandler={(query) => {
+                handleSearch(query)
+              }}
             ></SecondaryTextInputField>
-          </View>
-          <View style={styles.button}>
-            <PrimaryButton
-              textStyle={{ fontSize: responsiveFontSize(2.4) }}
-            >Search</PrimaryButton>
           </View>
         </View>
         <View>
