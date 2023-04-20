@@ -23,11 +23,12 @@ import { getFirestore, collection, addDoc, updateDoc, doc } from 'firebase/fires
 import { app } from '../firebase/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import { getBytes, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getBytes, getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function Profile({ navigation }) {
   const storage = getStorage(app);
   const db = getFirestore(app);
+  const default_prof = require('../assets/images/Profile.png');
   const auth = getAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -56,7 +57,7 @@ export default function Profile({ navigation }) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1
     })
     console.log(result);
@@ -65,11 +66,21 @@ export default function Profile({ navigation }) {
       setImage(result.uri);
       const img = await fetch(result.uri);
       const by = await img.blob();
-      const refs = ref(storage, auth.currentUser.uid)
+      const refs = ref(storage, 'gs://indusuniapp-df82f.appspot.com/' + auth.currentUser.uid);
       uploadBytes(refs, by).then(() => {
         console.log(res);
-        updateDoc(userData, {
-          profileImg: result.uri
+        getDownloadURL(refs).then((url) => {
+          const xhr = new XMLHttpRequest();
+          xhr.responseType = 'blob';
+          xhr.onload = (event) => {
+            const blob = xhr.response;
+          };
+          xhr.open('GET', url);
+          xhr.send();
+          console.log(url);
+          updateDoc(userData, {
+            profileImg: url
+          })
         })
       });
     }
@@ -118,7 +129,7 @@ export default function Profile({ navigation }) {
         >
           <Image
             style={styles.image}
-            source={{ uri: image }}
+            source={image === "" ? default_prof : { uri: image }}
           />
         </TouchableHighlight>
       </View>
@@ -253,7 +264,7 @@ const styles = StyleSheet.create({
   profileImgContainer: {
     width: responsiveWidth(27),
     height: responsiveWidth(27),
-    borderRadius: 50,
+    borderRadius: responsiveWidth(27) / 2,
     alignItems: "center",
     paddingTop: 2,
     shadowColor: "#000",
@@ -269,7 +280,7 @@ const styles = StyleSheet.create({
   image: {
     width: responsiveWidth(25),
     height: responsiveWidth(25),
-    borderRadius: 50,
+    borderRadius: responsiveWidth(25) / 2,
   },
 
   editButtonOuterContainer: {

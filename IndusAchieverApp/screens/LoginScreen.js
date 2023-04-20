@@ -9,7 +9,8 @@ import {
   View,
   Image,
   Pressable,
-  ToastAndroid
+  ImageBackground,
+  Alert
 } from "react-native";
 import Colors from "../constants/Colors";
 import Card from "../components/Card";
@@ -67,13 +68,15 @@ export default function LoginScreen({ navigation }) {
           }
         })
         .catch((error) => {
-          // setError('Invalid User !')
-          const errorCode = error.code.replace("auth/", "");
-          if (errorCode) {
-            // ToastAndroid.show(errorCode, ToastAndroid.SHORT);
-            setError("Invalid User !!")
-          } else {
-            // AlertIOS.alert("title", "text");
+          if (error.code === 'auth/user-not-found') {
+            Alert.alert(
+              'That email address is invalid'
+            )
+          }
+          else if (error.code === 'auth/wrong-password') {
+            Alert.alert(
+              'Entered Password is Incorrect'
+            )
           }
           setEmail('');
           setPassword('');
@@ -83,97 +86,103 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <KeyboardAwareScrollView style={styles.mainContainer}>
-      <View style={styles.containerImage}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/IndusAchieverLogo.png")}
-        />
-      </View>
-      <Card>
-        <View>
-          <TextInputField
-            title="Email:"
-            iconName={"user-alt"}
-            iconStyle={{ marginRight: responsiveWidth(2) }}
-            size={responsiveFontSize(3.7)}
-            placeholder="Enter Email"
-            enteredValue={email}
-            enteredValueHandler={text => setEmail(text)}
-            multiline={true}
+      <ImageBackground
+        style={styles.building}
+        source={require("../assets/images/IndusMainBuilding.png")}
+      >
+        <View style={styles.containerImage}>
+          <Image
+            style={styles.image}
+            source={require("../assets/images/IndusAchieverLogo.png")}
           />
-          <Pressable onPress={handlePasswordVisibility}>
-            <View style={styles.EyeContainer}>
-              <Icon name={rightIcon} style={styles.eyeIcon} />
-            </View>
-          </Pressable>
-          <TextInputField
-            title="Password:"
-            iconName={"lock"}
-            size={responsiveFontSize(4)}
-            placeholder="Enter Password"
-            enteredValue={password}
-            enteredValueHandler={password => setPassword(password)}
-            secureTextEntry={passwordVisibility}
-          />
-
-          <Pressable
-            onPress={() => {
-              navigation.navigate('ForgotPassword')
-            }}
-            style={({ pressed }) =>
-              pressed
-                ? [styles.buttonInnerContainer, styles.pressed]
-                : styles.buttonInnerContainer
-            }
-          >
-            <View style={styles.forgotPassContainer}>
-              <Text style={styles.forgotPass}>Forgot Password?</Text>
-            </View>
-          </Pressable>
         </View>
-        {
-          error == '' ? null : (<View style={{ paddingBottom: 10 }}>
-            <Text style={{ color: Colors.red, textAlign: 'center' }}>
-              {error}
-            </Text>
-          </View>)
-        }
-        <View style={styles.buttonContainer}>
-          <PrimaryButton
-            onPress={() => onSignIn()}
-          >Login</PrimaryButton>
-        </View>
-      </Card>
-
-      <View style={styles.signUpContainer}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginVertical: 16,
-          }}
-        >
-          <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
+        <Card cardStyle={{ marginBottom: responsiveHeight(8) }}>
           <View>
-            <Text
+            <TextInputField
+              title="Email:"
+              iconName={"user-alt"}
+              iconStyle={{ marginRight: responsiveWidth(2) }}
+              size={responsiveFontSize(3.7)}
+              placeholder="Enter Email"
+              enteredValue={email}
+              enteredValueHandler={text => setEmail(text)}
+              multiline={true}
+            />
+            <Pressable onPress={handlePasswordVisibility}>
+              <View style={styles.EyeContainer}>
+                <Icon name={rightIcon} style={styles.eyeIcon} />
+              </View>
+            </Pressable>
+            <TextInputField
+              title="Password:"
+              iconName={"lock"}
+              size={responsiveFontSize(4)}
+              placeholder="Enter Password"
+              enteredValue={password}
+              enteredValueHandler={password => setPassword(password)}
+              secureTextEntry={passwordVisibility}
+            />
+
+            <Pressable
+              onPress={() => {
+                navigation.navigate('ForgotPassword')
+              }}
+              style={({ pressed }) =>
+                pressed
+                  ? [styles.buttonInnerContainer, styles.pressed]
+                  : styles.buttonInnerContainer
+              }
+            >
+              <View style={styles.forgotPassContainer}>
+                <Text style={styles.forgotPass}>Forgot Password?</Text>
+              </View>
+            </Pressable>
+          </View>
+          {
+            error == '' ? null : (<View style={{ paddingBottom: 10 }}>
+              <Text style={{ color: Colors.red, textAlign: 'center' }}>
+                {error}
+              </Text>
+            </View>)
+          }
+          <View style={styles.buttonContainer}>
+            <PrimaryButton
+              onPress={() => onSignIn()}
+            >Login</PrimaryButton>
+          </View>
+          <View style={styles.signUpContainer}>
+            <View
               style={{
-                width: 50,
-                textAlign: "center",
-                color: Colors.darkred,
-                fontSize: responsiveFontSize(2.5),
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 16,
               }}
             >
-              OR
-            </Text>
+              <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
+              <View>
+                <Text
+                  style={{
+                    width: 50,
+                    textAlign: "center",
+                    color: Colors.darkred,
+                    fontSize: responsiveFontSize(2.5),
+                  }}
+                >
+                  OR
+                </Text>
+              </View>
+              <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
+            </View>
+            <SecondaryButton
+              onPress={() => {
+                navigation.navigate('SignUpScreen')
+              }}
+            >Sign Up</SecondaryButton>
           </View>
-          <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
-        </View>
-        <SecondaryButton
-          onPress={() => {
-            navigation.navigate('SignUpScreen')
-          }}
-        >Sign Up</SecondaryButton>
-      </View>
+        </Card>
+
+
+      </ImageBackground>
     </KeyboardAwareScrollView>
   );
 }
@@ -184,6 +193,11 @@ const styles = StyleSheet.create({
   },
   signUpContainer: {
     marginHorizontal: 16,
+  },
+  building: {
+    // height: "100%",
+    // resizeMode: 'cover',
+    // flex: 1
   },
   containerImage: {
     flex: 1,
@@ -216,7 +230,7 @@ const styles = StyleSheet.create({
     color: Colors.darkred,
   },
   buttonContainer: {
-    marginBottom: responsiveHeight(5),
+    marginBottom: responsiveHeight(3),
   },
   building: {
     flex: 1,

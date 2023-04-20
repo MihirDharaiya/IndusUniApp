@@ -18,9 +18,7 @@ function SecondaryButton({
   buttonStyle,
   textStyle,
   selected = false
-}) 
-
-{
+}) {
   return (
     <View style={[styles.buttonOuterContainer, buttonStyle]}>
       <Pressable
@@ -41,7 +39,7 @@ function SecondaryButton({
         ) : (
           false
         )}
-        <Text style={[styles.buttonText, textStyle,{color: selected ? Colors.darkred : Colors.blue}]}>{children}</Text>
+        <Text style={[styles.buttonText, textStyle, { color: selected ? Colors.darkred : Colors.blue }]}>{children}</Text>
       </Pressable>
     </View>
   );
@@ -65,10 +63,6 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(3),
     textAlign: "center",
     fontWeight: "bold",
-  },
-  pressed: {
-    opacity: 0.75,
-    backgroundColor: Colors.grey,
   },
   iconStyle: {
     padding: 5,

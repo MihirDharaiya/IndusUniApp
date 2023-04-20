@@ -63,6 +63,8 @@ export default function CreateDoubtScreen({ route, navigation }) {
   const [error, setError] = useState("");
   const [selected, setSelected] = useState([]);
   const [isOtherSubject, setIsOtherSubject] = useState(false);
+  const profile = { uri: route.params.data.profileImg };
+  const default_prof = require('../assets/images/Profile.png');
 
   useEffect(() => { }, []);
 
@@ -116,16 +118,20 @@ export default function CreateDoubtScreen({ route, navigation }) {
             <View style={styles.imgContainer}>
               <Image
                 style={styles.profileImg}
-                source={require("../assets/images/Profile.png")}
+                source={route.params.data.profileImg === "" ? default_prof : profile}
               />
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>Name:</Text>
-              <Text style={styles.answerTitle}>{route.params.data.fname}</Text>
-              <Text style={styles.title}>Designation:</Text>
-              <Text style={styles.answerTitle}>
-                {route.params.data.fposition}
-              </Text>
+              <View>
+                <Text style={styles.title}>Name:</Text>
+                <Text style={styles.answerTitle}>{route.params.data.fname}</Text>
+              </View>
+              <View>
+                <Text style={styles.title}>Designation:</Text>
+                <Text style={styles.answerTitle}>
+                  {route.params.data.fposition}
+                </Text>
+              </View>
             </View>
           </View>
         </Card>
@@ -207,13 +213,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
   },
+  textContainer: {
+    justifyContent: 'center',
+  },
   imgContainer: {
     margin: 10,
   },
   profileImg: {
-    width: responsiveWidth(24),
-    height: responsiveWidth(24),
-    borderRadius: 25,
+    width: responsiveWidth(30),
+    height: responsiveWidth(30),
+    borderRadius: responsiveWidth(30) / 2,
   },
   titleContainer: {
     flexDirection: "row",
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: responsiveHeight(1),
     color: Colors.grey,
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(2.3),
     width: responsiveWidth(50),
     flexWrap: "wrap",
   },

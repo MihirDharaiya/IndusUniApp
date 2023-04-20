@@ -102,6 +102,10 @@ const FacultyList = ({ navigation }) => {
   }, [isFocused]);
 
   function card(data) {
+    const prof = data.profileImg;
+    const profile = { uri: data.profileImg }
+    const default_prof = require('../assets/images/Profile.png');
+    let icon = prof === "" ? default_prof : profile;
     return (
       <View>
         <Pressable
@@ -114,7 +118,7 @@ const FacultyList = ({ navigation }) => {
               <View style={styles.imgContainer}>
                 <Image
                   style={styles.profileImg}
-                  source={require("../assets/images/Profile.png")}
+                  source={icon}
                 />
               </View>
               <View style={styles.textContainer}>
@@ -244,9 +248,9 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   profileImg: {
-    width: responsiveWidth(24),
-    height: responsiveWidth(24),
-    borderRadius: 25,
+    width: responsiveWidth(30),
+    height: responsiveWidth(30),
+    borderRadius: responsiveWidth(30) / 2,
   },
   titleContainer: {
     flexDirection: "row",

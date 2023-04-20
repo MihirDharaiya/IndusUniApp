@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   input: {
+    padding: 10,
     flex: 1,
     fontSize: responsiveFontSize(2.3),
   },

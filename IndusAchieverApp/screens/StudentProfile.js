@@ -12,7 +12,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function StudentProfile({ route, navigation }) {
   const currentProfileUser = route.params.data.uid;
-  const profile = route.params.data.profileImg;
+  const profile = { uri: route.params.data.profileImg };
+  const default_prof = require('../assets/images/Profile.png');
   const [users, setUsers] = useState([]);
   const db = getFirestore(app);
   const auth = getAuth();
@@ -65,8 +66,8 @@ export default function StudentProfile({ route, navigation }) {
           </View>
           <View style={styles.image}>
             <Image
-              style={{ width: responsiveWidth(40), height: responsiveHeight(20), borderRadius: 40 }}
-              source={{ uri: profile }} />
+              style={{ width: responsiveWidth(40), height: responsiveWidth(40), borderRadius: responsiveWidth(5) }}
+              source={route.params.data.profileImg === "" ? default_prof : profile} />
           </View>
           <View>
             <Text style={styles.nameTitle}>{route.params.data.name}</Text>
@@ -245,8 +246,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   profileImg: {
-    width: responsiveWidth(24),
-    height: responsiveWidth(24),
+    width: responsiveWidth(30),
+    height: responsiveWidth(40),
     borderRadius: 25,
   },
   title: {

@@ -10,13 +10,16 @@ import Card from '../components/Card'
 import { getFirestore, getDocs, doc, collection, onSnapshot, limit, query, where } from 'firebase/firestore';
 import { app } from '../firebase/firebase';
 import { getAuth } from "firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
+import SecondaryTextInputField from '../components/SecondaryTextInputField'
+import PrimaryButton from '../components/PrimaryButton';
 
 export default function Community({ navigation }) {
   const [showSection1, setShowSection1] = useState(true);
   const [users, setUsers] = useState([]);
   const db = getFirestore(app);
   const auth = getAuth();
-
+  const isFocused = useIsFocused();
 
   async function getUsers() {
     const docRef = query(collection(db, "users"), where("uid", "!=", auth.currentUser.uid));
@@ -39,7 +42,7 @@ export default function Community({ navigation }) {
     );
 
     return () => backHandler.remove();
-  }, [])
+  }, [isFocused])
 
   const toggleSections = () => {
     setShowSection1(!showSection1);
@@ -84,19 +87,18 @@ export default function Community({ navigation }) {
     <View style={styles.rootContainer}>
       <View style={{ marginTop: 10 }}>
         {/* <FlexedButtons></FlexedButtons> */}
-        {/* <View style={styles.container}>
-        <View style={styles.searchBox}>
-        <SecondaryTextInputField
-        iconVisible={true}
-        iconName={"search"}
-        size={responsiveFontSize(3)}
-        placeholder={"Search By Name"}
-        ></SecondaryTextInputField>
+        <View style={styles.container}>
+          <View style={styles.searchBox}>
+            <SecondaryTextInputField
+              placeholder={"Search By Name"}
+            ></SecondaryTextInputField>
+          </View>
+          <View style={styles.button}>
+            <PrimaryButton
+              textStyle={{ fontSize: responsiveFontSize(2.4) }}
+            >Search</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.button}>
-        <PrimaryButton>Search</PrimaryButton>
-        </View>
-      </View> */}
         <View>
           <FlatList
             data={users}
@@ -127,11 +129,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   searchBox: {
-    width: responsiveWidth(55),
-    marginTop: responsiveHeight(1.1)
+    flex: 1,
+    // width: responsiveWidth(60),
+    marginTop: responsiveHeight(1.1),
+    marginHorizontal: responsiveWidth(2)
   },
   button: {
-    width: responsiveWidth(40)
+    // width: responsiveWidth(35)
   },
   titleContainer: {
     flexDirection: 'row'
@@ -157,7 +161,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: responsiveWidth(30),
     height: responsiveWidth(30),
-    borderRadius: 60,
+    borderRadius: responsiveWidth(30) / 2,
     alignItems: "center",
     paddingTop: 2,
     shadowColor: "#000",
