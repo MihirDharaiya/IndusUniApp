@@ -62,6 +62,7 @@ export default function Community({ navigation }) {
       i++;
     });
     setUsers(arr);
+    setData(arr);
   }
   useEffect(() => {
     getUsers();
@@ -83,7 +84,7 @@ export default function Community({ navigation }) {
   const handleSearch = (query) => {
     setSearchQuery(query);
     const formatquery = query.toLowerCase();
-    const filterData = filter(users, (user) => {
+    const filterData = filter(data, (user) => {
       return contains(user, formatquery);
     });
     setUsers(filterData);

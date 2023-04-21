@@ -9,10 +9,16 @@ import { getFirestore, getDocs, collection, limit, query, where } from 'firebase
 import { app } from '../firebase/firebase';
 import { getAuth } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import Card from '../components/Card'
 
 export default function StudentProfile({ route, navigation }) {
   const currentProfileUser = route.params.data.uid;
   const profile = { uri: route.params.data.profileImg };
+  // let ans;
+  // var tags = route.params.data.tags;
+  // for (let i = 1; i <= tags; i++) {
+  //   ans = route.params.data.tags[i + 1];
+  // }
   const default_prof = require('../assets/images/Profile.png');
   const [users, setUsers] = useState([]);
   const db = getFirestore(app);
@@ -30,6 +36,18 @@ export default function StudentProfile({ route, navigation }) {
     })
     setUsers(arr)
   }
+  function renderT() {
+
+    const arr = route.params.data.tags;
+
+    return arr === [] ? "" : arr.map((obj, index) => {
+      const key = index;
+      return <Text style={styles.tagStyle} key={key}>{obj}</Text>;
+
+
+    });
+  }
+
   useEffect(() => {
     getUsers()
   }, [])
@@ -152,12 +170,11 @@ export default function StudentProfile({ route, navigation }) {
         </BorderCard>
         <View style={styles.suggestionView}>
           <Text style={styles.suggestionText}>Skills</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {renderT()}
+          </View>
         </View>
-        <View style={styles.containerImage}>
-          <Image
-            style={styles.image2}
-            source={require("../assets/images/coming_soon.gif")}
-          />
+        <View>
         </View>
       </View>
     </ScrollView>
@@ -229,11 +246,12 @@ const styles = StyleSheet.create({
   suggestionText: {
     color: Colors.darkred,
     fontSize: responsiveFontSize(3),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: responsiveHeight(2)
   },
   suggestionView: {
     margin: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   titleContainer: {
     flexDirection: 'row'
@@ -275,5 +293,13 @@ const styles = StyleSheet.create({
     color: Colors.lightgrey,
     marginLeft: 4,
   },
+  tagStyle: {
+    borderWidth: 1,
+    borderRadius: responsiveFontSize(2),
+    padding: responsiveWidth(2),
+    margin: responsiveWidth(2),
+    testAlign: 'center',
+    fontSize: responsiveFontSize(2.3)
+  }
 
 })

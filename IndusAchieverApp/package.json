@@ -30,6 +30,7 @@
     "react-native": "0.70.5",
     "react-native-dropdown-select-list": "^2.0.4",
     "react-native-dropdownalert": "^4.5.1",
+    "react-native-element-textinput": "^2.2.0",
     "react-native-internet-connection-alert": "^0.1.9",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-keyboard-spacer": "^0.4.1",

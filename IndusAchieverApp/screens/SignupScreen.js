@@ -93,6 +93,7 @@ export default function SignupScreen({ navigation }) {
             batchYear: "20" + arr[0],
             uid: auth.currentUser.uid,
             profileImg: "",
+            tags: [],
           }).then(() => {
             navigation.navigate("VerifyEmail");
             AsyncStorage.setItem("users", JSON.stringify(data));
