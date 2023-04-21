@@ -96,6 +96,7 @@ export default function ActiveDoubts({ navigation }) {
         arr[i]["doubtId"] = arrId[i];
       }
       setResolvedDoubt(arr);
+      console.log(arr);
     });
   };
 
@@ -119,6 +120,7 @@ export default function ActiveDoubts({ navigation }) {
         arr[i]["doubtId"] = arrId[i];
       }
       setDoubt(arr);
+      console.log(arr);
     });
   };
   useEffect(() => {

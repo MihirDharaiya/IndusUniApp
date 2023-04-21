@@ -87,7 +87,6 @@ export default function Profile({ navigation }) {
         "gs://indusuniapp-df82f.appspot.com/" + auth.currentUser.uid
       );
       uploadBytes(refs, by).then(() => {
-        // console.log(res);
         getDownloadURL(refs).then((url) => {
           const xhr = new XMLHttpRequest();
           xhr.responseType = "blob";

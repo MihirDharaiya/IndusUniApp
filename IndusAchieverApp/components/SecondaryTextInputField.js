@@ -14,10 +14,11 @@ export default function SecondaryTextInputField({
   maxLength,
   enteredValue,
   enteredValueHandler,
-  clearButtonMode
+  clearButtonMode,
+  viewStyle,
 }) {
   return (
-    <View style={styles.searchSection}>
+    <View style={[styles.searchSection, viewStyle]}>
       <Icon
         style={styles.searchIcon}
         name={iconName}

@@ -213,11 +213,12 @@ const styles = StyleSheet.create({
   containerImage: {
     flex: 1,
     alignItems: "center",
-    marginVertical: responsiveHeight(5),
+    marginTop: responsiveHeight(5),
+    marginBottom: responsiveHeight(3),
   },
   infoText: {
     textAlign: "center",
-    fontSize: responsiveFontSize(2.4),
+    fontSize: responsiveFontSize(2),
     color: Colors.darkred,
     fontWeight: "bold",
     marginBottom: responsiveHeight(4),

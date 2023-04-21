@@ -52,8 +52,7 @@ export default function SocailMediaScreen({ navigation }) {
     setLinkedIn(snap.data().linkedIn.replace(linLink, ""));
     setTwitter(snap.data().twitter.replace(twitLink, ""));
     setInstagram(snap.data().instagram.replace(instLink, ""));
-    setValue(snap.data().tags)
-
+    setValue(snap.data().tags);
   };
 
   useEffect(() => {
@@ -70,7 +69,7 @@ export default function SocailMediaScreen({ navigation }) {
       linkedIn: linkedIn.length < 1 ? "" : linLink + linkedIn,
       instagram: instagram.length < 1 ? "" : instLink + instagram,
       twitter: twitter.length < 1 ? "" : twitLink + twitter,
-      tags: value
+      tags: value,
     }).then(() => {
       if (Platform.OS === "android") {
         ToastAndroid.show("Details Have Been Saved", ToastAndroid.SHORT);
@@ -84,7 +83,6 @@ export default function SocailMediaScreen({ navigation }) {
       navigation.navigate("Profile");
     });
   };
-  console.log(value);
   return (
     <ScrollView style={styles.rootContainer}>
       <Text style={styles.textStyle}>Add Other Details</Text>
@@ -130,7 +128,14 @@ export default function SocailMediaScreen({ navigation }) {
         <View style={styles.suggestionView}>
           <Text style={styles.suggestionText}>Add Skills</Text>
         </View>
-        <View style={{ alignItems: 'center', padding: responsiveWidth(4), alignItems: 'center', justifyContent: 'center' }}>
+        <View
+          style={{
+            alignItems: "center",
+            padding: responsiveWidth(4),
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <HashtagInput
             data={value}
             style={styles.input}
@@ -218,7 +223,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 16,
     height: 55,
     paddingHorizontal: 12,
@@ -232,8 +237,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    flexWrap: 'wrap'
-
+    flexWrap: "wrap",
   },
   inputStyle: { fontSize: 16 },
   labelStyle: { fontSize: 14 },

@@ -106,9 +106,10 @@ export default function LoginScreen({ navigation }) {
         .catch((error) => {
           setEmail("");
           setPassword("");
-          const errorCode = error.code.replace("auth/", "");
-          if (errorCode) {
-            setError("Invalid User");
+          if (error.code === "auth/user-not-found") {
+            Alert.alert("That email address is invalid");
+          } else if (error.code === "auth/wrong-password") {
+            Alert.alert("Entered Password is Incorrect");
           }
         });
       if (userData) {

@@ -1,7 +1,6 @@
 import {
   StyleSheet,
   View,
-  Button,
   Text,
   FlatList,
   Pressable,
@@ -19,10 +18,7 @@ import Card from "../components/Card";
 import {
   getFirestore,
   getDocs,
-  doc,
   collection,
-  onSnapshot,
-  limit,
   query,
   where,
 } from "firebase/firestore";
@@ -30,7 +26,6 @@ import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 import SecondaryTextInputField from "../components/SecondaryTextInputField";
-import PrimaryButton from "../components/PrimaryButton";
 import filter from "lodash.filter";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -78,9 +73,6 @@ export default function Community({ navigation }) {
     return () => backHandler.remove();
   }, [isFocused]);
 
-  const toggleSections = () => {
-    setShowSection1(!showSection1);
-  };
   const handleSearch = (query) => {
     setSearchQuery(query);
     const formatquery = query.toLowerCase();
@@ -137,19 +129,17 @@ export default function Community({ navigation }) {
   return (
     <View style={styles.rootContainer}>
       <View style={{ marginTop: 10 }}>
-        <View style={styles.container}>
-          <View style={styles.searchBox}>
-            <SecondaryTextInputField
-              clearButtonMode={"always"}
-              placeholder={"Search By Name"}
-              enteredValue={searchQuery}
-              enteredValueHandler={(query) => {
-                handleSearch(query);
-              }}
-            ></SecondaryTextInputField>
-          </View>
-        </View>
-        <SafeAreaView style={{ paddingBottom: responsiveHeight(27) }}>
+        <SecondaryTextInputField
+          clearButtonMode={"always"}
+          placeholder={"Search By Name"}
+          enteredValue={searchQuery}
+          enteredValueHandler={(query) => {
+            handleSearch(query);
+          }}
+          viewStyle={styles.searchBar}
+        ></SecondaryTextInputField>
+
+        <SafeAreaView style={{ paddingBottom: responsiveHeight(9) }}>
           <FlatList
             data={users}
             renderItem={({ item }) => card(item)}
@@ -175,11 +165,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 1,
   },
-  searchBox: {
-    flex: 1,
-    marginTop: responsiveHeight(1.1),
+  searchBar: {
     marginHorizontal: responsiveWidth(2),
+    marginBottom: -30,
+    backgroundColor: Colors.extralightgrey,
   },
   button: {
     // width: responsiveWidth(35)

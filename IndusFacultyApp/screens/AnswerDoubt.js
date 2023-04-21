@@ -49,6 +49,7 @@ export default function ReportStudent({ route, navigation }) {
         batchYear: route.params.data.batchYear,
         reply: reply,
         resolvedOn: fDate,
+        createdAt: route.params.data.createdAt,
       }).then(() => {
         setReply("");
 

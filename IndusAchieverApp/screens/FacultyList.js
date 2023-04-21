@@ -110,7 +110,7 @@ const FacultyList = ({ navigation }) => {
       <View>
         <Pressable
           onPress={() => {
-            navigation.navigate("CreateDoubtScreen", { data: data });
+            navigation.navigate("Add Doubt Details", { data: data });
           }}
         >
           <Card>
