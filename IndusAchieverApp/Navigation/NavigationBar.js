@@ -31,10 +31,8 @@ import ForgotPassword from "../screens/ForgotPassword";
 import ReenterPassword from "../screens/ReenterPassword";
 import EmailVerification from "../screens/EmailVerification";
 import StudentProfile from "../screens/StudentProfile";
-import AlumniProfile from "../screens/AlumniProfile";
 import CreateDoubtScreen from "../screens/CreateDoubtScreen";
 import FacultyList from "../screens/FacultyList";
-import NoInternet from "../screens/NoInternet";
 import VerifyEmail from "../screens/VerifyEmail";
 import ViewDetails from "../screens/ViewDetails";
 import SuccessPage from "../screens/SuccessPage";
@@ -162,7 +160,7 @@ export default function NavigationBar() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={"LoginScreen"}
-        screenOptions={({}) => ({
+        screenOptions={({ }) => ({
           headerStyle: {
             backgroundColor: Colors.blue,
             borderBottomWidth: 1,
@@ -215,11 +213,6 @@ export default function NavigationBar() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="AlumniProfile"
-          component={AlumniProfile}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="SuccessPage"
           component={SuccessPage}
           options={{ headerShown: false }}
@@ -248,11 +241,6 @@ export default function NavigationBar() {
           name="FAQ"
           component={FrequentlyAskedQuestion}
           options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="NoInternet"
-          component={NoInternet}
-          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="SocailMediaScreen"

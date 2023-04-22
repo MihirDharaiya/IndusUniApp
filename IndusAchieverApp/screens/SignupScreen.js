@@ -109,7 +109,7 @@ export default function SignupScreen({ navigation }) {
               tags: [],
             }).then(() => {
               navigation.navigate("VerifyEmail");
-              AsyncStorage.setItem("users", JSON.stringify(data));
+              // AsyncStorage.setItem("users", JSON.stringify(data));
             });
           })
           .catch((error) => {

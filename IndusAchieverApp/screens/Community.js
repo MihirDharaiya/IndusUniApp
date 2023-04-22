@@ -140,7 +140,7 @@ export default function Community({ navigation }) {
           viewStyle={styles.searchBar}
         ></SecondaryTextInputField>
 
-        <SafeAreaView style={{ paddingBottom: responsiveHeight(9) }}>
+        <SafeAreaView style={{ paddingBottom: responsiveHeight(20) }}>
           <FlatList
             data={users}
             renderItem={({ item }) => card(item)}
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     marginHorizontal: responsiveWidth(2),
-    marginBottom: -30,
+    // marginBottom: -30,
     backgroundColor: Colors.extralightgrey,
   },
   button: {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2.1),
     flex: 1,
     flexWrap: "wrap",
-    width: "100%",
+    width: responsiveWidth(45),
   },
   textContainer: {
     padding: 6,

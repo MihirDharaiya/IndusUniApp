@@ -1,6 +1,4 @@
 import ActiveDoubts from "../screens/ActiveDoubts";
-import AlumniProfile from "../screens/AlumniProfile";
-import AlumniSection from "../screens/AlumniSection";
 import EmailVerification from "../screens/EmailVerification";
 import ForgotPassword from "../screens/ForgotPassword";
 import HomeScreen from "../screens/HomeScreen";
@@ -25,14 +23,12 @@ const Routes = {
     pastDoubts: PastDoubts,
     profile: Profile,
     activeDoubts: ActiveDoubts,
-    alumniProfile: AlumniProfile,
-    alumniSection: AlumniSection,
     createDoubtScreen: CreateDoubtScreen,
     community: Community,
     notification: Notification,
     reenterPassword: ReenterPassword,
     socialMediaScreen: SocailMediaScreen,
     studentProfile: StudentProfile
-    
+
 }
 export default Routes;
