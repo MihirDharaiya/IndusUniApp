@@ -79,7 +79,7 @@ export default function LoginScreen({ navigation }) {
           setEmail("");
           setPassword("");
           if (error.code === "auth/user-not-found") {
-            Alert.alert("That email address is invalid");
+            Alert.alert("Email address is invalid");
           } else if (error.code === "auth/wrong-password") {
             Alert.alert("Entered Password is Incorrect");
           }

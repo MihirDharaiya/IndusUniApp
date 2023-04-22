@@ -10,7 +10,14 @@ import {
   faSignature,
 } from "@fortawesome/free-solid-svg-icons";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import app from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 import emailjs from "@emailjs/browser";
@@ -33,8 +40,11 @@ function AddFaculty(props) {
       var randomNumber = Math.floor(Math.random() * chars.length);
       password += chars.substring(randomNumber, randomNumber + 1);
     }
-    const pass = firstname.slice(0, 4) + password;
-    setPasword(pass.trim());
+    let fn = firstname.replace("Dr. ", "");
+    fn = firstname.replace("Dr.", "");
+
+    const pass = fn.slice(0, 4) + password;
+    setPasword(pass.replace(" ", "*"));
   }
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -79,30 +89,38 @@ function AddFaculty(props) {
     generatePassword();
     const fullname = firstname + " " + lastname;
     e.preventDefault();
-
-    await signUp(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("User Added :", user);
-        setDoc(doc(db, "faculty", user.uid), {
-          femail: email,
-          fname: fullname,
-          fbranch: branch,
-          fposition: position,
-          fid: id,
-          profileImg: "",
+    const faculty = collection(db, "faculty");
+    const q = query(faculty, where("fid", "==", id));
+    const docSnap = await getDocs(q);
+    if (docSnap.empty) {
+      await signUp(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("User Added :", user);
+          setDoc(doc(db, "faculty", user.uid), {
+            femail: email,
+            fname: fullname,
+            fbranch: branch,
+            fposition: position,
+            fid: id,
+            profileImg: "",
+          });
+        })
+        .then(() => {
+          alert("New faculty is added to the organisation.");
+          console.log(email);
+          console.log(password);
+          reset();
+          sendEmail(fullname);
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            alert("Email address is already inuse");
+          }
         });
-      })
-      .then(() => {
-        alert("New faculty is added to the organisation.");
-        console.log(email);
-        console.log(password);
-        reset();
-        sendEmail(fullname);
-      })
-      .then((error) => {
-        alert(error.text);
-      });
+    } else {
+      alert("ID is already in USE");
+    }
   };
   console.log(firstname);
   console.log(lastname);

@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, ImageBackground, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  Pressable,
+} from "react-native";
 import React from "react";
 import {
   responsiveHeight,
@@ -6,37 +12,41 @@ import {
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
 import Colors from "../constants/Colors";
-import ActiveDoubts from '../screens/ActiveDoubts';
+import ActiveDoubts from "../screens/ActiveDoubts";
 
-export default function ImageTextStack({onPressActive, onPressQuestions,count}) {
-    return (
+export default function ImageTextStack({
+  onPressActive,
+  onPressQuestions,
+  count,
+}) {
+  return (
     <View style={styles.boxContainer}>
       <View style={styles.container}>
         <Pressable onPress={onPressActive}>
-        <ImageBackground
-          source={require("../assets/images/Pencil.jpg")}
-          style={styles.backdrop1}
-        >
-          <View style={styles.textContainer}>
-            <Text style={styles.imageNumbers}>{count}</Text>
-            <Text style={styles.imageText}> Active Doubts</Text>
-          </View>
-        </ImageBackground>
-        </Pressable> 
+          <ImageBackground
+            source={require("../assets/images/Pencil.jpg")}
+            style={styles.backdrop1}
+          >
+            <View style={styles.textContainer}>
+              <Text style={styles.imageNumbers}>{count}</Text>
+              <Text style={styles.imageText}> Active Doubts</Text>
+            </View>
+          </ImageBackground>
+        </Pressable>
       </View>
 
       <View style={styles.container}>
         <Pressable onPress={onPressQuestions}>
-        <ImageBackground
-          source={require("../assets/images/Question_mark.jpg")}
-          style={styles.backdrop2}
-        >
-          <View style={styles.textContainer2}>
-            <Text style={styles.imageText2}>
-              Frequently {"\n"} Asked {"\n"} Doubts
-            </Text>
-          </View>
-        </ImageBackground>
+          <ImageBackground
+            source={require("../assets/images/Question_mark.jpg")}
+            style={styles.backdrop2}
+          >
+            <View style={styles.textContainer2}>
+              <Text style={styles.imageText2}>
+                Frequently {"\n"} Asked {"\n"} Doubts
+              </Text>
+            </View>
+          </ImageBackground>
         </Pressable>
       </View>
     </View>
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: 'center'
+    alignItems: "center",
   },
   imageText: {
     marginBottom: responsiveHeight(0.4),
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
   },
   imageNumbers: {
     marginBottom: responsiveHeight(1),
-    fontSize: responsiveFontSize(2.2),
+    fontSize: responsiveFontSize(3),
     fontWeight: "600",
     color: Colors.blue,
   },

@@ -207,7 +207,7 @@ export default function Profile({ navigation }) {
           iconName={"id-badge"}
           iconStyle={{ marginRight: responsiveWidth(3.4) }}
           size={responsiveFontSize(3.8)}
-          placeholder="IU12312"
+          placeholder="IU0000000000"
           style={{ marginRight: 3 }}
           editable={false}
           enteredValue={enrollnmentNumber}
@@ -228,7 +228,7 @@ export default function Profile({ navigation }) {
           iconName={"id-card"}
           iconStyle={{ marginRight: responsiveWidth(2) }}
           size={responsiveFontSize(3.1)}
-          placeholder="2017"
+          placeholder="0000"
           editable={false}
           enteredValue={batchYear}
           textStyle={{ color: Colors.black }}

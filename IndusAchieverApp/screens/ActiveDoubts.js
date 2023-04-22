@@ -23,7 +23,6 @@ import {
   doc,
   query,
   onSnapshot,
-  getDocs,
   collection,
   where,
   deleteDoc,
@@ -31,7 +30,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
-import { getAuth, User } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 
 export default function ActiveDoubts({ navigation }) {
@@ -96,7 +95,6 @@ export default function ActiveDoubts({ navigation }) {
         arr[i]["doubtId"] = arrId[i];
       }
       setResolvedDoubt(arr);
-      console.log(arr);
     });
   };
 
@@ -120,7 +118,6 @@ export default function ActiveDoubts({ navigation }) {
         arr[i]["doubtId"] = arrId[i];
       }
       setDoubt(arr);
-      console.log(arr);
     });
   };
   useEffect(() => {

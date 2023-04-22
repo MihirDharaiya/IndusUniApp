@@ -1,27 +1,30 @@
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native'
-import React from 'react'
-import Colors from '../constants/Colors'
-import { responsiveFontSize,responsiveHeight,responsiveWidth } from 'react-native-responsive-dimensions'
-import {app} from '../firebase/firebase';
-import {useState,useEffect} from 'react'
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { StyleSheet, Text, View, ImageBackground, Image } from "react-native";
+import React from "react";
+import Colors from "../constants/Colors";
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import { app } from "../firebase/firebase";
+import { useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 
-const Splash = ({navigation}) => {
-const [isLogiIn,setLogin]=useState(false)
-const auth=getAuth()
+const Splash = ({ navigation }) => {
+  const [isLogiIn, setLogin] = useState(false);
+  const auth = getAuth();
 
-useEffect(() => {
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      setLogin(true);
-      navigation.navigate("Overview");
-    } else {
-      setLogin(false);
-      navigation.navigate("LoginScreen");
-    }
-    console.log("user", isLogiIn);
-  });
-}, [app]);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setLogin(true);
+        navigation.navigate("Overview");
+      } else {
+        setLogin(false);
+        navigation.navigate("LoginScreen");
+      }
+    });
+  }, [app]);
 
   return (
     <View style={styles.rootContainer}>
@@ -41,10 +44,10 @@ useEffect(() => {
         </View>
       </ImageBackground>
     </View>
-  )
-}
+  );
+};
 
-export default Splash
+export default Splash;
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -70,4 +73,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   textView: {},
-})
+});

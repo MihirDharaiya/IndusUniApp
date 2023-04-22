@@ -3,17 +3,32 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import { StyleSheet, Text, View, ScrollView, FlatList, BackHandler } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  BackHandler,
+} from "react-native";
 import { React, useEffect, useState } from "react";
 import Colors from "../constants/Colors";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import BorderCard from "../components/BorderCard";
 import TextInputBoxField from "../components/TextInputBoxField";
 import { getAuth } from "firebase/auth";
-import { getFirestore, getDocs, doc, collection, getDoc, where, query, onSnapshot, orderBy } from 'firebase/firestore';
-import { app } from '../firebase/firebase';
-
-
+import {
+  getFirestore,
+  getDocs,
+  doc,
+  collection,
+  getDoc,
+  where,
+  query,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
+import { app } from "../firebase/firebase";
 
 export default function PastDoubts({ navigation }) {
   const auth = getAuth();
@@ -24,14 +39,18 @@ export default function PastDoubts({ navigation }) {
   async function getDoubts() {
     const a = await getDoc(doc(db, "users", useruid));
     const enroll = a.data().enrollnmentNumber;
-    const docRef = query(collection(db, "pastdoubts"), where("enrollnmentNumber", "==", enroll), orderBy("createdAt", "desc"));
+    const docRef = query(
+      collection(db, "pastdoubts"),
+      where("enrollnmentNumber", "==", enroll),
+      orderBy("createdAt", "desc")
+    );
     const un = onSnapshot(docRef, (querySnapshot) => {
       var arr = [];
       querySnapshot.forEach((doc) => {
-        arr.push(doc.data())
+        arr.push(doc.data());
       });
       setDoubts(arr);
-    })
+    });
   }
   useEffect(() => {
     getDoubts();
@@ -45,18 +64,33 @@ export default function PastDoubts({ navigation }) {
     );
 
     return () => backHandler.remove();
-  }, [])
+  }, []);
   function card(data) {
     return (
       <View>
-
         <BorderCard>
           <View style={styles.inputField}>
-            <TextInputBoxField title={'Subject:'} editable={false} enteredValue={data.subject} multiline={true}></TextInputBoxField>
-            <TextInputBoxField title={'Reply:'} editable={false} enteredValue={data.reply} multiline={true} textStyle={{ color: Colors.darkred }}></TextInputBoxField>
-
+            <TextInputBoxField
+              title={"Subject:"}
+              editable={false}
+              enteredValue={data.subject}
+              multiline={true}
+            ></TextInputBoxField>
+            <TextInputBoxField
+              title={"Reply:"}
+              editable={false}
+              enteredValue={data.reply}
+              multiline={true}
+              textStyle={{ color: Colors.darkred }}
+            ></TextInputBoxField>
           </View>
-          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              justifyContent: "space-between",
+            }}
+          >
             <View style={styles.leftView}>
               <Text style={styles.headingText}>Raised On:</Text>
               <Text style={styles.answerText}>{data.raisedOn}</Text>
@@ -67,11 +101,16 @@ export default function PastDoubts({ navigation }) {
             </View>
           </View>
           <View style={styles.facultyView}>
-            <Text style={styles.facultyText}><Text style={{ fontWeight: '700', color: Colors.black }}>By - </Text> {data.fname}</Text>
+            <Text style={styles.facultyText}>
+              <Text style={{ fontWeight: "700", color: Colors.black }}>
+                By -{" "}
+              </Text>{" "}
+              {data.fname}
+            </Text>
           </View>
         </BorderCard>
       </View>
-    )
+    );
   }
   return (
     <View style={styles.rootContainer}>
@@ -83,10 +122,9 @@ export default function PastDoubts({ navigation }) {
         <FlatList
           data={doubts}
           renderItem={({ item }) => card(item)}
-          keyExtractor={data => data.uid}
+          keyExtractor={(data) => data.uid}
           style={{ marginBottom: responsiveHeight(10) }}
-        >
-        </FlatList>
+        ></FlatList>
       </View>
     </View>
   );
@@ -95,20 +133,20 @@ export default function PastDoubts({ navigation }) {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   activeText: {
     fontSize: responsiveFontSize(3),
     color: Colors.grey,
-    fontWeight: '500',
+    fontWeight: "500",
     paddingLeft: responsiveWidth(2),
   },
   titleView: {
     paddingTop: responsiveHeight(2),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: responsiveHeight(2)
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: responsiveHeight(2),
   },
   inputField: {
     flex: 1,
@@ -120,41 +158,41 @@ const styles = StyleSheet.create({
   },
   rightView: {
     marginTop: responsiveHeight(1),
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   headingText: {
     fontSize: responsiveFontSize(2),
-    fontWeight: '600'
+    fontWeight: "600",
   },
   answerText: {
     fontSize: responsiveFontSize(2),
-    fontWeight: '600',
-    color: Colors.lightgrey
+    fontWeight: "600",
+    color: Colors.lightgrey,
   },
   nameView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: responsiveHeight(1)
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: responsiveHeight(1),
   },
   facultyView: {
     padding: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   facultyText: {
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: responsiveFontSize(2),
     color: Colors.navyblue,
     width: responsiveWidth(50),
-    flexWrap: 'wrap',
-    textAlign: 'center',
-    alignItems: 'center',
-    flex: 1
+    flexWrap: "wrap",
+    textAlign: "center",
+    alignItems: "center",
+    flex: 1,
   },
   facultyHeading: {
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: responsiveFontSize(2),
-    textAlign: 'center',
-    alignItems: 'center',
-  }
+    textAlign: "center",
+    alignItems: "center",
+  },
 });

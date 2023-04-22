@@ -26,7 +26,14 @@ import {
   VerifyEmail,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTogglePasswordVisibility } from "../components/ViewPassword";
@@ -49,7 +56,7 @@ export default function SignupScreen({ navigation }) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
-  const addUser = () => {
+  const addUser = async () => {
     const reg = /[a-z]*\.[0-9]+\.[a-z]+@iite\.indusuni\.ac\.in/i;
     if (!reg.test(email)) {
       setError("Please Enter Valid University Email !!");
@@ -80,32 +87,43 @@ export default function SignupScreen({ navigation }) {
       if (arr[1] === "cse") {
         arr[1] = "cs";
       }
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          sendEmailVerification(user);
-          setDoc(doc(db, "users", user.uid), {
-            email: email,
-            name: toTitleCase(name),
-            enrollnmentNumber: enrollnmentNumber,
-            branch: arr[1].toUpperCase(),
-            batchYear: "20" + arr[0],
-            uid: auth.currentUser.uid,
-            profileImg: "",
-            tags: [],
-          }).then(() => {
-            navigation.navigate("VerifyEmail");
-            AsyncStorage.setItem("users", JSON.stringify(data));
+      const user = collection(db, "users");
+      const q = query(
+        user,
+        where("enrollnmentNumber", "==", enrollnmentNumber)
+      );
+      const docSnap = await getDocs(q);
+      if (docSnap.empty) {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            sendEmailVerification(user);
+            setDoc(doc(db, "users", user.uid), {
+              email: email,
+              name: toTitleCase(name),
+              enrollnmentNumber: enrollnmentNumber,
+              branch: arr[1].toUpperCase(),
+              batchYear: "20" + arr[0],
+              uid: auth.currentUser.uid,
+              profileImg: "",
+              tags: [],
+            }).then(() => {
+              navigation.navigate("VerifyEmail");
+              AsyncStorage.setItem("users", JSON.stringify(data));
+            });
+          })
+          .catch((error) => {
+            // const errorCode = error.code.replace("auth/", "");
+            if (error.code === "auth/email-already-in-use") {
+              setEmail("");
+              Alert.alert("Email address is already inuse");
+            }
+            console.log("Error : ", error);
           });
-        })
-        .catch((error) => {
-          // const errorCode = error.code.replace("auth/", "");
-          if (error.code === "auth/email-already-in-use") {
-            Alert.alert("That email address is already inuse");
-          }
-          console.log("Error : ", error);
-        });
+      } else {
+        setenrollnmentNumber("");
+        Alert.alert("Enrollnment Number is already inuse");
+      }
     }
   };
 

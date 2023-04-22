@@ -13,7 +13,7 @@ import {
   BackHandler,
   Alert,
 } from "react-native";
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Colors from "../constants/Colors";
 import ImageTextStack from "../components/ImageTextStack";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -51,25 +51,24 @@ export default function HomeScreen({ navigation }) {
   }
   useEffect(() => {
     if (isFocused) {
-    count();
-    const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
-      ]);
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-  
-    return () => backHandler.remove();
-    
+      count();
+      const backAction = () => {
+        Alert.alert("Hold on!", "Are you sure you want to go back?", [
+          {
+            text: "Cancel",
+            onPress: () => null,
+            style: "cancel",
+          },
+          { text: "YES", onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+      };
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+
+      return () => backHandler.remove();
     }
   }, [isFocused]);
   return (

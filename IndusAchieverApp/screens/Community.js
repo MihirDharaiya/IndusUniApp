@@ -105,7 +105,7 @@ export default function Community({ navigation }) {
             >
               <Text style={styles.yearStyle}>
                 <Text style={{ fontWeight: "700", color: Colors.black }}>
-                  Batch Year:
+                  Batch Year :
                 </Text>{" "}
                 {data.batchYear}
               </Text>
@@ -116,6 +116,7 @@ export default function Community({ navigation }) {
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.title}>Name:</Text>
+
                 <Text style={styles.answerTitle}>{toTitleCase(data.name)}</Text>
                 <Text style={styles.title}>Branch:</Text>
                 <Text style={styles.answerTitle}>{data.branch}</Text>
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
+    flex: 1,
   },
   title: {
     fontWeight: "800",
@@ -188,10 +190,12 @@ const styles = StyleSheet.create({
     marginBottom: responsiveHeight(1),
     color: Colors.grey,
     fontSize: responsiveFontSize(2.1),
+    flex: 1,
+    flexWrap: "wrap",
+    width: "100%",
   },
   textContainer: {
     padding: 6,
-    justifyContent: "flex-end",
   },
   imgContainer: {
     margin: 10,

@@ -1,64 +1,98 @@
-import { StyleSheet, Text, View, ScrollView, Image, Pressable, FlatList } from 'react-native'
-import { React, useState, useEffect } from 'react'
-import Colors from '../constants/Colors'
-import BorderCard from '../components/BorderCard'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-import RoundButton from '../components/RoundButton'
-import { Linking } from 'react-native';
-import { getFirestore, getDocs, collection, limit, query, where } from 'firebase/firestore';
-import { app } from '../firebase/firebase';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  Pressable,
+  FlatList,
+} from "react-native";
+import { React, useState, useEffect } from "react";
+import Colors from "../constants/Colors";
+import BorderCard from "../components/BorderCard";
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import RoundButton from "../components/RoundButton";
+import { Linking } from "react-native";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
+import { app } from "../firebase/firebase";
 import { getAuth } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import Card from '../components/Card'
+import Card from "../components/Card";
 
 export default function StudentProfile({ route, navigation }) {
   const currentProfileUser = route.params.data.uid;
   const profile = { uri: route.params.data.profileImg };
-  // let ans;
-  // var tags = route.params.data.tags;
-  // for (let i = 1; i <= tags; i++) {
-  //   ans = route.params.data.tags[i + 1];
-  // }
-  const default_prof = require('../assets/images/Profile.png');
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+  const default_prof = require("../assets/images/Profile.png");
   const [users, setUsers] = useState([]);
   const db = getFirestore(app);
   const auth = getAuth();
   async function getUsers() {
-    const docRef = query(collection(db, "users"), where("uid", "!=", auth.currentUser.uid), limit(4));
+    const docRef = query(
+      collection(db, "users"),
+      where("uid", "!=", auth.currentUser.uid),
+      limit(4)
+    );
     const docSnap = await getDocs(docRef);
-    var arr = []
+    var arr = [];
     let i = 0;
-    docSnap.forEach(doc => {
+    docSnap.forEach((doc) => {
       if (currentProfileUser != doc.id && i < 3) {
-        arr.push(doc.data())
+        arr.push(doc.data());
         i++;
       }
-    })
-    setUsers(arr)
+    });
+    setUsers(arr);
   }
   function renderT() {
-
     const arr = route.params.data.tags;
 
-    return arr === [] ? "" : arr.map((obj, index) => {
-      const key = index;
-      return <Text style={styles.tagStyle} key={key}>{obj}</Text>;
-
-
-    });
+    return arr === []
+      ? ""
+      : arr.map((obj, index) => {
+          const key = index;
+          return (
+            <Text style={styles.tagStyle} key={key}>
+              {obj}
+            </Text>
+          );
+        });
   }
 
   useEffect(() => {
-    getUsers()
-  }, [])
+    getUsers();
+  }, []);
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={{ marginTop: 10 }}>
         <BorderCard>
-          <View style={{ justifyContent: 'space-between', alignItems: 'space-between', flexDirection: 'row' }}>
+          <View
+            style={{
+              justifyContent: "space-between",
+              alignItems: "space-between",
+              flexDirection: "row",
+            }}
+          >
             <Pressable
               onPress={() => {
-                navigation.navigate("ReportStudent", { data: route.params.data });
+                navigation.navigate("ReportStudent", {
+                  data: route.params.data,
+                });
               }}
             >
               <View style={styles.reportContainer}>
@@ -84,33 +118,53 @@ export default function StudentProfile({ route, navigation }) {
           </View>
           <View style={styles.image}>
             <Image
-              style={{ width: responsiveWidth(40), height: responsiveWidth(40), borderRadius: responsiveWidth(5) }}
-              source={route.params.data.profileImg === "" ? default_prof : profile} />
+              style={{
+                width: responsiveWidth(40),
+                height: responsiveWidth(40),
+                borderRadius: responsiveWidth(5),
+              }}
+              source={
+                route.params.data.profileImg === "" ? default_prof : profile
+              }
+            />
           </View>
           <View>
-            <Text style={styles.nameTitle}>{route.params.data.name}</Text>
+            <Text style={styles.nameTitle}>
+              {toTitleCase(route.params.data.name)}
+            </Text>
             <Text style={styles.subTitle}>Branch: </Text>
-            <View style={{ flexDirection: 'row', textAlign: 'center', justifyContent: 'center' }}>
-              <Text style={styles.answerText}>{route.params.data.branch + ", "}</Text>
-              <Text style={styles.answerText}>{route.params.data.batchYear}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                textAlign: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.answerText}>
+                {route.params.data.branch + ", "}
+              </Text>
+              <Text style={styles.answerText}>
+                {route.params.data.batchYear}
+              </Text>
             </View>
           </View>
           <View style={styles.buttonView}>
             {/* <Text style={{fontSize: responsiveFontSize(2)}}>Skills:</Text> */}
-            <View style={{ flexDirection: 'row' }}>
-            </View>
-
+            <View style={{ flexDirection: "row" }}></View>
           </View>
           <View
             style={{
-              borderBottomColor: 'black',
+              borderBottomColor: "black",
               borderBottomWidth: StyleSheet.hairlineWidth,
-            }} />
+            }}
+          />
           <View style={styles.roundButtonView}>
             <RoundButton
               onPress={() => {
-                typeof (route.params.data.github) == "string" && route.params.data.github != "" ?
-                  Linking.openURL(route.params.data.github) : alert('User Profile is Incomplete')
+                typeof route.params.data.github == "string" &&
+                route.params.data.github != ""
+                  ? Linking.openURL(route.params.data.github)
+                  : alert("User Profile is Incomplete");
               }}
               textNotVisible={true}
               iconVisible={true}
@@ -121,7 +175,7 @@ export default function StudentProfile({ route, navigation }) {
             ></RoundButton>
             <RoundButton
               onPress={() => {
-                Linking.openURL("mailto:" + route.params.data.email)
+                Linking.openURL("mailto:" + route.params.data.email);
               }}
               textNotVisible={true}
               iconVisible={true}
@@ -132,8 +186,10 @@ export default function StudentProfile({ route, navigation }) {
             ></RoundButton>
             <RoundButton
               onPress={() => {
-                typeof (route.params.data.linkedIn) == "string" && route.params.data.linkedIn != "" ?
-                  Linking.openURL(route.params.data.linkedIn) : alert('User Profile is Incomplete')
+                typeof route.params.data.linkedIn == "string" &&
+                route.params.data.linkedIn != ""
+                  ? Linking.openURL(route.params.data.linkedIn)
+                  : alert("User Profile is Incomplete");
               }}
               textNotVisible={true}
               iconVisible={true}
@@ -144,8 +200,10 @@ export default function StudentProfile({ route, navigation }) {
             ></RoundButton>
             <RoundButton
               onPress={() => {
-                typeof (route.params.data.instagram) == "string" && route.params.data.instagram != "" ?
-                  Linking.openURL(route.params.data.instagram) : alert('User Profile is Incomplete')
+                typeof route.params.data.instagram == "string" &&
+                route.params.data.instagram != ""
+                  ? Linking.openURL(route.params.data.instagram)
+                  : alert("User Profile is Incomplete");
               }}
               textNotVisible={true}
               iconVisible={true}
@@ -156,8 +214,10 @@ export default function StudentProfile({ route, navigation }) {
             ></RoundButton>
             <RoundButton
               onPress={() => {
-                typeof (route.params.data.twitter) == "string" && route.params.data.twitter != "" ?
-                  Linking.openURL(route.params.data.twitter) : alert('User Profile is Incomplete')
+                typeof route.params.data.twitter == "string" &&
+                route.params.data.twitter != ""
+                  ? Linking.openURL(route.params.data.twitter)
+                  : alert("User Profile is Incomplete");
               }}
               textNotVisible={true}
               iconVisible={true}
@@ -170,22 +230,27 @@ export default function StudentProfile({ route, navigation }) {
         </BorderCard>
         <View style={styles.suggestionView}>
           <Text style={styles.suggestionText}>Skills</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
             {renderT()}
           </View>
         </View>
-        <View>
-        </View>
+        <View></View>
       </View>
     </ScrollView>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
   },
   image: {
     // width: responsiveWidth(27),
@@ -201,64 +266,64 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.25,
     // shadowRadius: 3.84,
     // elevation: 5,
-    alignItems: 'center'
+    alignItems: "center",
   },
   image2: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: responsiveHeight(30),
     width: responsiveHeight(40),
   },
   yearStyle: {
     color: Colors.darkred,
-    fontWeight: '700'
+    fontWeight: "700",
   },
   nameTitle: {
     fontSize: responsiveFontSize(2.5),
-    fontWeight: '700',
-    textAlign: 'center',
-    paddingTop: responsiveHeight(1)
+    fontWeight: "700",
+    textAlign: "center",
+    paddingTop: responsiveHeight(1),
   },
   subTitle: {
     fontSize: responsiveFontSize(2.2),
-    fontWeight: '500',
-    textAlign: 'center',
-    paddingTop: responsiveHeight(2)
+    fontWeight: "500",
+    textAlign: "center",
+    paddingTop: responsiveHeight(2),
   },
   answerText: {
     fontSize: responsiveFontSize(2),
-    fontWeight: '500',
-    textAlign: 'center',
+    fontWeight: "500",
+    textAlign: "center",
     color: Colors.grey,
-    paddingTop: responsiveHeight(0.5)
+    paddingTop: responsiveHeight(0.5),
   },
   buttonView: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    padding: 15
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    padding: 15,
   },
   roundButtonView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 5
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 5,
   },
   suggestionText: {
     color: Colors.darkred,
     fontSize: responsiveFontSize(3),
-    fontWeight: 'bold',
-    marginBottom: responsiveHeight(2)
+    fontWeight: "bold",
+    marginBottom: responsiveHeight(2),
   },
   suggestionView: {
     margin: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   titleContainer: {
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   moreText: {
     color: Colors.grey,
-    textAlign: 'center'
+    textAlign: "center",
   },
   imgContainer: {
     margin: 10,
@@ -269,19 +334,19 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   title: {
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: responsiveHeight(1),
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
   },
   answerTitle: {
-    fontWeight: '500',
+    fontWeight: "500",
     marginBottom: responsiveHeight(1),
     color: Colors.grey,
-    fontSize: responsiveFontSize(1.8)
+    fontSize: responsiveFontSize(1.8),
   },
   textContainer: {
     padding: 6,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   reportContainer: {
     flexDirection: "row",
@@ -298,8 +363,7 @@ const styles = StyleSheet.create({
     borderRadius: responsiveFontSize(2),
     padding: responsiveWidth(2),
     margin: responsiveWidth(2),
-    testAlign: 'center',
-    fontSize: responsiveFontSize(2.3)
-  }
-
-})
+    testAlign: "center",
+    fontSize: responsiveFontSize(2.3),
+  },
+});

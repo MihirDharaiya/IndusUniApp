@@ -107,7 +107,7 @@ export default function LoginScreen({ navigation }) {
           setEmail("");
           setPassword("");
           if (error.code === "auth/user-not-found") {
-            Alert.alert("That email address is invalid");
+            Alert.alert("Email address is invalid");
           } else if (error.code === "auth/wrong-password") {
             Alert.alert("Entered Password is Incorrect");
           }
@@ -135,11 +135,11 @@ export default function LoginScreen({ navigation }) {
         <Card cardStyle={{ marginBottom: responsiveHeight(25) }}>
           <View>
             <TextInputField
-              title="Username:"
+              title="Email ID:"
               iconName={"at"}
               iconStyle={{ marginRight: responsiveWidth(2) }}
               size={responsiveFontSize(3.7)}
-              placeholder="Enter Username"
+              placeholder="Enter Email"
               enteredValue={email}
               enteredValueHandler={(text) => setEmail(text)}
               multiline={true}

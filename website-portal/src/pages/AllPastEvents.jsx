@@ -13,7 +13,10 @@ function AllPastEvents(props) {
   const db = getFirestore(app);
   const [events, setEvents] = useState([]);
   const getEvents = async () => {
-    const docRef = query(collection(db, "events"), orderBy("date", "desc"));
+    const docRef = query(
+      collection(db, "events"),
+      orderBy("createdAt", "desc")
+    );
     const docSnap = await getDocs(docRef);
     var arr = [];
     docSnap.forEach((doc) => {
@@ -32,7 +35,7 @@ function AllPastEvents(props) {
           <table>
             <tr>
               <th>Theme of the Event</th>
-              <th>Held on</th>
+              <th>Created on</th>
               <th>Faculty Name</th>
             </tr>
             {events.map((event) => (
@@ -40,10 +43,10 @@ function AllPastEvents(props) {
                 <br />
                 <tr className="list-row">
                   <td>{event.title}</td>
-                  <td>
-                    <strong>{event.date}</strong>
+                  <td style={{ width: "20%" }}>
+                    {event.createdAt.toDate().toDateString()}
                   </td>
-                  <td style={{ width: "35%" }}>{event.fname}</td>
+                  <td style={{ width: "20%" }}>{event.fname}</td>
                 </tr>
               </>
             ))}
