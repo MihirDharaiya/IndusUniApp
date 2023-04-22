@@ -32,7 +32,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTogglePasswordVisibility } from "../components/ViewPassword";
 import Icon from "react-native-vector-icons/FontAwesome5";

@@ -21,7 +21,7 @@ import {
   onSnapshot,
   orderBy,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import Colors from "../constants/Colors";

@@ -12,7 +12,7 @@ import React, { useEffect } from "react";
 import Routes from "./Routes";
 import Colors from "../constants/Colors";
 import { getAuth } from "firebase/auth";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "../screens/HomeScreen";

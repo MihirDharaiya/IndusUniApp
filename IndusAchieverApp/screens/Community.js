@@ -22,7 +22,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 import SecondaryTextInputField from "../components/SecondaryTextInputField";

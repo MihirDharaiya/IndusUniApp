@@ -30,7 +30,7 @@ import {
   collection,
   getCountFromServer,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();

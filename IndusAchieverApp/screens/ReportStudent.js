@@ -18,7 +18,7 @@ import Card from "../components/Card";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import PrimaryButton from "../components/PrimaryButton";
 export default function ReportStudent({ route, navigation }) {
   const auth = getAuth();

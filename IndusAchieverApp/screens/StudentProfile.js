@@ -25,7 +25,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { getAuth } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Card from "../components/Card";

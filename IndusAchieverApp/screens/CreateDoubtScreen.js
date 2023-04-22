@@ -22,8 +22,14 @@ import PrimaryButton from "../components/PrimaryButton";
 import { SelectList } from "react-native-dropdown-select-list";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import {
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
+import { app } from "../firebase.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SuccessPage from "./SuccessPage";
@@ -64,9 +70,9 @@ export default function CreateDoubtScreen({ route, navigation }) {
   const [selected, setSelected] = useState([]);
   const [isOtherSubject, setIsOtherSubject] = useState(false);
   const profile = { uri: route.params.data.profileImg };
-  const default_prof = require('../assets/images/Profile.png');
+  const default_prof = require("../assets/images/Profile.png");
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   const addDoubt = async () => {
     let user = await AsyncStorage.getItem("users");
@@ -105,7 +111,7 @@ export default function CreateDoubtScreen({ route, navigation }) {
         } else {
           // AlertIOS.alert("Raised", "Doubt has been created");
         }
-        navigation.navigate("SuccessPage")
+        navigation.navigate("SuccessPage");
       });
     }
   };
@@ -118,13 +124,17 @@ export default function CreateDoubtScreen({ route, navigation }) {
             <View style={styles.imgContainer}>
               <Image
                 style={styles.profileImg}
-                source={route.params.data.profileImg === "" ? default_prof : profile}
+                source={
+                  route.params.data.profileImg === "" ? default_prof : profile
+                }
               />
             </View>
             <View style={styles.textContainer}>
               <View>
                 <Text style={styles.title}>Name:</Text>
-                <Text style={styles.answerTitle}>{route.params.data.fname}</Text>
+                <Text style={styles.answerTitle}>
+                  {route.params.data.fname}
+                </Text>
               </View>
               <View>
                 <Text style={styles.title}>Designation:</Text>
@@ -214,7 +224,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   textContainer: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   imgContainer: {
     margin: 10,

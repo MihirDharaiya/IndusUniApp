@@ -15,7 +15,7 @@ import {
 import Colors from "../constants/Colors";
 import BorderCard from "../components/BorderCard";
 import React, { useState, useEffect } from "react";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import {
   query,
   getDocs,

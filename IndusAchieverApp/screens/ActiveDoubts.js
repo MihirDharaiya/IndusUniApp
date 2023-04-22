@@ -29,7 +29,7 @@ import {
   addDoc,
   orderBy,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase";
 import { getAuth } from "firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
 

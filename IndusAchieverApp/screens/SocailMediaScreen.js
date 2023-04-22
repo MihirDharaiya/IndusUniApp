@@ -25,7 +25,7 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { HashtagInput } from "react-native-element-textinput";
 export default function SocailMediaScreen({ navigation }) {
   const auth = getAuth();

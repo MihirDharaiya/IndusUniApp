@@ -17,7 +17,7 @@ import Colors from "../constants/Colors";
 import Card from "../components/Card";
 import TextInputField from "../components/TextInputField";
 import SecondaryButton from "../components/SecondaryButton";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 import { useState } from "react";
 import {
   getAuth,

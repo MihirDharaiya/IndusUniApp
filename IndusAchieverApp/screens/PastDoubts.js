@@ -28,7 +28,7 @@ import {
   onSnapshot,
   orderBy,
 } from "firebase/firestore";
-import { app } from "../firebase/firebase";
+import { app } from "../firebase.js";
 
 export default function PastDoubts({ navigation }) {
   const auth = getAuth();
