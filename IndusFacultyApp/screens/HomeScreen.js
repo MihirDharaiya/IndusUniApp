@@ -113,6 +113,7 @@ export default function HomeScreen({ navigation }) {
           setData([]);
           setNoData(true);
           setGenerateDoubt(false);
+          setImage("");
         }
       } catch (e) {
         console.log("Error getting cached document:", e);
@@ -215,7 +216,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.studentsContainer}>
                 <View style={styles.textContainer}>
                   <Text style={styles.hintText}>Name:</Text>
-                  <Text style={styles.text}>{data.name}</Text>
+                  <Text style={styles.nameText}>{data.name}</Text>
                 </View>
                 <View style={styles.textContainer}>
                   <Text style={styles.hintText}>Enroll No.:</Text>
@@ -368,6 +369,15 @@ const styles = StyleSheet.create({
     color: Colors.lightgrey,
     marginLeft: 4,
   },
+  nameText: {
+    fontSize: responsiveFontSize(1.8),
+    fontWeight: "400",
+    color: Colors.lightgrey,
+    marginLeft: 4,
+    width: responsiveWidth(38),
+    flexWrap: "wrap",
+  },
+
   subjectContainer: {
     flexDirection: "row",
     alignItems: "center",

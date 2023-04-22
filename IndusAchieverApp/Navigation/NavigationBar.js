@@ -160,7 +160,7 @@ export default function NavigationBar() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={"LoginScreen"}
-        screenOptions={({ }) => ({
+        screenOptions={({}) => ({
           headerStyle: {
             backgroundColor: Colors.blue,
             borderBottomWidth: 1,
