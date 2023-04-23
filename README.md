@@ -19,7 +19,7 @@
 
 # Google Playstore links
 
-## [Indus Achiever](https://play.google.com/store/apps/details?id=com.indus.achieverapp)
+## [Indus Achiever(v1.0.3)](https://play.google.com/store/apps/details?id=com.indus.achieverapp)
 
 ### [https://play.google.com/store/apps/details?id=com.indus.achieverapp](https://play.google.com/store/apps/details?id=com.indus.achieverapp)
 
@@ -31,7 +31,7 @@
 <br>
 <br>
 
-## [Indus Faculty](https://play.google.com/store/apps/details?id=com.indus.facultyapp)
+## [Indus Faculty(v1.0.5)](https://play.google.com/store/apps/details?id=com.indus.facultyapp)
 
 ### [https://play.google.com/store/apps/details?id=com.indus.facultyapp](https://play.google.com/store/apps/details?id=com.indus.facultyapp)
 

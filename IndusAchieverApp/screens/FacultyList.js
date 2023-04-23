@@ -104,7 +104,7 @@ const FacultyList = ({ navigation }) => {
   function card(data) {
     const prof = data.profileImg;
     const profile = { uri: data.profileImg };
-    const default_prof = require("../assets/images/Profile.png");
+    const default_prof = require("../assets/images/NoImageFaculty.png");
     let icon = prof === "" ? default_prof : profile;
     return (
       <View>

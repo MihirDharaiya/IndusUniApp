@@ -28,7 +28,7 @@ import { useIsFocused } from "@react-navigation/native";
 import SecondaryTextInputField from "../components/SecondaryTextInputField";
 import filter from "lodash.filter";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { TextInput } from "react-native-element-textinput";
 export default function Community({ navigation }) {
   const [showSection1, setShowSection1] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -129,25 +129,26 @@ export default function Community({ navigation }) {
   }
   return (
     <View style={styles.rootContainer}>
-      <View style={{ marginTop: 10 }}>
+      <View style={styles.inputContainer}>
         <SecondaryTextInputField
+          iconName={"search"}
+          size={responsiveFontSize(3.4)}
           clearButtonMode={"always"}
-          placeholder={"Search By Name"}
+          placeholder={"Search By Name/Year"}
           enteredValue={searchQuery}
           enteredValueHandler={(query) => {
             handleSearch(query);
           }}
           viewStyle={styles.searchBar}
-        ></SecondaryTextInputField>
-
-        <SafeAreaView style={{ paddingBottom: responsiveHeight(23) }}>
-          <FlatList
-            data={users}
-            renderItem={({ item }) => card(item)}
-            keyExtractor={(data) => data.uid}
-            initialNumToRender={1}
-          ></FlatList>
-        </SafeAreaView>
+        />
+      </View>
+      <View style={{ paddingBottom: responsiveHeight(18) }}>
+        <FlatList
+          data={users}
+          renderItem={({ item }) => card(item)}
+          keyExtractor={(data) => data.uid}
+          initialNumToRender={1}
+        ></FlatList>
       </View>
     </View>
   );
@@ -156,6 +157,13 @@ export default function Community({ navigation }) {
 const styles = StyleSheet.create({
   rootContainer: {
     backgroundColor: Colors.white,
+  },
+  inputContainer: {
+    paddingTop: responsiveHeight(1),
+  },
+  searchBar: {
+    marginHorizontal: responsiveWidth(2),
+    backgroundColor: Colors.extralightgrey,
   },
   yearStyle: {
     color: Colors.darkred,
@@ -168,13 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
   },
-  searchBar: {
-    marginHorizontal: responsiveWidth(2),
-    backgroundColor: Colors.extralightgrey,
-  },
-  button: {
-    // width: responsiveWidth(35)
-  },
+
   titleContainer: {
     flexDirection: "row",
     flex: 1,

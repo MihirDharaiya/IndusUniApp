@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  BackHandler,
 } from "react-native";
 import { React, useState, useEffect } from "react";
 import Colors from "../constants/Colors";
@@ -76,6 +77,15 @@ export default function StudentProfile({ route, navigation }) {
 
   useEffect(() => {
     getUsers();
+    const backAction = () => {
+      navigation.navigate("Community");
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
   }, []);
   return (
     <ScrollView style={styles.rootContainer}>
@@ -116,13 +126,9 @@ export default function StudentProfile({ route, navigation }) {
               </View>
             </Pressable>
           </View>
-          <View style={styles.image}>
+          <View style={styles.imageContainer}>
             <Image
-              style={{
-                width: responsiveWidth(40),
-                height: responsiveWidth(40),
-                borderRadius: responsiveWidth(5),
-              }}
+              style={styles.image}
               source={
                 route.params.data.profileImg === "" ? default_prof : profile
               }
@@ -238,7 +244,18 @@ export default function StudentProfile({ route, navigation }) {
               flexWrap: "wrap",
             }}
           >
-            {renderT()}
+            {route.params.data.tags.length === 0 ? (
+              <>
+                <View style={styles.containerImage}>
+                  <Image
+                    style={styles.image2}
+                    source={require("../assets/images/NoSkills.gif")}
+                  />
+                </View>
+              </>
+            ) : (
+              renderT()
+            )}
           </View>
         </View>
         <View></View>
@@ -252,27 +269,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
   },
-  image: {
-    // width: responsiveWidth(27),
-    // height: responsiveWidth(27),
-    // borderRadius: 50,
-    // alignItems: "center",
-    // paddingTop: 2,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
+  imageContainer: {
     alignItems: "center",
   },
-  image2: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: responsiveHeight(30),
-    width: responsiveHeight(40),
+  image: {
+    height: responsiveWidth(42),
+    width: responsiveWidth(42),
+    borderRadius: responsiveWidth(5),
   },
   yearStyle: {
     color: Colors.darkred,
@@ -365,5 +368,13 @@ const styles = StyleSheet.create({
     margin: responsiveWidth(2),
     testAlign: "center",
     fontSize: responsiveFontSize(2.3),
+  },
+  containerImage: {
+    alignItems: "center",
+  },
+  image2: {
+    marginTop: -10,
+    width: responsiveWidth(80),
+    height: responsiveWidth(58),
   },
 });
