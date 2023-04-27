@@ -21,6 +21,10 @@
 
 ## [Indus Achiever(v1.0.3)](https://play.google.com/store/apps/details?id=com.indus.achieverapp)
 
+### Test user credentials:
+#### - email: jainishpatel.19.cs@iite.indusuni.ac.in
+#### - password: jenu3181@%
+
 ### [https://play.google.com/store/apps/details?id=com.indus.achieverapp](https://play.google.com/store/apps/details?id=com.indus.achieverapp)
 
 <br>
@@ -32,6 +36,10 @@
 <br>
 
 ## [Indus Faculty(v1.0.5)](https://play.google.com/store/apps/details?id=com.indus.facultyapp)
+
+### Test user credentials:
+#### - email: jainish9726@gmail.com 
+#### - password: jainish9726
 
 ### [https://play.google.com/store/apps/details?id=com.indus.facultyapp](https://play.google.com/store/apps/details?id=com.indus.facultyapp)
 
